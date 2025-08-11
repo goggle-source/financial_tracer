@@ -1,0 +1,115 @@
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-30T13:13:29+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T14:55:59+03:00"}
+{"err":"error conn database: cannot parse `host=localhost user= password=xxxxx port= dbname=`: invalid port (strconv.ParseUint: parsing \"dbname=\": invalid syntax)","level":"error","msg":"fatal conn database","op":"postgresql","time":"2025-07-31T14:56:00+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T14:59:21+03:00"}
+{"err":"error conn database: cannot parse `host=localhost user= password=xxxxx port= dbname=`: invalid port (strconv.ParseUint: parsing \"dbname=\": invalid syntax)","level":"error","msg":"fatal conn database","op":"postgresql","time":"2025-07-31T14:59:21+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:00:56+03:00"}
+{"err":"error conn database: cannot parse `host=localhost user= password=xxxxx port= dbname=`: invalid port (strconv.ParseUint: parsing \"dbname=\": invalid syntax)","level":"error","msg":"fatal conn database","op":"postgresql","time":"2025-07-31T15:00:56+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:02:49+03:00"}
+{"err":"error conn database: cannot parse `host=localhost user= password=xxxxx port= dbname= sslmode=disable`: invalid port (strconv.ParseUint: parsing \"dbname=\": invalid syntax)","level":"error","msg":"fatal conn database","op":"postgresql","time":"2025-07-31T15:02:49+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:08:42+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:12:51+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:13:22+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:14:56+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:15:47+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:19:24+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:21:04+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:21:29+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:23:05+03:00"}
+{"level":"fatal","msg":"error conn database: cannot parse `host=localhost user=postgres password=xxxxx port= dbname=tracer sslmode=disable`: invalid port (strconv.ParseUint: parsing \"dbname=tracer\": invalid syntax)","time":"2025-07-31T15:23:05+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-07-31T15:23:47+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:27:47+03:00"}
+{"level":"fatal","msg":"error migrate database: ERROR: syntax error at or near \"CASCAD\" (SQLSTATE 42601)","time":"2025-08-01T16:27:48+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:29:44+03:00"}
+{"level":"fatal","msg":"error migrate database: invalid field found for struct github.com/financial_tracer/internal/common/postgresql.Transaction's field Category: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2025-08-01T16:29:44+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:31:40+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:31:56+03:00"}
+{"Error":"Postgresql.Login: ERROR: duplicate key value violates unique constraint \"uni_categories_name\" (SQLSTATE 23505)","level":"error","msg":"Fatal login","time":"2025-08-01T16:31:56+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:32:20+03:00"}
+{"Error":"Postgresql.Login: ERROR: duplicate key value violates unique constraint \"uni_categories_name\" (SQLSTATE 23505)","level":"error","msg":"Fatal login","time":"2025-08-01T16:32:20+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:33:13+03:00"}
+{"Error":"Postgresql.Login: ERROR: duplicate key value violates unique constraint \"uni_categories_name\" (SQLSTATE 23505)","level":"error","msg":"Fatal login","time":"2025-08-01T16:33:14+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:34:06+03:00"}
+{"level":"fatal","msg":"error conn database: failed to connect to `user=postgres database=tracer`:\n\t[::1]:5432 (localhost): failed to receive message: unexpected EOF\n\t127.0.0.1:5432 (localhost): failed to receive message: unexpected EOF","time":"2025-08-01T16:34:06+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:34:26+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:34:48+03:00"}
+{"Error":"Postgresql.Login: ERROR: duplicate key value violates unique constraint \"uni_categories_name\" (SQLSTATE 23505)","level":"error","msg":"Fatal login","time":"2025-08-01T16:34:48+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:36:34+03:00"}
+{"level":"fatal","msg":"error conn database: failed to connect to `user=postgres database=tracer`:\n\t[::1]:5432 (localhost): failed to receive message: unexpected EOF\n\t127.0.0.1:5432 (localhost): failed to receive message: unexpected EOF","time":"2025-08-01T16:36:34+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:36:54+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:37:11+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:37:42+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:53:18+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:54:33+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:56:03+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:56:11+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T16:56:41+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:22:47+03:00"}
+{"level":"fatal","msg":"error conn database: failed to connect to `user=postgres database=tracer`: [::1]:5432 (localhost): failed SASL auth: FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01)","time":"2025-08-01T20:22:47+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:23:09+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:23:49+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:26:44+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:42:48+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:43:36+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:45:32+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:49:03+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:49:10+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:54:13+03:00"}
+{"Error":"postgresql.ReadCaategory: Categories: unsupported relations for schema Category","level":"error","msg":"Fatal read","time":"2025-08-01T20:54:13+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:56:09+03:00"}
+{"Error":"postgresql.ReadCaategory: ERROR: column users.user_id does not exist (SQLSTATE 42703)","level":"error","msg":"Fatal read","time":"2025-08-01T20:56:09+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T20:58:56+03:00"}
+{"Error":"postgresql.ReadCaategory: Categories: unsupported relations for schema Category","level":"error","msg":"Fatal read","time":"2025-08-01T20:58:56+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T21:22:38+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T21:28:46+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T21:28:54+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-01T21:39:20+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T18:55:33+03:00"}
+{"level":"fatal","msg":"postgresql.DeleteCategory: not found","time":"2025-08-02T18:55:35+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T18:58:14+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:02:15+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:23:50+03:00"}
+{"Error":"postgresql.AuthorizationUser: record not found","level":"error","msg":"Fatal login","time":"2025-08-02T19:23:50+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:24:12+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:24:41+03:00"}
+{"Error":"postgresql.AuthorizationUser: record not found","level":"error","msg":"Fatal login","time":"2025-08-02T19:24:41+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:25:56+03:00"}
+{"Error":"postgresql.GetUser: not found","level":"error","msg":"Fatal login","time":"2025-08-02T19:25:56+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:46:31+03:00"}
+{"Error":"postgresql.GetUser: not found","level":"error","msg":"Fatal login","time":"2025-08-02T19:46:31+03:00"}
+{"Error":"postgresql.CreateCategory: ERROR: insert or update on table \"categories\" violates foreign key constraint \"fk_users_categories\" (SQLSTATE 23503)","level":"error","msg":"Fatal create category","time":"2025-08-02T19:46:31+03:00"}
+{"Error":"postgresql.CreateCategory: ERROR: value too long for type character varying(10) (SQLSTATE 22001)","level":"error","msg":"Fatal create transaction","time":"2025-08-02T19:46:31+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:47:21+03:00"}
+{"Error":"postgresql.GetUser: not found","level":"error","msg":"Fatal login","time":"2025-08-02T19:47:22+03:00"}
+{"Error":"postgresql.CreateCategory: ERROR: insert or update on table \"categories\" violates foreign key constraint \"fk_users_categories\" (SQLSTATE 23503)","level":"error","msg":"Fatal create category","time":"2025-08-02T19:47:22+03:00"}
+{"Error":"postgresql.CreateCategory: ERROR: new row for relation \"categories\" violates check constraint \"chk_categories_type\" (SQLSTATE 23514)","level":"error","msg":"Fatal create transaction","time":"2025-08-02T19:47:22+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:48:14+03:00"}
+{"Error":"postgresql.GetUser: not found","level":"error","msg":"Fatal login","time":"2025-08-02T19:48:14+03:00"}
+{"Error":"postgresql.CreateCategory: ERROR: insert or update on table \"categories\" violates foreign key constraint \"fk_users_categories\" (SQLSTATE 23503)","level":"error","msg":"Fatal create category","time":"2025-08-02T19:48:14+03:00"}
+{"Error":"postgresql.CreateCategory: ERROR: value too long for type character varying(10) (SQLSTATE 22001)","level":"error","msg":"Fatal create transaction","time":"2025-08-02T19:48:14+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:51:09+03:00"}
+{"Error":"postgresql.GetUser: not found","level":"error","msg":"Fatal login","time":"2025-08-02T19:51:09+03:00"}
+{"Error":"postgresql.CreateCategory: ERROR: insert or update on table \"categories\" violates foreign key constraint \"fk_users_categories\" (SQLSTATE 23503)","level":"error","msg":"Fatal create category","time":"2025-08-02T19:51:09+03:00"}
+{"Error":"postgresql.CreateCategory: ERROR: value too long for type character varying(10) (SQLSTATE 22001)","level":"error","msg":"Fatal create transaction","time":"2025-08-02T19:51:09+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:51:34+03:00"}
+{"Error":"postgresql.GetUser: not found","level":"error","msg":"Fatal login","time":"2025-08-02T19:51:35+03:00"}
+{"Error":"postgresql.CreateCategory: ERROR: insert or update on table \"categories\" violates foreign key constraint \"fk_users_categories\" (SQLSTATE 23503)","level":"error","msg":"Fatal create category","time":"2025-08-02T19:51:35+03:00"}
+{"Error":"postgresql.CreateTransaction: not found","level":"error","msg":"Fatal create transaction","time":"2025-08-02T19:51:35+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:55:00+03:00"}
+{"Error":"postgresql.GetUser: not found","level":"error","msg":"Fatal login","time":"2025-08-02T19:55:01+03:00"}
+{"Error":"postgresql.CreateCategory: ERROR: insert or update on table \"categories\" violates foreign key constraint \"fk_users_categories\" (SQLSTATE 23503)","level":"error","msg":"Fatal create category","time":"2025-08-02T19:55:01+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:55:30+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T19:56:42+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T20:07:55+03:00"}
+{"Error":"postgresql.DeleteCategory: not found","level":"error","msg":"Fatal delete category","time":"2025-08-02T20:07:55+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T20:08:40+03:00"}
+{"Error":"postgresql.DeleteCategory: not found","level":"error","msg":"Fatal delete category","time":"2025-08-02T20:08:40+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T20:53:39+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T20:56:04+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T21:02:02+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-02T21:08:55+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-04T16:51:50+03:00"}
+{"level":"fatal","msg":"postgresql.GetTransactions: ERROR: syntax error at end of input (SQLSTATE 42601)","time":"2025-08-04T16:51:51+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-04T16:52:16+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-04T16:53:47+03:00"}
+{"level":"info","msg":"create logger","op":"Good","time":"2025-08-04T16:53:59+03:00"}
