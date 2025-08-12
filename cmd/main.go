@@ -4,8 +4,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/financial_tracer/internal/common/postgresql"
 	"github.com/financial_tracer/internal/config"
+	"github.com/financial_tracer/internal/infastructure/db/postgresql"
 	"github.com/sirupsen/logrus"
 )
 

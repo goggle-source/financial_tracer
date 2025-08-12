@@ -4,7 +4,7 @@ import "errors"
 
 var (
 	ErrorNotFound          = errors.New("not found")
-	ErrorUserExists        = errors.New("user exists")
+	ErrorDuplicated        = errors.New("error enique")
 	ErrorCategoryExists    = errors.New("category exists")
 	ErrorTransactionExists = errors.New("transaction exists")
 )
