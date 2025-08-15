@@ -2,10 +2,13 @@ package main
 
 import (
 	"io"
+	"net/http"
 	"os"
 
 	"github.com/financial_tracer/internal/config"
+	"github.com/financial_tracer/internal/handlers"
 	"github.com/financial_tracer/internal/infastructure/db/postgresql"
+	"github.com/financial_tracer/internal/usercase/user"
 	"github.com/sirupsen/logrus"
 )
 
@@ -13,14 +16,23 @@ func main() {
 	cfg := config.LoadConfig()
 	log := NewLogger(cfg.App.Env)
 
-	_, err := postgresql.Init(cfg)
+	db, err := postgresql.Init(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	//TODO: router(gin)
-	//TODO: handler(gin)
+	users := user.CreateServer(db)
+	handlersUser := handlers.CreateHandlersUser(users, log)
+	r := handlers.Router(handlersUser)
 
+	srv := &http.Server{
+		Addr:         ":8080",
+		Handler:      r,
+		IdleTimeout:  cfg.Server.IdleTimeout,
+		WriteTimeout: cfg.Server.WriteTimeout,
+		ReadTimeout:  cfg.Server.ReadTimeout,
+	}
+	_ = srv
 }
 
 func NewLogger(cfg string) *logrus.Logger {

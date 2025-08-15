@@ -4,17 +4,15 @@ import (
 	"fmt"
 
 	"github.com/financial_tracer/internal/config"
-	"github.com/financial_tracer/internal/domain/entities"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-type GormUser struct {
+type Users struct {
 	gorm.Model
-	RequestId    string   `gorm:"not null"`
-	Name         string   `gorm:"size:50;not null"`
-	Email        string   `gorm:"not null;enique"`
-	PasswordHash [32]byte `gorm:"not null"`
+	Name         string `gorm:"size:50;not null"`
+	Email        string `gorm:"not null;enique"`
+	PasswordHash []byte `gorm:"not null"`
 }
 
 type Db struct {
@@ -31,7 +29,7 @@ func Init(cfg *config.Config) (*Db, error) {
 	}
 
 	err = db.AutoMigrate(
-		&entities.User{},
+		&Users{},
 	)
 	if err != nil {
 		return nil, fmt.Errorf("error migrate database: %w", err)

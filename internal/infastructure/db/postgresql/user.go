@@ -4,47 +4,58 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/financial_tracer/internal/domain/entities"
-	storage "github.com/financial_tracer/internal/domain/errors"
+	"github.com/financial_tracer/internal/domain"
+	"github.com/financial_tracer/internal/models"
 	"gorm.io/gorm"
 )
 
-func (d *Db) CreateUser(user *entities.User) error {
+func (d *Db) RegistrationUser(user *domain.User) error {
 	const op = "Postgresql.Login"
 
-	result := d.DB.Create(&user)
+	userDb := Users{
+		Name:         user.Name,
+		Email:        user.Email,
+		PasswordHash: user.PasswordHash[:],
+	}
+
+	result := d.DB.Create(&userDb)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
-			return fmt.Errorf("%s: %w", op, storage.ErrorDuplicated)
+			return fmt.Errorf("%s: %w", op, domain.ErrorDuplicated)
 		}
 		return fmt.Errorf("%s: %w", op, result.Error)
 	}
 	return nil
 }
 
-func (d *Db) GetUser(email string, password string) (*entities.User, error) {
+func (d *Db) AuthenticationUser(email string, password []byte) (*models.UserResponse, error) {
 	const op = "postgresql.GetUser"
 
-	var user entities.User
+	var user Users
 
-	result := d.DB.Where("email = ? AND password = ?", user.Email, user.PasswordHash).First(&user)
+	result := d.DB.Where("email = ? AND password = ?", email, password).First(&user)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return &entities.User{}, fmt.Errorf("%s: %w", op, storage.ErrorNotFound)
+			return nil, fmt.Errorf("%s: %w", op, domain.ErrorNotFound)
 		}
-		return &entities.User{}, fmt.Errorf("%s: %w", op, result.Error)
+		return nil, fmt.Errorf("%s: %w", op, result.Error)
 	}
 
-	return &user, nil
+	userDomain := models.UserResponse{
+		Name:  user.Name,
+		Email: user.Email,
+	}
+
+	return &userDomain, nil
 }
 
-func (d *Db) DeleteUser(email string, password string) error {
+func (d *Db) DeleteUser(email string, passwordHash []byte) error {
 	const op = "postgresql.DeleteUser"
-	var user entities.User
-	result := d.DB.Where("email = ? AND password = ?", email, password).Delete(&user)
+	var user domain.User
+	result := d.DB.Where("email = ? AND password = ?", email, passwordHash).Delete(&user)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return fmt.Errorf("%s: %w", op, storage.ErrorNotFound)
+			return fmt.Errorf("%s: %w", op, domain.ErrorNotFound)
 		}
 		return fmt.Errorf("%s: %w", op, result.Error)
 	}
