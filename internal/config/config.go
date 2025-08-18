@@ -13,8 +13,9 @@ type Config struct {
 }
 
 type AppB struct {
-	Env  string `mapstructure:"Env"`
-	Host string `mapstructure:"Host"`
+	SercretKey string `mapstructure:"sercetKey"`
+	Env        string `mapstructure:"Env"`
+	Host       string `mapstructure:"Host"`
 }
 
 type HTTPServer struct {

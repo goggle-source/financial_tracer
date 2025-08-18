@@ -7,7 +7,8 @@ func Router(handlers *HandlersUser) *gin.Engine {
 
 	user := r.Group("/user")
 	{
-		user.POST("/login", handlers.Post)
+		user.POST("/register", handlers.Registration)
+		user.POST("/login", handlers.Authentication)
 	}
 
 	return r

@@ -5,11 +5,10 @@ import (
 	"fmt"
 
 	"github.com/financial_tracer/internal/domain"
-	"github.com/financial_tracer/internal/models"
 	"gorm.io/gorm"
 )
 
-func (d *Db) RegistrationUser(user *domain.User) error {
+func (d *Db) RegistrationUser(user *domain.User) (int, error) {
 	const op = "Postgresql.Login"
 
 	userDb := Users{
@@ -21,14 +20,14 @@ func (d *Db) RegistrationUser(user *domain.User) error {
 	result := d.DB.Create(&userDb)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
-			return fmt.Errorf("%s: %w", op, domain.ErrorDuplicated)
+			return 0, fmt.Errorf("%s: %w", op, domain.ErrorDuplicated)
 		}
-		return fmt.Errorf("%s: %w", op, result.Error)
+		return 0, fmt.Errorf("%s: %w", op, result.Error)
 	}
-	return nil
+	return int(userDb.ID), nil
 }
 
-func (d *Db) AuthenticationUser(email string, password []byte) (*models.UserResponse, error) {
+func (d *Db) AuthenticationUser(email string, password []byte) (int, error) {
 	const op = "postgresql.GetUser"
 
 	var user Users
@@ -36,17 +35,12 @@ func (d *Db) AuthenticationUser(email string, password []byte) (*models.UserResp
 	result := d.DB.Where("email = ? AND password = ?", email, password).First(&user)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return nil, fmt.Errorf("%s: %w", op, domain.ErrorNotFound)
+			return 0, fmt.Errorf("%s: %w", op, domain.ErrorNotFound)
 		}
-		return nil, fmt.Errorf("%s: %w", op, result.Error)
+		return 0, fmt.Errorf("%s: %w", op, result.Error)
 	}
 
-	userDomain := models.UserResponse{
-		Name:  user.Name,
-		Email: user.Email,
-	}
-
-	return &userDomain, nil
+	return int(user.ID), nil
 }
 
 func (d *Db) DeleteUser(email string, passwordHash []byte) error {
