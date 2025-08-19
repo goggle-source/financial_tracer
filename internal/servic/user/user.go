@@ -3,6 +3,7 @@ package user
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/financial_tracer/internal/domain"
 )
@@ -30,6 +31,12 @@ func CreateServer(d DatabaseUserRepository) *CreateUserServer {
 
 func (c *CreateUserServer) ServerRegistrationUser(name string, email string, password string) (int, error) {
 	const op = "server.ServerCreateUser"
+	if len(password) < 8 {
+		return 0, fmt.Errorf("%s: %w", op, domain.ErrorPassword)
+	}
+	if !strings.Contains(email, "@") {
+		return 0, fmt.Errorf("%s: %w", op, domain.ErrorEmail)
+	}
 
 	passwordHash, err := Hash(password)
 	if err != nil {
@@ -44,6 +51,9 @@ func (c *CreateUserServer) ServerRegistrationUser(name string, email string, pas
 
 	id, err := c.d.RegistrationUser(&user)
 	if err != nil {
+		if errors.Is(err, domain.ErrorDuplicated) {
+			return 0, fmt.Errorf("%s: %w", op, domain.ErrorDuplicated)
+		}
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
@@ -52,6 +62,12 @@ func (c *CreateUserServer) ServerRegistrationUser(name string, email string, pas
 
 func (c *CreateUserServer) ServerAuthenticationUser(email string, password string) (int, error) {
 	const op = "server.ServerGetUser"
+	if len(password) < 8 {
+		return 0, fmt.Errorf("%s: %w", op, domain.ErrorPassword)
+	}
+	if !strings.Contains(email, "@") {
+		return 0, fmt.Errorf("%s: %w", op, domain.ErrorEmail)
+	}
 
 	passwordHash, err := Hash(password)
 	if err != nil {

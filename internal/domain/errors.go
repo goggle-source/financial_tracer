@@ -8,4 +8,6 @@ var (
 	ErrorValidData    = errors.New("error request data")
 	ErrorHashPassword = errors.New("error hash password")
 	ErrorInternal     = errors.New("error server")
+	ErrorPassword     = errors.New("error password")
+	ErrorEmail        = errors.New("error email")
 )

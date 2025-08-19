@@ -35,10 +35,6 @@ func CreateHandlersUser(secretKey string, user *user.CreateUserServer, log *logr
 func (h *HandlersUser) Registration(c *gin.Context) {
 	const op = "handler.PostUser"
 
-	h.log.WithFields(logrus.Fields{
-		"op": op,
-	}).Info("post user")
-
 	var req struct {
 		Name     string `json:"name"`
 		Email    string `json:"email"`
@@ -56,6 +52,33 @@ func (h *HandlersUser) Registration(c *gin.Context) {
 
 	userId, err := h.users.ServerRegistrationUser(req.Name, req.Email, req.Password)
 	if err != nil {
+		if errors.Is(err, domain.ErrorDuplicated) {
+			h.log.WithFields(logrus.Fields{
+				"op":  op,
+				"err": domain.ErrorDuplicated,
+			}).Error("error duplicated email")
+			c.JSON(http.StatusConflict, gin.H{"error": "error duplicated email"})
+			return
+		}
+
+		if errors.Is(err, domain.ErrorEmail) {
+			h.log.WithFields(logrus.Fields{
+				"op":  op,
+				"err": domain.ErrorEmail,
+			}).Error("error email")
+			c.JSON(http.StatusBadRequest, gin.H{"error": "error email"})
+			return
+		}
+
+		if errors.Is(err, domain.ErrorPassword) {
+			h.log.WithFields(logrus.Fields{
+				"op":  op,
+				"err": domain.ErrorPassword,
+			}).Error("error password")
+			c.JSON(http.StatusBadRequest, gin.H{"error": "error password"})
+			return
+		}
+
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": domain.ErrorInternal,
@@ -92,10 +115,6 @@ func (h *HandlersUser) Registration(c *gin.Context) {
 func (h *HandlersUser) Authentication(c *gin.Context) {
 	const op = "handlers.GetUser"
 
-	h.log.WithFields(logrus.Fields{
-		"op": op,
-	}).Info("get user")
-
 	var req struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
@@ -119,6 +138,22 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 			}).Error("error not found")
 			c.JSON(http.StatusNotFound, gin.H{"error": "error not found"})
 		}
+		if errors.Is(err, domain.ErrorPassword) {
+			h.log.WithFields(logrus.Fields{
+				"op":  op,
+				"err": domain.ErrorPassword,
+			}).Error("error password")
+			c.JSON(http.StatusBadRequest, gin.H{"error": "error password"})
+		}
+		if errors.Is(err, domain.ErrorEmail) {
+			h.log.WithFields(logrus.Fields{
+				"op":  op,
+				"err": domain.ErrorEmail,
+			}).Error("error email")
+			c.JSON(http.StatusBadRequest, gin.H{"error": "error email"})
+			return
+		}
+
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": domain.ErrorInternal,
@@ -149,6 +184,38 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 
 	h.log.Info("authentication user")
 	c.JSON(http.StatusOK, ResponseJSONUser{RefreshToken: rt, AccsessToken: t})
+}
+
+func (h *HandlersUser) DeleteUser(c *gin.Context) {
+	const op = "handlers.DeleteUser"
+
+	var req struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		h.log.WithFields(logrus.Fields{
+			"op":  op,
+			"err": domain.ErrorValidData,
+		}).Error("Error request")
+		c.JSON(http.StatusBadRequest, gin.H{"error": domain.ErrorValidData})
+		return
+	}
+
+	err := h.users.ServerDeleteUser(req.Email, req.Password)
+	if err != nil {
+		if errors.Is(err, domain.ErrorNotFound) {
+			h.log.WithFields(logrus.Fields{
+				"op":  op,
+				"err": domain.ErrorNotFound,
+			}).Error("error not found")
+			c.JSON(http.StatusNotFound, gin.H{"error": "error not found"})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "user deleted"})
 }
 
 func JWTAccsessToken(secretKey string, id int) (string, error) {
