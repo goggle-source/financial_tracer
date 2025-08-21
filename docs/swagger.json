@@ -1,0 +1,18 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API для работы с финансовым трекером",
+        "title": "Финансый Трекер",
+        "contact": {
+            "name": "Ярослав",
+            "url": "https://github.com/goggle-source",
+            "email": "asssv0423348@gmail.com"
+        },
+        "license": {
+            "name": "MIT"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "paths": {}
+}

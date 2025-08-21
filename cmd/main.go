@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	_ "github.com/financial_tracer/docs"
 	"github.com/financial_tracer/internal/config"
 	"github.com/financial_tracer/internal/handlers"
 	"github.com/financial_tracer/internal/infastructure/db/postgresql"
@@ -20,7 +21,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	users := user.CreateServer(db)
 	handlersUser := handlers.CreateHandlersUser(cfg.App.SercretKey, users, log)
 	r := handlers.Router(handlersUser)
@@ -32,7 +32,7 @@ func main() {
 		WriteTimeout: cfg.Server.WriteTimeout,
 		ReadTimeout:  cfg.Server.ReadTimeout,
 	}
-	
+
 	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("listen: %s\n", err)
 	}

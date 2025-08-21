@@ -1,0 +1,13 @@
+host: localhost:8080
+info:
+  contact:
+    email: asssv0423348@gmail.com
+    name: Ярослав
+    url: https://github.com/goggle-source
+  description: API для работы с финансовым трекером
+  license:
+    name: MIT
+  title: Финансый Трекер
+  version: "1.0"
+paths: {}
+swagger: "2.0"
