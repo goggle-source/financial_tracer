@@ -1,3 +1,46 @@
+basePath: /
+definitions:
+  models.User:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  userHandlers.ResponseJSONUser:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  userHandlers.UserAuthentication:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  userHandlers.UserDelete:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  userHandlers.UserRegistration:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -7,7 +50,91 @@ info:
   description: API для работы с финансовым трекером
   license:
     name: MIT
-  title: Финансый Трекер
+  title: Финансовый Трекер
   version: "1.0"
-paths: {}
+paths:
+  /registration/get_accsess_token:
+    post:
+      consumes:
+      - application/json
+      description: Получение токена
+      parameters:
+      - description: User
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Получение токена
+  /registration/login:
+    post:
+      consumes:
+      - application/json
+      description: Вход пользователя в систему
+      parameters:
+      - description: Учетные данные
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/userHandlers.UserAuthentication'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userHandlers.ResponseJSONUser'
+      summary: Аутентификация пользователя
+      tags:
+      - auth
+  /registration/register:
+    post:
+      consumes:
+      - application/json
+      description: Создание нового пользователя
+      parameters:
+      - description: Данные пользователя
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/userHandlers.UserRegistration'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/userHandlers.ResponseJSONUser'
+      summary: Регистрация пользователя
+      tags:
+      - auth
+  /user/delete:
+    post:
+      consumes:
+      - application/json
+      description: Удаление пользователя
+      parameters:
+      - description: User
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/userHandlers.UserDelete'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Удаление пользователя
 swagger: "2.0"

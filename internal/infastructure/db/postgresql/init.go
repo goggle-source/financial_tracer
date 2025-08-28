@@ -11,7 +11,7 @@ import (
 type Users struct {
 	gorm.Model
 	Name         string `gorm:"size:50;not null"`
-	Email        string `gorm:"not null;enique"`
+	Email        string `gorm:"not null;unique"`
 	PasswordHash []byte `gorm:"not null"`
 }
 

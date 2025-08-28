@@ -10,4 +10,5 @@ var (
 	ErrorInternal     = errors.New("error server")
 	ErrorPassword     = errors.New("error password")
 	ErrorEmail        = errors.New("error email")
+	ErrorSize         = errors.New("error size")
 )

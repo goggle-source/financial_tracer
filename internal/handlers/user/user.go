@@ -1,28 +1,39 @@
-package handlers
+package userHandlers
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
-	"strconv"
-	"time"
 
 	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/models"
 	"github.com/financial_tracer/internal/servic/user"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/sirupsen/logrus"
 )
 
+// UserRegistration represents registration user request
+type UserRegistration struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+// UserAuthentication represents authentication user request
+type UserAuthentication struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+// UserDelete represents delete user request
+type UserDelete struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+// ResponseJSONUser represents response user response
 type ResponseJSONUser struct {
 	RefreshToken string `json:"refresh_token,omitempty"`
 	AccsessToken string `json:"access_token"`
-}
-
-type Claims struct {
-	Id int `json:"id"`
-	jwt.RegisteredClaims
 }
 
 type HandlersUser struct {
@@ -39,29 +50,25 @@ func CreateHandlersUser(secretKey string, user *user.CreateUserServer, log *logr
 	}
 }
 
-//  Registration godoc
-//	@Summary		Регистрция пользователя
-//	@Description	Регистрация пользователя
-//	@Tags			user
+// Registration godoc
+//
+//	@Summary		Регистрация пользователя
+//	@Description	Создание нового пользователя
+//	@Tags			registration
 //	@Accept			json
 //	@Produce		json
-//	@Param			req	body		models.RegisterUser	true	"RegisterUser"
-//	@Success		200	{object}	ResponseJSONUser
+//	@Param			user	body		UserRegistration	true	"Данные пользователя"
+//	@Success		201		{object}	ResponseJSONUser
 //	@Router			/registration/register [post]
-
 func (h *HandlersUser) Registration(c *gin.Context) {
 	const op = "handler.PostUser"
 
-	var req struct {
-		Name     string `json:"name"`
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
+	var req UserRegistration
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
-			"err": domain.ErrorValidData,
+			"err": err,
 		}).Error("Error request")
 		c.JSON(http.StatusBadRequest, gin.H{"error": domain.ErrorValidData})
 		return
@@ -72,23 +79,23 @@ func (h *HandlersUser) Registration(c *gin.Context) {
 		User: models.User{Email: req.Email, Password: req.Password},
 	}
 
-	userId, err := h.users.ServerRegistrationUser(user)
+	userId, userName, err := h.users.ServerRegistrationUser(user)
 	if err != nil {
 		RegistrationError(c, op, err)
 
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
-			"err": domain.ErrorInternal,
+			"err": err,
 		}).Error("error server")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "error server"})
 		return
 	}
 
-	tokens, err := PostJWT(c, h.SecretKey, userId)
+	tokens, err := PostJWT(c, h.SecretKey, userId, userName)
 	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
-			"err": domain.ErrorInternal,
+			"err": err,
 		}).Error("error create tokens")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "error server"})
 		return
@@ -99,27 +106,26 @@ func (h *HandlersUser) Registration(c *gin.Context) {
 
 }
 
-//  Authentication godoc
+// Authentication godoc
+//
 //	@Summary		Аутентификация пользователя
-//	@Description	Аутентификация пользователя
-//	@Accept			json
-//	@Produce		json
-//	@Param			req	body		models.User	true	"User"
-//	@Success		200	{object}	ResponseJSONUser
-//	@Router			/registration/login [post]
-
+//	@Description	Вход пользователя в систему
+//	@Tags			registration
+//
+// @Accept			json
+// @Produce		json
+// @Param			credentials	body		UserAuthentication	true	"Учетные данные"
+// @Success		200			{object}	ResponseJSONUser
+// @Router			/registration/login [post]
 func (h *HandlersUser) Authentication(c *gin.Context) {
 	const op = "handlers.GetUser"
 
-	var req struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
+	var req UserAuthentication
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
-			"err": domain.ErrorValidData,
+			"err": err,
 		}).Error("Error request")
 		c.JSON(http.StatusBadRequest, gin.H{"error": domain.ErrorValidData})
 		return
@@ -130,24 +136,26 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 		Password: req.Password,
 	}
 
-	userId, err := h.users.ServerAuthenticationUser(user)
+	userId, userName, err := h.users.ServerAuthenticationUser(user)
 	if err != nil {
 
-		RegistrationError(c, op, err)
-
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": domain.ErrorInternal,
-		}).Error("error authentication user")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "error server"})
+		if RegistrationError(c, op, err) {
+			h.log.WithFields(logrus.Fields{
+				"op":  op,
+				"err": err,
+			}).Error("error authentication user")
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "error server"})
+			return
+		}
 		return
+
 	}
 
-	tokens, err := PostJWT(c, h.SecretKey, userId)
+	tokens, err := PostJWT(c, h.SecretKey, userId, userName)
 	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
-			"err": domain.ErrorInternal,
+			"err": err,
 		}).Error("error create tokens")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "error server"})
 		return
@@ -157,26 +165,27 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 	c.JSON(http.StatusOK, tokens)
 }
 
-//  DeleteUser godoc
+// DeleteUser godoc
+//
 //	@Summary		Удаление пользователя
 //	@Description	Удаление пользователя
+//
+// @Tags deleteUser
+//
 //	@Accept			json
 //	@Produce		json
-//	@Param			req	body		models.User	true	"User"
+//	@Param			req	body		UserDelete	true	"User"
 //	@Success		200	{object}	string
 //	@Router			/user/delete [post]
 func (h *HandlersUser) DeleteUser(c *gin.Context) {
 	const op = "handlers.DeleteUser"
 
-	var req struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
+	var req UserDelete
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
-			"err": domain.ErrorValidData,
+			"err": err,
 		}).Error("Error request")
 		c.JSON(http.StatusBadRequest, gin.H{"error": domain.ErrorValidData})
 		return
@@ -192,7 +201,7 @@ func (h *HandlersUser) DeleteUser(c *gin.Context) {
 		if errors.Is(err, domain.ErrorNotFound) {
 			h.log.WithFields(logrus.Fields{
 				"op":  op,
-				"err": domain.ErrorNotFound,
+				"err": err,
 			}).Error("error not found")
 			c.JSON(http.StatusNotFound, gin.H{"error": "error not found"})
 			return
@@ -202,9 +211,13 @@ func (h *HandlersUser) DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "user deleted"})
 }
 
-//  GetAccsessToken godoc
+// GetAccsessToken godoc
+//
 //	@summary		Получение токена
 //	@description	Получение токена
+//
+// @Tags registration
+//
 //	@accept			json
 //	@produce		json
 //	@param			req	body		models.User	true	"User"
@@ -220,81 +233,26 @@ func (h *HandlersUser) GetAccsessToken(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
-			"err": domain.ErrorValidData,
+			"err": err,
 		}).Error("Error request")
 		c.JSON(http.StatusBadRequest, gin.H{"error": domain.ErrorValidData})
 		return
 	}
 
-	token, err := jwt.Parse(req.RefreshToken, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("%s: %w", op, domain.ErrorInternal)
-		}
+	i, name, err := CheckAccess(req.RefreshToken, h.SecretKey, h.log)
+	if err != nil {
+		h.log.WithFields(logrus.Fields{
+			"op":    op,
+			"error": err,
+		}).Error("error check token")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "token is not valid"})
+	}
 
-		return []byte(h.SecretKey), nil
-	})
-
+	tokens, err := JWTAccessToken(h.SecretKey, i, name)
 	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
-			"err": "error parse token",
-		}).Error("error parse token")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "error token"})
-		return
-	}
-
-	if !token.Valid {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": "error valid token",
-		}).Error("error valid token")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "error token"})
-		return
-	}
-
-	tokenClaims, ok := token.Claims.(*Claims)
-	if !ok {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": "error claims",
-		}).Error("error claims")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "error token"})
-		return
-	}
-
-	if tokenClaims.ExpiresAt.Unix() < time.Now().Unix() {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": "error expired token",
-		}).Error("error expired token")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "error token"})
-		return
-	}
-
-	if tokenClaims.ID == "" {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": "error id",
-		}).Error("error id")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "error token"})
-		return
-	}
-
-	i, err := strconv.Atoi(tokenClaims.ID)
-	if err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": "error id",
-		}).Error("error id")
-		c.JSON(http.StatusBadRequest, gin.H{"error": "error token"})
-		return
-	}
-
-	tokens, err := JWTAccsessToken(h.SecretKey, i)
-	if err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": "error create tokens",
+			"err": err,
 		}).Error("error create tokens")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "error server"})
 		return

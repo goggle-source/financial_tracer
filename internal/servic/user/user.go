@@ -10,9 +10,9 @@ import (
 )
 
 type DatabaseUserRepository interface {
-	RegistrationUser(user *domain.User) (int, error)
-	DeleteUser(email string, passwordHash []byte) error
-	AuthenticationUser(email string, password []byte) (int, error)
+	RegistrationUser(user *domain.User) (int, string, error)
+	DeleteUser(email string, password string) error
+	AuthenticationUser(email string, password string) (int, string, error)
 }
 
 type UserValid struct {
@@ -29,15 +29,15 @@ func CreateServer(d DatabaseUserRepository) *CreateUserServer {
 	}
 }
 
-func (c *CreateUserServer) ServerRegistrationUser(us models.RegisterUser) (int, error) {
+func (c *CreateUserServer) ServerRegistrationUser(us models.RegisterUser) (int, string, error) {
 	const op = "server.ServerCreateUser"
 	if err := validator.New().Struct(us); err != nil {
-
+		return 0, "", fmt.Errorf("%s: %w", op, ValidError(err))
 	}
 
 	passwordHash, err := Hash(us.Password)
 	if err != nil {
-		return 0, fmt.Errorf("%s: %w", op, domain.ErrorHashPassword)
+		return 0, "", fmt.Errorf("%s: %w", op, domain.ErrorHashPassword)
 	}
 
 	user := domain.User{
@@ -46,37 +46,32 @@ func (c *CreateUserServer) ServerRegistrationUser(us models.RegisterUser) (int, 
 		PasswordHash: passwordHash,
 	}
 
-	id, err := c.d.RegistrationUser(&user)
+	id, name, err := c.d.RegistrationUser(&user)
 	if err != nil {
 		if errors.Is(err, domain.ErrorDuplicated) {
-			return 0, fmt.Errorf("%s: %w", op, domain.ErrorDuplicated)
+			return 0, "", fmt.Errorf("%s: %w", op, domain.ErrorDuplicated)
 		}
-		return 0, fmt.Errorf("%s: %w", op, err)
+		return 0, "", fmt.Errorf("%s: %w", op, err)
 	}
 
-	return id, nil
+	return id, name, nil
 }
 
-func (c *CreateUserServer) ServerAuthenticationUser(us models.User) (int, error) {
+func (c *CreateUserServer) ServerAuthenticationUser(us models.User) (int, string, error) {
 	const op = "server.ServerGetUser"
 	if err := validator.New().Struct(us); err != nil {
-		return 0, fmt.Errorf("%s: %w", op, ValidError(err))
+		return 0, "", fmt.Errorf("%s: %w", op, ValidError(err))
 	}
 
-	passwordHash, err := Hash(us.Password)
-	if err != nil {
-		return 0, fmt.Errorf("%s: %w", op, domain.ErrorHashPassword)
-	}
-
-	id, err := c.d.AuthenticationUser(us.Email, passwordHash)
+	id, name, err := c.d.AuthenticationUser(us.Email, us.Password)
 	if err != nil {
 		if errors.Is(err, domain.ErrorNotFound) {
-			return 0, fmt.Errorf("%s: %w", op, domain.ErrorNotFound)
+			return 0, "", fmt.Errorf("%s: %w", op, domain.ErrorNotFound)
 		}
-		return 0, fmt.Errorf("%s: %w", op, err)
+		return 0, "", fmt.Errorf("%s: %w", op, err)
 	}
 
-	return id, nil
+	return id, name, nil
 }
 
 func (c *CreateUserServer) ServerDeleteUser(us models.User) error {
@@ -85,12 +80,7 @@ func (c *CreateUserServer) ServerDeleteUser(us models.User) error {
 		return fmt.Errorf("%s: %w", op, ValidError(err))
 	}
 
-	passwordHash, err := Hash(us.Password)
-	if err != nil {
-		return fmt.Errorf("%s: %w", op, domain.ErrorHashPassword)
-	}
-
-	err = c.d.DeleteUser(us.Email, passwordHash)
+	err := c.d.DeleteUser(us.Email, us.Password)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
@@ -103,15 +93,15 @@ func ValidError(err error) error {
 
 		switch err.Tag() {
 		case "required":
-			return fmt.Errorf("%s is required", err.Field())
+			return domain.ErrorNotFound
 		case "email":
-			return fmt.Errorf("%s is not valid email", err.Field())
+			return domain.ErrorEmail
 		case "min":
-			return fmt.Errorf("%s must be at least %s characters", err.Field(), err.Param())
+			return domain.ErrorSize
 		case "max":
-			return fmt.Errorf("%s must be at most %s characters", err.Field(), err.Param())
+			return domain.ErrorSize
 		default:
-			return fmt.Errorf("%s is not valid", err.Field())
+			return domain.ErrorValidData
 		}
 	}
 	return nil

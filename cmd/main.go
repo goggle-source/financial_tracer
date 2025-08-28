@@ -8,6 +8,7 @@ import (
 	_ "github.com/financial_tracer/docs"
 	"github.com/financial_tracer/internal/config"
 	"github.com/financial_tracer/internal/handlers"
+	userHandlers "github.com/financial_tracer/internal/handlers/user"
 	"github.com/financial_tracer/internal/infastructure/db/postgresql"
 	"github.com/financial_tracer/internal/servic/user"
 	"github.com/sirupsen/logrus"
@@ -22,8 +23,8 @@ func main() {
 		log.Fatal(err)
 	}
 	users := user.CreateServer(db)
-	handlersUser := handlers.CreateHandlersUser(cfg.App.SercretKey, users, log)
-	r := handlers.Router(handlersUser)
+	handlersUser := userHandlers.CreateHandlersUser(cfg.App.SercretKey, users, log)
+	r := handlers.Router(handlersUser, log)
 
 	srv := &http.Server{
 		Addr:         ":8080",
