@@ -22,6 +22,190 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/category/create_category": {
+            "post": {
+                "description": "Создание новой категории для зарегистрировшегося пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Создание Категории",
+                "parameters": [
+                    {
+                        "description": "данные для создание новой категории",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers_categories.RequestCreateCategory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешное создание категории",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некоректено введены данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "501": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/category/delete_category": {
+            "delete": {
+                "description": "Удаление категории конкретного пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Удаление категории",
+                "parameters": [
+                    {
+                        "description": "userID для удаление категории",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers_categories.IDCategory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некоректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/category/get_category": {
+            "get": {
+                "description": "Получение категории для конкретного пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Получение категории",
+                "parameters": [
+                    {
+                        "description": "userID для получение категории",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers_categories.IDCategory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некоректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/category/update_category": {
+            "put": {
+                "description": "Обновление всех характеристики категории",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "обновление пользователя",
+                "parameters": [
+                    {
+                        "description": "данные для обновление категории",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers_categories.RequestUpdateCategory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некоректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/registration/get_accsess_token": {
             "post": {
                 "description": "Получение токена",
@@ -31,23 +215,26 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "registration"
+                ],
                 "summary": "Получение токена",
                 "parameters": [
                     {
-                        "description": "User",
+                        "description": "для получение accsess токена",
                         "name": "req",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/internal_handlers_user.RefreshToken"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Получение access токена",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
                         }
                     }
                 }
@@ -63,25 +250,37 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "registration"
                 ],
                 "summary": "Аутентификация пользователя",
                 "parameters": [
                     {
-                        "description": "Учетные данные",
+                        "description": "Данные для авторизации пользователя",
                         "name": "credentials",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/userHandlers.UserAuthentication"
+                            "$ref": "#/definitions/internal_handlers_user.UserAuthentication"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Авторизация пользователя",
                         "schema": {
-                            "$ref": "#/definitions/userHandlers.ResponseJSONUser"
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некоректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
                         }
                     }
                 }
@@ -97,25 +296,37 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "registration"
                 ],
                 "summary": "Регистрация пользователя",
                 "parameters": [
                     {
-                        "description": "Данные пользователя",
+                        "description": "Данные для регистрации пользователя",
                         "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/userHandlers.UserRegistration"
+                            "$ref": "#/definitions/internal_handlers_user.UserRegistration"
                         }
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "Регистрация пользователя",
                         "schema": {
-                            "$ref": "#/definitions/userHandlers.ResponseJSONUser"
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некоректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
                         }
                     }
                 }
@@ -130,23 +341,38 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "User"
+                ],
                 "summary": "Удаление пользователя",
                 "parameters": [
                     {
-                        "description": "User",
+                        "description": "данные для удаление пользователя",
                         "name": "req",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/userHandlers.UserDelete"
+                            "$ref": "#/definitions/internal_handlers_user.UserDelete"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Удаление пользователя",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некоректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
                         }
                     }
                 }
@@ -154,34 +380,66 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.User": {
+        "github_com_financial_tracer_internal_handlers_api.ErrorResponse": {
             "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
             "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string",
-                    "minLength": 8
+                "error": {}
+            }
+        },
+        "github_com_financial_tracer_internal_handlers_api.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "value": {}
+            }
+        },
+        "internal_handlers_categories.IDCategory": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "integer"
                 }
             }
         },
-        "userHandlers.ResponseJSONUser": {
+        "internal_handlers_categories.RequestCreateCategory": {
             "type": "object",
             "properties": {
-                "access_token": {
+                "description": {
                     "type": "string"
                 },
+                "limit": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_handlers_categories.RequestUpdateCategory": {
+            "type": "object",
+            "properties": {
+                "Description": {
+                    "type": "string"
+                },
+                "category_id": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_handlers_user.RefreshToken": {
+            "type": "object",
+            "properties": {
                 "refresh_token": {
                     "type": "string"
                 }
             }
         },
-        "userHandlers.UserAuthentication": {
+        "internal_handlers_user.UserAuthentication": {
             "type": "object",
             "properties": {
                 "email": {
@@ -192,7 +450,7 @@ const docTemplate = `{
                 }
             }
         },
-        "userHandlers.UserDelete": {
+        "internal_handlers_user.UserDelete": {
             "type": "object",
             "properties": {
                 "email": {
@@ -203,7 +461,7 @@ const docTemplate = `{
                 }
             }
         },
-        "userHandlers.UserRegistration": {
+        "internal_handlers_user.UserRegistration": {
             "type": "object",
             "properties": {
                 "email": {
@@ -224,7 +482,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8080",
-	BasePath:         "/",
+	BasePath:         "/financial_tracker",
 	Schemes:          []string{},
 	Title:            "Финансовый Трекер",
 	Description:      "API для работы с финансовым трекером",

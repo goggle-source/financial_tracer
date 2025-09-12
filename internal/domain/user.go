@@ -5,3 +5,9 @@ type User struct {
 	Email        string
 	PasswordHash []byte
 }
+
+type Category struct {
+	Name        string
+	Limit       int
+	Description string
+}

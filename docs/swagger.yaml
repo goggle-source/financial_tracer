@@ -1,38 +1,58 @@
-basePath: /
+basePath: /financial_tracker
 definitions:
-  models.User:
+  github_com_financial_tracer_internal_handlers_api.ErrorResponse:
     properties:
-      email:
-        type: string
-      password:
-        minLength: 8
-        type: string
-    required:
-    - email
-    - password
+      error: {}
     type: object
-  userHandlers.ResponseJSONUser:
+  github_com_financial_tracer_internal_handlers_api.SuccessResponse:
     properties:
-      access_token:
+      value: {}
+    type: object
+  internal_handlers_categories.IDCategory:
+    properties:
+      category_id:
+        type: integer
+    type: object
+  internal_handlers_categories.RequestCreateCategory:
+    properties:
+      description:
         type: string
+      limit:
+        type: integer
+      name:
+        type: string
+    type: object
+  internal_handlers_categories.RequestUpdateCategory:
+    properties:
+      Description:
+        type: string
+      category_id:
+        type: integer
+      limit:
+        type: integer
+      name:
+        type: string
+    type: object
+  internal_handlers_user.RefreshToken:
+    properties:
       refresh_token:
         type: string
     type: object
-  userHandlers.UserAuthentication:
+  internal_handlers_user.UserAuthentication:
     properties:
       email:
         type: string
       password:
         type: string
     type: object
-  userHandlers.UserDelete:
+  internal_handlers_user.UserDelete:
     properties:
       email:
         type: string
       password:
         type: string
     type: object
-  userHandlers.UserRegistration:
+  internal_handlers_user.UserRegistration:
     properties:
       email:
         type: string
@@ -53,88 +73,236 @@ info:
   title: Финансовый Трекер
   version: "1.0"
 paths:
+  /category/create_category:
+    post:
+      consumes:
+      - application/json
+      description: Создание новой категории для зарегистрировшегося пользователя
+      parameters:
+      - description: данные для создание новой категории
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handlers_categories.RequestCreateCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешное создание категории
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+        "400":
+          description: Некоректено введены данные
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+        "501":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+      summary: Создание Категории
+      tags:
+      - categories
+  /category/delete_category:
+    delete:
+      consumes:
+      - application/json
+      description: Удаление категории конкретного пользователя
+      parameters:
+      - description: userID для удаление категории
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handlers_categories.IDCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+        "400":
+          description: Некоректные данные
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+      summary: Удаление категории
+      tags:
+      - categories
+  /category/get_category:
+    get:
+      consumes:
+      - application/json
+      description: Получение категории для конкретного пользователя
+      parameters:
+      - description: userID для получение категории
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handlers_categories.IDCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+        "400":
+          description: Некоректные данные
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+      summary: Получение категории
+      tags:
+      - categories
+  /category/update_category:
+    put:
+      consumes:
+      - application/json
+      description: Обновление всех характеристики категории
+      parameters:
+      - description: данные для обновление категории
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/internal_handlers_categories.RequestUpdateCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+        "400":
+          description: Некоректные данные
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+      summary: обновление пользователя
+      tags:
+      - categories
   /registration/get_accsess_token:
     post:
       consumes:
       - application/json
       description: Получение токена
       parameters:
-      - description: User
+      - description: для получение accsess токена
         in: body
         name: req
         required: true
         schema:
-          $ref: '#/definitions/models.User'
+          $ref: '#/definitions/internal_handlers_user.RefreshToken'
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Получение access токена
           schema:
-            type: string
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
       summary: Получение токена
+      tags:
+      - registration
   /registration/login:
     post:
       consumes:
       - application/json
       description: Вход пользователя в систему
       parameters:
-      - description: Учетные данные
+      - description: Данные для авторизации пользователя
         in: body
         name: credentials
         required: true
         schema:
-          $ref: '#/definitions/userHandlers.UserAuthentication'
+          $ref: '#/definitions/internal_handlers_user.UserAuthentication'
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Авторизация пользователя
           schema:
-            $ref: '#/definitions/userHandlers.ResponseJSONUser'
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+        "400":
+          description: Некоректные данные
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
       summary: Аутентификация пользователя
       tags:
-      - auth
+      - registration
   /registration/register:
     post:
       consumes:
       - application/json
       description: Создание нового пользователя
       parameters:
-      - description: Данные пользователя
+      - description: Данные для регистрации пользователя
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/userHandlers.UserRegistration'
+          $ref: '#/definitions/internal_handlers_user.UserRegistration'
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: Регистрация пользователя
           schema:
-            $ref: '#/definitions/userHandlers.ResponseJSONUser'
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+        "400":
+          description: Некоректные данные
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
       summary: Регистрация пользователя
       tags:
-      - auth
+      - registration
   /user/delete:
     post:
       consumes:
       - application/json
       description: Удаление пользователя
       parameters:
-      - description: User
+      - description: данные для удаление пользователя
         in: body
         name: req
         required: true
         schema:
-          $ref: '#/definitions/userHandlers.UserDelete'
+          $ref: '#/definitions/internal_handlers_user.UserDelete'
       produces:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Удаление пользователя
           schema:
-            type: string
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+        "400":
+          description: Некоректные данные
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
       summary: Удаление пользователя
+      tags:
+      - User
 swagger: "2.0"

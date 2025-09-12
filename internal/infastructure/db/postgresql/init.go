@@ -8,11 +8,20 @@ import (
 	"gorm.io/gorm"
 )
 
-type Users struct {
+type User struct {
 	gorm.Model
-	Name         string `gorm:"size:50;not null"`
-	Email        string `gorm:"not null;unique"`
-	PasswordHash []byte `gorm:"not null"`
+	Name         string     `gorm:"size:50;not null"`
+	Email        string     `gorm:"not null;unique"`
+	PasswordHash []byte     `gorm:"not null"`
+	Categories   []Category `gorm:"UserID"`
+}
+
+type Category struct {
+	gorm.Model
+	Name        string `gorm:"size:60;not null;unique"`
+	UserID      uint
+	Limit       int    `gorm:"not null"`
+	Description string `gorm:"not null;size:100"`
 }
 
 type Db struct {
@@ -20,8 +29,8 @@ type Db struct {
 }
 
 func Init(cfg *config.Config) (*Db, error) {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s port=%s dbname=%s sslmode=disable",
-		cfg.App.Host, cfg.DB.User, cfg.DB.Password, cfg.DB.PortDb, cfg.DB.DbName)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=%s",
+		cfg.App.Host, cfg.DB.User, cfg.DB.Password, cfg.DB.PortDb, cfg.DB.DbName, cfg.DB.Time)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -29,7 +38,8 @@ func Init(cfg *config.Config) (*Db, error) {
 	}
 
 	err = db.AutoMigrate(
-		&Users{},
+		&User{},
+		&Category{},
 	)
 	if err != nil {
 		return nil, fmt.Errorf("error migrate database: %w", err)

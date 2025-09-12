@@ -2,7 +2,6 @@ package user
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/models"
@@ -10,34 +9,33 @@ import (
 )
 
 type DatabaseUserRepository interface {
-	RegistrationUser(user *domain.User) (int, string, error)
+	RegistrationUser(user *domain.User) (uint, string, error)
 	DeleteUser(email string, password string) error
-	AuthenticationUser(email string, password string) (int, string, error)
+	AuthenticationUser(email string, password string) (uint, string, error)
 }
 
 type UserValid struct {
 	Valid func(error) []validator.ValidationErrors
 }
 
-type CreateUserServer struct {
+type UserServer struct {
 	d DatabaseUserRepository
 }
 
-func CreateServer(d DatabaseUserRepository) *CreateUserServer {
-	return &CreateUserServer{
+func CreateUserServer(d DatabaseUserRepository) *UserServer {
+	return &UserServer{
 		d: d,
 	}
 }
 
-func (c *CreateUserServer) ServerRegistrationUser(us models.RegisterUser) (int, string, error) {
-	const op = "server.ServerCreateUser"
+func (c *UserServer) ServerRegistrationUser(us models.RegisterUser) (uint, string, error) {
 	if err := validator.New().Struct(us); err != nil {
-		return 0, "", fmt.Errorf("%s: %w", op, ValidError(err))
+		return 0, "", err
 	}
 
 	passwordHash, err := Hash(us.Password)
 	if err != nil {
-		return 0, "", fmt.Errorf("%s: %w", op, domain.ErrorHashPassword)
+		return 0, "", err
 	}
 
 	user := domain.User{
@@ -49,60 +47,38 @@ func (c *CreateUserServer) ServerRegistrationUser(us models.RegisterUser) (int, 
 	id, name, err := c.d.RegistrationUser(&user)
 	if err != nil {
 		if errors.Is(err, domain.ErrorDuplicated) {
-			return 0, "", fmt.Errorf("%s: %w", op, domain.ErrorDuplicated)
+			return 0, "", err
 		}
-		return 0, "", fmt.Errorf("%s: %w", op, err)
+		return 0, "", err
 	}
 
 	return id, name, nil
 }
 
-func (c *CreateUserServer) ServerAuthenticationUser(us models.User) (int, string, error) {
-	const op = "server.ServerGetUser"
+func (c *UserServer) ServerAuthenticationUser(us models.AuthenticationUser) (uint, string, error) {
+
 	if err := validator.New().Struct(us); err != nil {
-		return 0, "", fmt.Errorf("%s: %w", op, ValidError(err))
+
+		return 0, "", err
 	}
 
 	id, name, err := c.d.AuthenticationUser(us.Email, us.Password)
 	if err != nil {
-		if errors.Is(err, domain.ErrorNotFound) {
-			return 0, "", fmt.Errorf("%s: %w", op, domain.ErrorNotFound)
-		}
-		return 0, "", fmt.Errorf("%s: %w", op, err)
+		return 0, "", err
 	}
 
 	return id, name, nil
 }
 
-func (c *CreateUserServer) ServerDeleteUser(us models.User) error {
-	const op = "server.ServerDeleteUser"
+func (c *UserServer) ServerDeleteUser(us models.DeleteUser) error {
 	if err := validator.New().Struct(us); err != nil {
-		return fmt.Errorf("%s: %w", op, ValidError(err))
+
+		return err
 	}
 
 	err := c.d.DeleteUser(us.Email, us.Password)
 	if err != nil {
-		return fmt.Errorf("%s: %w", op, err)
-	}
-	return nil
-}
-
-func ValidError(err error) error {
-
-	for _, err := range err.(validator.ValidationErrors) {
-
-		switch err.Tag() {
-		case "required":
-			return domain.ErrorNotFound
-		case "email":
-			return domain.ErrorEmail
-		case "min":
-			return domain.ErrorSize
-		case "max":
-			return domain.ErrorSize
-		default:
-			return domain.ErrorValidData
-		}
+		return err
 	}
 	return nil
 }

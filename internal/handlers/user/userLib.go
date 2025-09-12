@@ -1,10 +1,7 @@
 package userHandlers
 
 import (
-	"errors"
 	"fmt"
-	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/financial_tracer/internal/domain"
@@ -13,30 +10,36 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// ResponseJWTUser represents a jwt model
+type ResponseJWTUser struct {
+	RefreshToken string `json:"refresh_token,omitempty"`
+	AccsessToken string `json:"access_token"`
+}
+
 type Claims struct {
-	Id   int    `json:"id"`
+	Id   uint   `json:"id"`
 	Name string `json:"name"`
 	jwt.RegisteredClaims
 }
 
-func PostJWT(c *gin.Context, secretKey string, id int, name string) (ResponseJSONUser, error) {
+func PostJWT(c *gin.Context, secretKey string, id uint, name string) (ResponseJWTUser, error) {
 	accsessToken, err := JWTAccessToken(secretKey, id, name)
 	if err != nil {
-		return ResponseJSONUser{}, fmt.Errorf("error create access token: %s", err)
+		return ResponseJWTUser{}, fmt.Errorf("error create access token: %s", err)
 	}
 
 	refreshToken, err := JWTRefreshToken(secretKey, id, name)
 	if err != nil {
-		return ResponseJSONUser{}, fmt.Errorf("error create refresh token: %s", err)
+		return ResponseJWTUser{}, fmt.Errorf("error create refresh token: %s", err)
 	}
 
-	return ResponseJSONUser{
+	return ResponseJWTUser{
 		AccsessToken: accsessToken,
 		RefreshToken: refreshToken,
 	}, nil
 }
 
-func JWTAccessToken(secretKey string, id int, name string) (string, error) {
+func JWTAccessToken(secretKey string, id uint, name string) (string, error) {
 	const op = "handlers.JWTAccsessToken"
 
 	payload := jwt.MapClaims{
@@ -53,7 +56,7 @@ func JWTAccessToken(secretKey string, id int, name string) (string, error) {
 	return t, nil
 }
 
-func JWTRefreshToken(secretKey string, id int, name string) (string, error) {
+func JWTRefreshToken(secretKey string, id uint, name string) (string, error) {
 	const op = "handlers.JWTRefreshToken"
 
 	payload := jwt.MapClaims{
@@ -70,32 +73,7 @@ func JWTRefreshToken(secretKey string, id int, name string) (string, error) {
 	return t, nil
 }
 
-func RegistrationError(c *gin.Context, op string, err error) bool {
-	if errors.Is(err, domain.ErrorDuplicated) {
-		c.JSON(http.StatusConflict, gin.H{"error": "error duplicated email"})
-		return false
-	}
-	if errors.Is(err, domain.ErrorEmail) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "error email"})
-		return false
-	}
-	if errors.Is(err, domain.ErrorPassword) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "error password"})
-		return false
-	}
-	if errors.Is(err, domain.ErrorNotFound) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "not found"})
-		return false
-	}
-	if errors.Is(err, domain.ErrorSize) {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid size"})
-		return false
-	}
-
-	return true
-}
-
-func CheckAccess(refreshToken string, secretKey string, log *logrus.Logger) (int, string, error) {
+func CheckAccess(refreshToken string, secretKey string, log *logrus.Logger) (uint, string, error) {
 	const op = "handlers.CheckAccess"
 	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -146,13 +124,5 @@ func CheckAccess(refreshToken string, secretKey string, log *logrus.Logger) (int
 		return 0, "", fmt.Errorf("%s error id token", op)
 	}
 
-	i, err := strconv.Atoi(tokenClaims.ID)
-	if err != nil {
-		log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": "error id",
-		}).Error("error id")
-		return 0, "", fmt.Errorf("%s id is not int", op)
-	}
-	return i, tokenClaims.Name, nil
+	return tokenClaims.Id, tokenClaims.Name, nil
 }

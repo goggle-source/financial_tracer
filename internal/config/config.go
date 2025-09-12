@@ -30,6 +30,7 @@ type DataBase struct {
 	Password string `mapstructure:"password"`
 	PortDb   string `mapstructure:"portDb"`
 	DbName   string `mapstructure:"dbName"`
+	Time string `mapstructure:"TimeZone"`
 }
 
 func LoadConfig() *Config {

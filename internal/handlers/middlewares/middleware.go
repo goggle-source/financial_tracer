@@ -19,6 +19,7 @@ func Logging(log *logrus.Logger) gin.HandlerFunc {
 		log.WithFields(logrus.Fields{
 			"method": c.Request.Method,
 			"path":   c.Request.URL.Path,
+			"time":   start,
 		}).Info("request")
 
 		c.Next()
@@ -27,7 +28,7 @@ func Logging(log *logrus.Logger) gin.HandlerFunc {
 			"method": c.Request.Method,
 			"path":   c.Request.URL.Path,
 			"exp":    time.Since(start),
-		}).Info("request")
+		}).Info("response")
 	}
 }
 
@@ -51,12 +52,28 @@ func JWToken(secretKey string) gin.HandlerFunc {
 		})
 
 		if err != nil || !token.Valid {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "error token"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid token"})
 			return
 		}
 
-		c.Set("jwtToken", token)
+		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+			c.Set("userID", claims["id"])
+			c.Next()
+		} else {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"err": "invalid token"})
+		}
+	}
+}
 
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
 		c.Next()
 	}
 }
