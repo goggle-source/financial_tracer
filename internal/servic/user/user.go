@@ -1,15 +1,16 @@
 package user
 
 import (
-	"errors"
+	"fmt"
 
 	"github.com/financial_tracer/internal/domain"
-	"github.com/financial_tracer/internal/models"
+	jwttoken "github.com/financial_tracer/internal/lib/jwtToken"
 	"github.com/go-playground/validator/v10"
+	"github.com/sirupsen/logrus"
 )
 
 type DatabaseUserRepository interface {
-	RegistrationUser(user *domain.User) (uint, string, error)
+	RegistrationUser(user domain.User) (uint, string, error)
 	DeleteUser(email string, password string) error
 	AuthenticationUser(email string, password string) (uint, string, error)
 }
@@ -19,23 +20,29 @@ type UserValid struct {
 }
 
 type UserServer struct {
-	d DatabaseUserRepository
+	log       *logrus.Logger
+	d         DatabaseUserRepository
+	SecretKey string
 }
 
-func CreateUserServer(d DatabaseUserRepository) *UserServer {
+func CreateUserServer(d DatabaseUserRepository, sk string, log *logrus.Logger) *UserServer {
 	return &UserServer{
-		d: d,
+		log:       log,
+		d:         d,
+		SecretKey: sk,
 	}
 }
 
-func (c *UserServer) ServerRegistrationUser(us models.RegisterUser) (uint, string, error) {
+func (c *UserServer) ServerRegistrationUser(us domain.RegisterUser) (jwttoken.ResponseJWTUser, error) {
+	const op = "user.ServerRegistrationUser"
+
 	if err := validator.New().Struct(us); err != nil {
-		return 0, "", err
+		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s invalid validate: %w", op, err)
 	}
 
 	passwordHash, err := Hash(us.Password)
 	if err != nil {
-		return 0, "", err
+		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s field hash password: %w", op, err)
 	}
 
 	user := domain.User{
@@ -44,41 +51,49 @@ func (c *UserServer) ServerRegistrationUser(us models.RegisterUser) (uint, strin
 		PasswordHash: passwordHash,
 	}
 
-	id, name, err := c.d.RegistrationUser(&user)
+	id, name, err := c.d.RegistrationUser(user)
 	if err != nil {
-		if errors.Is(err, domain.ErrorDuplicated) {
-			return 0, "", err
-		}
-		return 0, "", err
+		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s field registration user: %w", op, err)
 	}
 
-	return id, name, nil
+	tokens, err := jwttoken.PostJWT(c.SecretKey, id, name)
+	if err != nil {
+		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s field create JWT token: %w", op, err)
+	}
+
+	return tokens, nil
 }
 
-func (c *UserServer) ServerAuthenticationUser(us models.AuthenticationUser) (uint, string, error) {
+func (c *UserServer) ServerAuthenticationUser(us domain.AuthenticationUser) (jwttoken.ResponseJWTUser, error) {
+	const op = "user.ServerAuthenticationUser"
 
 	if err := validator.New().Struct(us); err != nil {
 
-		return 0, "", err
+		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s invalid validate: %w", op, err)
 	}
 
 	id, name, err := c.d.AuthenticationUser(us.Email, us.Password)
 	if err != nil {
-		return 0, "", err
+		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s field authentication user: %w", op, err)
 	}
 
-	return id, name, nil
+	token, err := jwttoken.PostJWT(c.SecretKey, id, name)
+	if err != nil {
+		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s field create JWT token: %w", op, err)
+	}
+
+	return token, nil
 }
 
-func (c *UserServer) ServerDeleteUser(us models.DeleteUser) error {
+func (c *UserServer) ServerDeleteUser(us domain.DeleteUser) error {
 	if err := validator.New().Struct(us); err != nil {
 
-		return err
+		return fmt.Errorf("invalid validate: %w", err)
 	}
 
 	err := c.d.DeleteUser(us.Email, us.Password)
 	if err != nil {
-		return err
+		return fmt.Errorf("field delete user: %w", err)
 	}
 	return nil
 }

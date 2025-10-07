@@ -3,16 +3,17 @@ package userHandlers
 import (
 	"net/http"
 
+	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/handlers/api"
-	"github.com/financial_tracer/internal/models"
+	jwttoken "github.com/financial_tracer/internal/lib/jwtToken"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
 
 type ServicUserer interface {
-	ServerRegistrationUser(us models.RegisterUser) (uint, string, error)
-	ServerAuthenticationUser(us models.AuthenticationUser) (uint, string, error)
-	ServerDeleteUser(us models.DeleteUser) error
+	ServerRegistrationUser(us domain.RegisterUser) (jwttoken.ResponseJWTUser, error)
+	ServerAuthenticationUser(us domain.AuthenticationUser) (jwttoken.ResponseJWTUser, error)
+	ServerDeleteUser(us domain.DeleteUser) error
 }
 
 type HandlersUser struct {
@@ -36,17 +37,18 @@ func CreateHandlersUser(secretKey string, user ServicUserer, log *logrus.Logger)
 //	@Tags			registration
 //	@Accept			json
 //	@Produce		json
-//	@Param			user	body		UserRegistration	true	"Данные для регистрации пользователя"
-//	@Success		200		{object}	api.SuccessResponse[ResponseJWTUser] "Регистрация пользователя"
+//	@Param			user	body		UserRegistration						true	"Данные для регистрации пользователя"
+//	@Success		200		{object}	api.SuccessResponse[ResponseJWTUser]	"Регистрация пользователя"
 //
-// @Failure 400 {object} api.ErrorResponse[[]map[string]string] "Некоректные данные"
-// @Failure 500 {object} api.ErrorResponse[string] "Ошибка сервера"
-// @Failure 400 {object} api.ErrorResponse[string] "Некоректные данные"
+//	@Failure		400		{object}	api.ErrorResponse[[]map[string]string]	"Некорректные входные данные"
+//	@Failure		500		{object}	api.ErrorResponse[string]				"Ошибка сервера"
+//	@Failure		400		{object}	api.ErrorResponse[string]				"Некорректные данные"
 //
 //	@Router			/registration/register [post]
 func (h *HandlersUser) Registration(c *gin.Context) {
 	const op = "handler.RegistrationUser"
 
+	c.Writer.Header().Set("content-type", "application/json")
 	var req UserRegistration
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -58,29 +60,19 @@ func (h *HandlersUser) Registration(c *gin.Context) {
 		return
 	}
 
-	user := models.RegisterUser{
+	user := domain.RegisterUser{
 		Name:     req.Name,
 		Email:    req.Email,
 		Password: req.Password,
 	}
 
-	userId, userName, err := h.users.ServerRegistrationUser(user)
+	tokens, err := h.users.ServerRegistrationUser(user)
 	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
 		}).Error("error registration user")
 		api.RegistrationError(c, op, err)
-		return
-	}
-
-	tokens, err := PostJWT(c, h.SecretKey, userId, userName)
-	if err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": err,
-		}).Error("error create tokens")
-		api.ResponseError(c, http.StatusInternalServerError, "error server")
 		return
 	}
 
@@ -96,18 +88,20 @@ func (h *HandlersUser) Registration(c *gin.Context) {
 //
 //	@Accept			json
 //	@Produce		json
-//	@Param			credentials	body		UserAuthentication	true	"Данные для авторизации пользователя"
-//	@Success		200			{object}	api.SuccessResponse[ResponseJWTUser] "Авторизация пользователя"
+//	@Param			credentials	body		UserAuthentication						true	"Данные для авторизации пользователя"
+//	@Success		200			{object}	api.SuccessResponse[ResponseJWTUser]	"Авторизация пользователя"
 //
-// @Failure 400 {object} api.ErrorResponse[[]map[string]string] "Некоректные данные"
-// @Failure 500 {object} api.ErrorResponse[string] "Ошибка сервера"
-// @Failure 400 {object} api.ErrorResponse[string] "Некоректные данные"
+//	@Failure		400			{object}	api.ErrorResponse[[]map[string]string]	"Некорректные входные данные"
+//	@Failure		500			{object}	api.ErrorResponse[string]				"Ошибка сервера"
+//	@Failure		400			{object}	api.ErrorResponse[string]				"Некорректные данные"
+//	@Failure		404			{object}	api.ErrorResponse[string]				"Пользователь не найден"
 //
 //	@Router			/registration/login [post]
 func (h *HandlersUser) Authentication(c *gin.Context) {
 	const op = "handlers.GetUser"
 
-	var req UserAuthentication
+	c.Writer.Header().Set("content-type", "application/json")
+	var req UserRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.WithFields(logrus.Fields{
@@ -118,12 +112,12 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 		return
 	}
 
-	user := models.AuthenticationUser{
+	user := domain.AuthenticationUser{
 		Email:    req.Email,
 		Password: req.Password,
 	}
 
-	userId, userName, err := h.users.ServerAuthenticationUser(user)
+	tokens, err := h.users.ServerAuthenticationUser(user)
 	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
@@ -132,16 +126,6 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 		api.RegistrationError(c, op, err)
 		return
 
-	}
-
-	tokens, err := PostJWT(c, h.SecretKey, userId, userName)
-	if err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": err,
-		}).Error("error create tokens")
-		api.ResponseError(c, http.StatusInternalServerError, "error server")
-		return
 	}
 
 	api.ResponseOK(c, tokens)
@@ -156,18 +140,22 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 //
 //	@Accept			json
 //	@Produce		json
-//	@Param			req	body		UserDelete	true	"данные для удаление пользователя"
-//	@Success		200	{object}	api.SuccessResponse[string] "Удаление пользователя"
+//	@Param			req	body		UserDelete								true	"данные для удаление пользователя"
+//	@Success		200	{object}	api.SuccessResponse[string]				"Удаление пользователя"
 //
-// @Failure 400 {object} api.ErrorResponse[[]map[string]string] "Некоректные данные"
-// @Failure 500 {object} api.ErrorResponse[string] "Ошибка сервера"
-// @Failure 400 {object} api.ErrorResponse[string] "Некоректные данные"
+//	@Failure		400	{object}	api.ErrorResponse[[]map[string]string]	"Некорректные входные данные"
+//	@Failure		500	{object}	api.ErrorResponse[string]				"Ошибка сервера"
+//	@Failure		400	{object}	api.ErrorResponse[string]				"Некорректные данные"
+//	@Failure		404	{object}	api.ErrorResponse[string]				"Пользователь не найден"
 //
 //	@Router			/user/delete [post]
+//
+//	@Security		jwtAuth
 func (h *HandlersUser) DeleteUser(c *gin.Context) {
 	const op = "handlers.DeleteUser"
 
-	var req UserDelete
+	c.Writer.Header().Set("content-type", "application/json")
+	var req UserRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.log.WithFields(logrus.Fields{
@@ -178,7 +166,7 @@ func (h *HandlersUser) DeleteUser(c *gin.Context) {
 		return
 	}
 
-	users := models.DeleteUser{
+	users := domain.DeleteUser{
 		Email:    req.Email,
 		Password: req.Password,
 	}
@@ -197,7 +185,7 @@ func (h *HandlersUser) DeleteUser(c *gin.Context) {
 	api.ResponseOK(c, "user delete")
 }
 
-// GetAccsessToken godoc
+// GetAccessToken godoc
 //
 //	@Summary		Получение токена
 //	@Description	Получение токена
@@ -206,12 +194,18 @@ func (h *HandlersUser) DeleteUser(c *gin.Context) {
 //
 //	@Accept			json
 //	@Produce		json
-//	@Param			req	body		RefreshToken	true	"для получение accsess токена"
-//	@Success		200	{object}	api.SuccessResponse[string] "Получение access токена"
-//	@Router			/registration/get_accsess_token [post]
-func (h *HandlersUser) GetAccsessToken(c *gin.Context) {
+//	@Param			req	body		RefreshToken				true	"для получение access токена"
+//	@Success		200	{object}	api.SuccessResponse[string]	"Получение access токена"
+//
+//	@Failure		400	{object}	api.ErrorResponse[string]	"Некорректные входные данные"
+//
+//	@Failure		500	{object}	api.ErrorResponse[string]	"Ошибка сервера"
+//
+//	@Router			/registration/get_access_token [post]
+func (h *HandlersUser) GetAccessToken(c *gin.Context) {
 	const op = "handlers.GetAccsessToken"
 
+	c.Writer.Header().Set("content-type", "application/json")
 	var req RefreshToken
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -223,7 +217,7 @@ func (h *HandlersUser) GetAccsessToken(c *gin.Context) {
 		return
 	}
 
-	i, name, err := CheckAccess(req.RefreshToken, h.SecretKey, h.log)
+	i, name, err := jwttoken.CheckAccess(req.RefreshToken, h.SecretKey, h.log)
 	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
@@ -233,7 +227,7 @@ func (h *HandlersUser) GetAccsessToken(c *gin.Context) {
 		return
 	}
 
-	tokens, err := JWTAccessToken(h.SecretKey, i, name)
+	tokens, err := jwttoken.JWTAccessToken(h.SecretKey, i, name)
 	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
@@ -243,6 +237,6 @@ func (h *HandlersUser) GetAccsessToken(c *gin.Context) {
 		return
 	}
 
-	h.log.Info("create accsess token")
+	h.log.Info("create access token")
 	api.ResponseOK(c, tokens)
 }

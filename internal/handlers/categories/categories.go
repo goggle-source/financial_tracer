@@ -3,17 +3,17 @@ package categoryHandlers
 import (
 	"net/http"
 
+	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/handlers/api"
-	"github.com/financial_tracer/internal/models"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
 
 type ServicCategoryer interface {
-	Create(idUser uint, category models.Category) (uint, error)
-	Get(idUser uint, idCategory uint) (models.Category, error)
-	Update(idUser uint, idCategory uint, newCategory models.Category) (uint, error)
-	Delete(idUser uint, idCategory uint) error
+	CreateCategory(idUser uint, category domain.CategoryInput) (uint, error)
+	ReadCategory(idCategory uint) (domain.CategoryOutput, error)
+	UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error)
+	DeleteCategory(idCategory uint) error
 }
 
 type CategoryHandlers struct {
@@ -36,19 +36,24 @@ func CreateHandlersCategory(categ ServicCategoryer, log *logrus.Logger) *Categor
 //	@Accept			json
 //	@Produce		json
 //
-//	@Param			req	body		RequestCreateCategory	true	"данные для создание новой категории"
+//	@Param			req	body		RequestCreateCategory					true	"данные для создание новой категории"
 //
-// @Success 200 {object} api.SuccessResponse[uint] "Успешное создание категории"
+//	@Success		200	{object}	api.SuccessResponse[uint]				"Успешное создание категории"
 //
-// @Failure 400 {object} api.ErrorResponse[[]map[string]string] "Некоректено введены данные"
+//	@Failure		401	{object}	api.ErrorResponse[string]				"Ошибка авторизации"
+//	@Failure		400	{object}	api.ErrorResponse[[]map[string]string]	"Некорректные входные данные"
+//	@Failure		400	{object}	api.ErrorResponse[string]				"Некорректный данные"
 //
-// @Failure 501 {object} api.ErrorResponse[string] "Ошибка сервера"
+//	@Failure		501	{object}	api.ErrorResponse[string]				"Ошибка сервера"
 //
-// @Router			/category/create_category [post]
+//	@Router			/category/create [post]
+//
+//	@Security		jwtAuth
 func (h *CategoryHandlers) PostCategory(c *gin.Context) {
 	const op = "handlers.PostCategory"
 
-	newCategory := RequestCreateCategory{}
+	c.Writer.Header().Set("content-type", "application/json")
+	newCategory := domain.CategoryInput{}
 	if err := c.ShouldBindJSON(&newCategory); err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
@@ -65,13 +70,13 @@ func (h *CategoryHandlers) PostCategory(c *gin.Context) {
 		return
 	}
 
-	cat := models.Category{
+	cat := domain.CategoryInput{
 		Name:        newCategory.Name,
 		Limit:       newCategory.Limit,
 		Description: newCategory.Description,
 	}
 
-	idCategory, err := h.categor.Create(idUser.(uint), cat)
+	idCategory, err := h.categor.CreateCategory(idUser.(uint), cat)
 	if err != nil {
 		h.log.WithField("op", op).Error("error create category")
 		api.RegistrationError(c, op, err)
@@ -87,17 +92,22 @@ func (h *CategoryHandlers) PostCategory(c *gin.Context) {
 //	@Tags			categories
 //	@Accept			json
 //	@Produce		json
-//	@Param			req			body		IDCategory	true	"userID для получение категории"
-//	@Success		200 {object}	api.SuccessResponse[models.Category]	"success"
+//	@Param			req	body		IDCategory								true	"userID для получение категории"
+//	@Success		200	{object}	api.SuccessResponse[domain.Category]	"success"
 //
-// @Failure 400 {object} api.ErrorResponse[[]map[string]string] "Некоректные данные"
-// @Failure 500 {object} api.ErrorResponse[string] "Ошибка сервера"
-// @Failure 400 {object} api.ErrorResponse[string] "Некоректные данные"
+//	@Failure		401	{object}	api.ErrorResponse[string]				"Ошибка авторизации"
+//	@Failure		400	{object}	api.ErrorResponse[[]map[string]string]	"Некорректные входные данные"
+//	@Failure		500	{object}	api.ErrorResponse[string]				"Ошибка сервера"
+//	@Failure		400	{object}	api.ErrorResponse[string]				"Некорректный данные"
+//	@Failure		404	{object}	api.ErrorResponse[string]				"Категория не найдена"
 //
-//	@Router			/category/get_category [get]
+//	@Router			/category/get [get]
+//
+//	@Security		jwtAuth
 func (h *CategoryHandlers) GetCategory(c *gin.Context) {
-	const op = "handlers.GetCateogry"
+	const op = "handlers.GetCategory"
 
+	c.Writer.Header().Set("content-type", "application/json")
 	id := IDCategory{}
 	if err := c.ShouldBindJSON(&id); err != nil {
 		h.log.WithFields(logrus.Fields{
@@ -108,14 +118,7 @@ func (h *CategoryHandlers) GetCategory(c *gin.Context) {
 		return
 	}
 
-	idUser, ok := c.Get("userID")
-	if !ok {
-		h.log.WithField("op", op).Error("error get userID")
-		api.ResponseError(c, http.StatusInternalServerError, "error server")
-		return
-	}
-
-	category, err := h.categor.Get(idUser.(uint), id.CategoryId)
+	category, err := h.categor.ReadCategory(id.CategoryId)
 	if err != nil {
 		h.log.WithField("op", op).Error("error get category")
 		api.RegistrationError(c, op, err)
@@ -131,17 +134,22 @@ func (h *CategoryHandlers) GetCategory(c *gin.Context) {
 //	@Tags			categories
 //	@Accept			json
 //	@Produce		json
-//	@Param			req	body		RequestUpdateCategory	true	"данные для обновление категории"
+//	@Param			req	body		RequestUpdateCategory					true	"данные для обновление категории"
 //	@Success		200	{object}	api.SuccessResponse[uint]				"success"
 //
-// @Failure 400 {object} api.ErrorResponse[[]map[string]string] "Некоректные данные"
-// @Failure 500 {object} api.ErrorResponse[string] "Ошибка сервера"
-// @Failure 400 {object} api.ErrorResponse[string] "Некоректные данные"
+//	@Failure		401	{object}	api.ErrorResponse[string]				"Ошибка авторизации"
+//	@Failure		400	{object}	api.ErrorResponse[[]map[string]string]	"Некоректные входные данные"
+//	@Failure		500	{object}	api.ErrorResponse[string]				"Ошибка сервера"
+//	@Failure		400	{object}	api.ErrorResponse[string]				"Некорректный данные"
+//	@Failure		404	{object}	api.ErrorResponse[string]				"Категория не найдена"
 //
-//	@Router			/category/update_category [put]
+//	@Router			/category/update [put]
+//
+//	@Security		jwtAuth
 func (h *CategoryHandlers) UpdateCategory(c *gin.Context) {
 	const op = "handlers.UpdateCategory"
 
+	c.Writer.Header().Set("content-type", "application/json")
 	var updateCategory RequestUpdateCategory
 
 	if err := c.ShouldBindJSON(&updateCategory); err != nil {
@@ -153,26 +161,19 @@ func (h *CategoryHandlers) UpdateCategory(c *gin.Context) {
 		return
 	}
 
-	newCategory := models.Category{
+	newCategory := domain.CategoryInput{
 		Name:        updateCategory.Name,
 		Limit:       updateCategory.Limit,
 		Description: updateCategory.Description,
 	}
 
-	idUser, ok := c.Get("userID")
-	if !ok {
-		h.log.WithField("op", op).Error("error get userID")
-		api.ResponseError(c, http.StatusInternalServerError, "error server")
-		return
-	}
-
-	id, err := h.categor.Update(idUser.(uint), updateCategory.CategoryId, newCategory)
+	category, err := h.categor.UpdateCategory(updateCategory.CategoryId, newCategory)
 	if err != nil {
 		h.log.WithField("op", op).Error("error update category")
 		api.RegistrationError(c, op, err)
 		return
 	}
-	api.ResponseOK(c, id)
+	api.ResponseOK(c, category)
 }
 
 // DeleteCategory godoc
@@ -182,16 +183,23 @@ func (h *CategoryHandlers) UpdateCategory(c *gin.Context) {
 //	@Tags			categories
 //	@Accept			json
 //	@Produce		json
-//	@Param			req	body		IDCategory	true	"userID для удаление категории"
-//	@Success		200	{object}	api.SuccessResponse[string]	"success"
+//	@Param			req	body		IDCategory								true	"userID для удаление категории"
+//	@Success		200	{object}	api.SuccessResponse[string]				"success"
 //
-// @Failure 500 {object} api.ErrorResponse[string] "Ошибка сервера"
-// @Failure 400 {object} api.ErrorResponse[string] "Некоректные данные"
+//	@Failure		401	{object}	api.ErrorResponse[string]				"Ошибка авторизации"
 //
-//	@Router			/category/delete_category [delete]
+//	@Failure		500	{object}	api.ErrorResponse[string]				"Ошибка сервера"
+//	@Failure		400	{object}	api.ErrorResponse[[]map[string]string]	"Некоректные входные данные"
+//	@Failure		400	{object}	api.ErrorResponse[string]				"Некорректные данные"
+//	@Failure		404	{object}	api.ErrorResponse[string]				"Категория не найдена"
+//
+//	@Router			/category/delete [delete]
+//
+//	@Security		jwtAuth
 func (h *CategoryHandlers) DeleteCategory(c *gin.Context) {
 	const op = "handlers.DeleteCategory"
 
+	c.Writer.Header().Set("content-type", "application/json")
 	categoryId := IDCategory{}
 	if err := c.ShouldBindJSON(&categoryId); err != nil {
 		h.log.WithFields(logrus.Fields{
@@ -202,14 +210,7 @@ func (h *CategoryHandlers) DeleteCategory(c *gin.Context) {
 		return
 	}
 
-	idUser, ok := c.Get("userID")
-	if !ok {
-		h.log.WithField("op", op).Error("error get userID")
-		api.ResponseError(c, http.StatusInternalServerError, "error server")
-		return
-	}
-
-	err := h.categor.Delete(idUser.(uint), categoryId.CategoryId)
+	err := h.categor.DeleteCategory(categoryId.CategoryId)
 	if err != nil {
 		h.log.WithField("op", op).Error("error delete category")
 		api.RegistrationError(c, op, err)

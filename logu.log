@@ -21,3 +21,133 @@
 {"fields.time":"2025-09-12T18:33:21.6230639+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-12T18:33:21+03:00"}
 {"err":"ERROR: duplicate key value violates unique constraint \"uni_users_email\" (SQLSTATE 23505)","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-12T18:33:21+03:00"}
 {"exp":52536600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-12T18:33:21+03:00"}
+{"level":"fatal","msg":"error conn database: failed to connect to `user=teamlid database=f`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connectex: No connection could be made because the target machine actively refused it.\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connectex: No connection could be made because the target machine actively refused it.","time":"2025-09-15T17:26:54+03:00"}
+{"fields.time":"2025-09-15T17:28:40.8990746+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T17:28:40+03:00"}
+{"err":"Key: 'RegisterUser.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'RegisterUser.Password' Error:Field validation for 'Password' failed on the 'min' tag","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-15T17:28:40+03:00"}
+{"exp":20062800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T17:28:40+03:00"}
+{"fields.time":"2025-09-15T17:29:00.8544128+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T17:29:00+03:00"}
+{"err":"ERROR: duplicate key value violates unique constraint \"uni_users_email\" (SQLSTATE 23505)","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-15T17:29:00+03:00"}
+{"exp":55566400,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T17:29:00+03:00"}
+{"fields.time":"2025-09-15T17:29:29.1695874+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T17:29:29+03:00"}
+{"exp":53049700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T17:29:29+03:00"}
+{"fields.time":"2025-09-15T17:30:00.4171592+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-09-15T17:30:00+03:00"}
+{"exp":52415100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-09-15T17:30:00+03:00"}
+{"fields.time":"2025-09-15T17:30:21.9717373+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T17:30:21+03:00"}
+{"err":"ERROR: duplicate key value violates unique constraint \"uni_users_email\" (SQLSTATE 23505)","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-15T17:30:22+03:00"}
+{"exp":52509300,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T17:30:22+03:00"}
+{"fields.time":"2025-09-15T17:31:35.6439905+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-09-15T17:31:35+03:00"}
+{"err":"not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-09-15T17:31:35+03:00"}
+{"exp":2391000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-09-15T17:31:35+03:00"}
+{"fields.time":"2025-09-15T17:33:50.2296673+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T17:33:50+03:00"}
+{"err":"Key: 'RegisterUser.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'RegisterUser.Password' Error:Field validation for 'Password' failed on the 'min' tag","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-15T17:33:50+03:00"}
+{"exp":506700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T17:33:50+03:00"}
+{"fields.time":"2025-09-15T17:34:04.2350656+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T17:34:04+03:00"}
+{"err":"ERROR: duplicate key value violates unique constraint \"uni_users_email\" (SQLSTATE 23505)","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-15T17:34:04+03:00"}
+{"exp":52930800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T17:34:04+03:00"}
+{"fields.time":"2025-09-15T17:36:03.11271+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T17:36:03+03:00"}
+{"err":"ERROR: duplicate key value violates unique constraint \"uni_users_email\" (SQLSTATE 23505)","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-15T17:36:03+03:00"}
+{"exp":71520700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T17:36:03+03:00"}
+{"fields.time":"2025-09-15T17:36:44.446041+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T17:36:44+03:00"}
+{"exp":19368400,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T17:36:44+03:00"}
+{"fields.time":"2025-09-15T17:36:57.7903576+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T17:36:57+03:00"}
+{"exp":0,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T17:36:57+03:00"}
+{"err":"ERROR: duplicate key value violates unique constraint \"uni_users_email\" (SQLSTATE 23505)","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-15T17:38:48+03:00"}
+{"fields.time":"2025-09-15T17:41:29.3643678+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T17:41:29+03:00"}
+{"err":"ERROR: duplicate key value violates unique constraint \"uni_users_email\" (SQLSTATE 23505)","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-15T17:41:29+03:00"}
+{"exp":76538700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T17:41:29+03:00"}
+{"fields.time":"2025-09-15T17:45:35.1149294+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T17:45:35+03:00"}
+{"err":"duplicated unique","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-15T17:45:35+03:00"}
+{"exp":73946200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T17:45:35+03:00"}
+{"fields.time":"2025-09-15T20:10:40.1686588+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-09-15T20:10:40+03:00"}
+{"err":"Key: 'AuthenticationUser.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'AuthenticationUser.Password' Error:Field validation for 'Password' failed on the 'min' tag","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-09-15T20:10:40+03:00"}
+{"exp":510600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-09-15T20:10:40+03:00"}
+{"fields.time":"2025-09-15T20:10:47.9951956+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T20:10:47+03:00"}
+{"err":"Key: 'RegisterUser.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'RegisterUser.Password' Error:Field validation for 'Password' failed on the 'min' tag","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-15T20:10:47+03:00"}
+{"exp":509400,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T20:10:47+03:00"}
+{"fields.time":"2025-09-15T20:11:04.932667+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T20:11:04+03:00"}
+{"err":"duplicated unique","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-15T20:11:04+03:00"}
+{"exp":54146900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T20:11:04+03:00"}
+{"fields.time":"2025-09-15T20:11:12.6605269+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T20:11:12+03:00"}
+{"exp":53987500,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T20:11:12+03:00"}
+{"fields.time":"2025-09-15T20:12:01.1150365+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create_category","time":"2025-09-15T20:12:01+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-09-15T20:12:01+03:00"}
+{"exp":0,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create_category","time":"2025-09-15T20:12:01+03:00"}
+{"fields.time":"2025-09-15T20:23:26.8076563+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-15T20:23:26+03:00"}
+{"exp":53033700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-15T20:23:26+03:00"}
+{"level":"error","msg":"error Authorization header","time":"2025-09-15T20:27:43+03:00"}
+{"level":"error","msg":"error Authorization header","time":"2025-09-15T20:28:02+03:00"}
+{"fields.time":"2025-09-15T20:30:38.3551751+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create_category","time":"2025-09-15T20:30:38+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-09-15T20:30:38+03:00"}
+{"exp":21021200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create_category","time":"2025-09-15T20:30:38+03:00"}
+{"fields.time":"2025-09-15T20:42:03.0270528+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create_category","time":"2025-09-15T20:42:03+03:00"}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-09-15T20:42:03+03:00"}
+{"exp":19603900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create_category","time":"2025-09-15T20:42:03+03:00"}
+{"fields.time":"2025-09-15T20:42:13.6569414+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create_category","time":"2025-09-15T20:42:13+03:00"}
+{"exp":12490000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create_category","time":"2025-09-15T20:42:13+03:00"}
+{"level":"fatal","msg":"error conn database: failed to connect to `user=teamlid database=f`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connectex: No connection could be made because the target machine actively refused it.\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connectex: No connection could be made because the target machine actively refused it.","time":"2025-09-16T17:46:05+03:00"}
+{"fields.time":"2025-09-16T17:49:46.9124287+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-16T17:49:46+03:00"}
+{"err":"error validate: Key: 'RegisterUser.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'RegisterUser.Password' Error:Field validation for 'Password' failed on the 'min' tag","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-16T17:49:46+03:00"}
+{"exp":19283100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-16T17:49:46+03:00"}
+{"fields.time":"2025-09-21T18:37:58.7173398+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/create","time":"2025-09-21T18:37:58+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostTransaction","time":"2025-09-21T18:37:58+03:00"}
+{"exp":1027400,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/transaction/create","time":"2025-09-21T18:37:58+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostTransaction","time":"2025-09-21T18:51:38+03:00"}
+{"fields.time":"2025-09-21T19:13:15.5305176+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-09-21T19:13:15+03:00"}
+{"exp":18796700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-09-21T19:13:15+03:00"}
+{"fields.time":"2025-09-21T19:13:15.5705255+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-09-21T19:13:15+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-09-21T19:13:15+03:00"}
+{"fields.time":"2025-09-21T19:13:15.5710401+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-09-21T19:13:15+03:00"}
+{"fields.time":"2025-09-21T19:13:15.5710401+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-09-21T19:13:15+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-09-21T19:13:15+03:00"}
+{"exp":7337600,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-09-21T19:13:15+03:00"}
+{"fields.time":"2025-09-21T19:13:16.0862237+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-09-21T19:13:16+03:00"}
+{"exp":573400,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-09-21T19:13:16+03:00"}
+{"fields.time":"2025-09-21T19:13:16.0873375+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-09-21T19:13:16+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-09-21T19:13:16+03:00"}
+{"fields.time":"2025-09-21T19:13:44.9802378+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-09-21T19:13:44+03:00"}
+{"exp":19818600,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-09-21T19:13:45+03:00"}
+{"fields.time":"2025-09-21T19:13:45.0193564+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-09-21T19:13:45+03:00"}
+{"fields.time":"2025-09-21T19:13:45.0193564+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-09-21T19:13:45+03:00"}
+{"fields.time":"2025-09-21T19:13:45.0193564+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-09-21T19:13:45+03:00"}
+{"exp":600600,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-09-21T19:13:45+03:00"}
+{"exp":600600,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-09-21T19:13:45+03:00"}
+{"exp":9670100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-09-21T19:13:45+03:00"}
+{"fields.time":"2025-09-21T19:13:45.3716957+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-09-21T19:13:45+03:00"}
+{"exp":504900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-09-21T19:13:45+03:00"}
+{"fields.time":"2025-09-21T19:13:45.3727359+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-09-21T19:13:45+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-09-21T19:13:45+03:00"}
+{"fields.time":"2025-09-21T19:13:50.9698271+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/create","time":"2025-09-21T19:13:50+03:00"}
+{"level":"error","msg":"error Authorization header","time":"2025-09-21T19:13:50+03:00"}
+{"exp":0,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/transaction/create","time":"2025-09-21T19:13:50+03:00"}
+{"fields.time":"2025-09-21T19:14:06.9661688+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-21T19:14:06+03:00"}
+{"err":"error validate: Key: 'RegisterUser.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'RegisterUser.Password' Error:Field validation for 'Password' failed on the 'min' tag","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-21T19:14:06+03:00"}
+{"exp":507600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-21T19:14:06+03:00"}
+{"fields.time":"2025-09-21T19:14:23.8366667+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-21T19:14:23+03:00"}
+{"exp":59071100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-21T19:14:23+03:00"}
+{"fields.time":"2025-09-21T19:15:00.8152955+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/create","time":"2025-09-21T19:15:00+03:00"}
+{"fields.time":"2025-09-21T19:18:53.5777716+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/create","time":"2025-09-21T19:18:53+03:00"}
+{"level":"error","msg":"error Authorization header","time":"2025-09-21T19:22:10+03:00"}
+{"err":"error validate: Key: 'RegisterUser.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'RegisterUser.Password' Error:Field validation for 'Password' failed on the 'min' tag","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-21T19:22:18+03:00"}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-09-21T19:22:47+03:00"}
+{"fields.time":"2025-09-21T19:26:11.3662756+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-09-21T19:26:11+03:00"}
+{"exp":18778900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-09-21T19:26:11+03:00"}
+{"fields.time":"2025-09-21T19:26:11.4039139+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-09-21T19:26:11+03:00"}
+{"exp":506200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-09-21T19:26:11+03:00"}
+{"fields.time":"2025-09-21T19:26:11.4044201+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-09-21T19:26:11+03:00"}
+{"fields.time":"2025-09-21T19:26:11.4044201+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-09-21T19:26:11+03:00"}
+{"exp":3160200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-09-21T19:26:11+03:00"}
+{"exp":8167200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-09-21T19:26:11+03:00"}
+{"fields.time":"2025-09-21T19:26:11.7634434+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-09-21T19:26:11+03:00"}
+{"exp":506500,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-09-21T19:26:11+03:00"}
+{"fields.time":"2025-09-21T19:26:11.7639499+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-09-21T19:26:11+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-09-21T19:26:11+03:00"}
+{"fields.time":"2025-09-21T19:26:36.1185397+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-21T19:26:36+03:00"}
+{"exp":54004900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-21T19:26:36+03:00"}
+{"fields.time":"2025-09-21T19:26:54.2943842+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-09-21T19:26:54+03:00"}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-09-21T19:26:54+03:00"}
+{"exp":504200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-09-21T19:26:54+03:00"}
+{"fields.time":"2025-09-21T19:27:02.1196637+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-09-21T19:27:02+03:00"}
+{"exp":7655300,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-09-21T19:27:02+03:00"}
+{"fields.time":"2025-09-21T19:28:30.1695484+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-09-21T19:28:30+03:00"}
+{"err":"error registration user: duplicated unique","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-09-21T19:28:30+03:00"}
+{"exp":52069100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-21T19:28:30+03:00"}

@@ -1,11 +1,10 @@
-package userHandlers
+package jwttoken
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
-	"github.com/financial_tracer/internal/domain"
-	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/sirupsen/logrus"
 )
@@ -13,7 +12,7 @@ import (
 // ResponseJWTUser represents a jwt model
 type ResponseJWTUser struct {
 	RefreshToken string `json:"refresh_token,omitempty"`
-	AccsessToken string `json:"access_token"`
+	AccessToken  string `json:"access_token"`
 }
 
 type Claims struct {
@@ -22,8 +21,8 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
-func PostJWT(c *gin.Context, secretKey string, id uint, name string) (ResponseJWTUser, error) {
-	accsessToken, err := JWTAccessToken(secretKey, id, name)
+func PostJWT(secretKey string, id uint, name string) (ResponseJWTUser, error) {
+	accessToken, err := JWTAccessToken(secretKey, id, name)
 	if err != nil {
 		return ResponseJWTUser{}, fmt.Errorf("error create access token: %s", err)
 	}
@@ -34,13 +33,13 @@ func PostJWT(c *gin.Context, secretKey string, id uint, name string) (ResponseJW
 	}
 
 	return ResponseJWTUser{
-		AccsessToken: accsessToken,
+		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
 }
 
 func JWTAccessToken(secretKey string, id uint, name string) (string, error) {
-	const op = "handlers.JWTAccsessToken"
+	const op = "handlers.JWTAccessToken"
 
 	payload := jwt.MapClaims{
 		"id":  id,
@@ -77,7 +76,7 @@ func CheckAccess(refreshToken string, secretKey string, log *logrus.Logger) (uin
 	const op = "handlers.CheckAccess"
 	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("%s: %w", op, domain.ErrorInternal)
+			return nil, fmt.Errorf("%s: %w", op, errors.New("invalid method"))
 		}
 
 		return []byte(secretKey), nil
@@ -86,7 +85,7 @@ func CheckAccess(refreshToken string, secretKey string, log *logrus.Logger) (uin
 	if err != nil {
 		log.WithFields(logrus.Fields{
 			"op":  op,
-			"err": "error parse token",
+			"err": "invalid parse token",
 		}).Error("error parse token")
 		return 0, "", fmt.Errorf("%s, not valid method: %w", op, err)
 	}

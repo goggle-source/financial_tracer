@@ -10,18 +10,29 @@ import (
 
 type User struct {
 	gorm.Model
-	Name         string     `gorm:"size:50;not null"`
-	Email        string     `gorm:"not null;unique"`
-	PasswordHash []byte     `gorm:"not null"`
-	Categories   []Category `gorm:"UserID"`
+	Name         string        `gorm:"size:50;not null"`
+	Email        string        `gorm:"not null;unique"`
+	PasswordHash []byte        `gorm:"not null"`
+	Categories   []Category    `gorm:"foreignKey:UserID"`
+	Transactions []Transaction `gorm:"foreignKey:UserID"`
 }
 
 type Category struct {
 	gorm.Model
-	Name        string `gorm:"size:60;not null;unique"`
+	Name         string `gorm:"size:60;not null;unique"`
+	UserID       uint
+	Limit        int           `gorm:"not null"`
+	Description  string        `gorm:"size:100"`
+	Transactions []Transaction `gorm:"foreignKey:CategoryID"`
+}
+
+type Transaction struct {
+	gorm.Model
+	Name        string `gorm:"not null;size:60"`
 	UserID      uint
-	Limit       int    `gorm:"not null"`
-	Description string `gorm:"not null;size:100"`
+	CategoryID  uint
+	Count       int    `gorm:"not null"`
+	Description string `gorm:"size:100"`
 }
 
 type Db struct {
@@ -32,7 +43,9 @@ func Init(cfg *config.Config) (*Db, error) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=%s",
 		cfg.App.Host, cfg.DB.User, cfg.DB.Password, cfg.DB.PortDb, cfg.DB.DbName, cfg.DB.Time)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		TranslateError: true,
+	})
 	if err != nil {
 		return nil, fmt.Errorf("error conn database: %w", err)
 	}

@@ -27,3 +27,9 @@ func ResponseError(c *gin.Context, status int, messageError any) {
 		MessageError: messageError,
 	})
 }
+
+func ResponseUnauthorizedError(err string) ErrorResponse {
+	return ErrorResponse{
+		MessageError: err,
+	}
+}

@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func (d *Db) RegistrationUser(user *domain.User) (uint, string, error) {
+func (d *Db) RegistrationUser(user domain.User) (uint, string, error) {
 
 	userDb := User{
 		Name:         user.Name,
@@ -19,7 +19,7 @@ func (d *Db) RegistrationUser(user *domain.User) (uint, string, error) {
 	result := d.DB.Create(&userDb)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
-			return 0, "", domain.ErrorDuplicated
+			return 0, "", ErrorDuplicated
 		}
 		return 0, "", result.Error
 	}
@@ -33,7 +33,7 @@ func (d *Db) AuthenticationUser(email string, password string) (uint, string, er
 	result := d.DB.Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return 0, "", domain.ErrorNotFound
+			return 0, "", ErrorNotFound
 		}
 		return 0, "", result.Error
 	}
@@ -48,10 +48,10 @@ func (d *Db) AuthenticationUser(email string, password string) (uint, string, er
 
 func (d *Db) DeleteUser(email string, passwordHash string) error {
 	var user domain.User
-	result := d.DB.Where("email = ?", email, passwordHash).First(&user)
+	result := d.DB.Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return domain.ErrorNotFound
+			return ErrorNotFound
 		}
 		return result.Error
 	}
@@ -64,5 +64,9 @@ func (d *Db) DeleteUser(email string, passwordHash string) error {
 	if result.Error != nil {
 		return result.Error
 	}
+	if result.RowsAffected == 0 {
+		return ErrorNotFound
+	}
+
 	return nil
 }

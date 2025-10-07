@@ -22,8 +22,13 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/category/create_category": {
+        "/category/create": {
             "post": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
                 "description": "Создание новой категории для зарегистрировшегося пользователя",
                 "consumes": [
                     "application/json"
@@ -54,7 +59,13 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Некоректено введены данные",
+                        "description": "Некорректный данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
                         "schema": {
                             "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
                         }
@@ -68,8 +79,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/category/delete_category": {
+        "/category/delete": {
             "delete": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
                 "description": "Удаление категории конкретного пользователя",
                 "consumes": [
                     "application/json"
@@ -100,7 +116,19 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Некоректные данные",
+                        "description": "Некорректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Категория не найдена",
                         "schema": {
                             "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
                         }
@@ -114,8 +142,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/category/get_category": {
+        "/category/get": {
             "get": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
                 "description": "Получение категории для конкретного пользователя",
                 "consumes": [
                     "application/json"
@@ -146,7 +179,19 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Некоректные данные",
+                        "description": "Некорректный данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Категория не найдена",
                         "schema": {
                             "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
                         }
@@ -160,8 +205,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/category/update_category": {
+        "/category/update": {
             "put": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
                 "description": "Обновление всех характеристики категории",
                 "consumes": [
                     "application/json"
@@ -192,7 +242,19 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Некоректные данные",
+                        "description": "Некорректный данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Категория не найдена",
                         "schema": {
                             "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
                         }
@@ -236,6 +298,18 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
                         }
+                    },
+                    "400": {
+                        "description": "Некорректные входные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
                     }
                 }
             }
@@ -272,7 +346,13 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Некоректные данные",
+                        "description": "Некорректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Пользователь не найден",
                         "schema": {
                             "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
                         }
@@ -318,7 +398,253 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Некоректные данные",
+                        "description": "Некорректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/transaction/create": {
+            "post": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "description": "Создание 1 транзакции для пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Создание транзакции",
+                "parameters": [
+                    {
+                        "description": "данные для создание пользователя",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers_transaction.RequestCreateTransaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Транзакция создана успешно",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/transaction/delete": {
+            "delete": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "description": "Удаление 1 транзакции для 1 пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Удаление транзакции",
+                "parameters": [
+                    {
+                        "description": "id транзакции",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers_transaction.RequestIdTransaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Транзакция удалена",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Транзакция не найдена",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/transaction/get": {
+            "get": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "description": "Получение 1 транзакции для 1 пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Получение транзакции",
+                "parameters": [
+                    {
+                        "description": "id транзакции",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers_transaction.RequestIdTransaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "good",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Транзакция не найдена",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/transaction/update": {
+            "put": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "description": "Обновление 1 транзакции для 1 пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Обновление транзакции",
+                "parameters": [
+                    {
+                        "description": "Данные для обновление пользователя",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_handlers_transaction.RequestUpdateTransaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Транзакция обновлена",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Транзакция не найдена",
                         "schema": {
                             "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
                         }
@@ -334,6 +660,11 @@ const docTemplate = `{
         },
         "/user/delete": {
             "post": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
                 "description": "Удаление пользователя",
                 "consumes": [
                     "application/json"
@@ -364,7 +695,13 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Некоректные данные",
+                        "description": "Некорректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Пользователь не найден",
                         "schema": {
                             "$ref": "#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse"
                         }
@@ -431,6 +768,48 @@ const docTemplate = `{
                 }
             }
         },
+        "internal_handlers_transaction.RequestCreateTransaction": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_handlers_transaction.RequestIdTransaction": {
+            "type": "object",
+            "properties": {
+                "transaction_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_handlers_transaction.RequestUpdateTransaction": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "transaction_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "internal_handlers_user.RefreshToken": {
             "type": "object",
             "properties": {
@@ -474,6 +853,14 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "jwtAuth": {
+            "description": "type \"Bearer\" после пробел и jwt token, пример: \"Bearer zpdgjeawzgp0398tuP29R0J20THVTP9235BHRNr312r346as2...\"",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

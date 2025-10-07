@@ -1,16 +1,17 @@
 package category
 
 import (
+	"fmt"
+
 	"github.com/financial_tracer/internal/domain"
-	"github.com/financial_tracer/internal/models"
 	"github.com/go-playground/validator/v10"
 )
 
 type DatabaseCategoryRepository interface {
-	CreateCategory(id uint, category domain.Category) (uint, error)
-	ReadCategory(idUser uint, idCategory uint) (domain.Category, error)
-	UpdateCategory(idUser uint, idCategory uint, newCategory domain.Category) (uint, error)
-	DeleteCategory(idUser uint, idCategory uint) error
+	CreateCategoryDatabase(id uint, category domain.CategoryInput) (uint, error)
+	ReadCategoryDatabase(idCategory uint) (domain.CategoryOutput, error)
+	UpdateCategoryDatabase(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error)
+	DeleteCategoryDatabase(idCategory uint) error
 }
 
 type CategoryServer struct {
@@ -23,54 +24,49 @@ func CreateCategoryServer(d DatabaseCategoryRepository) *CategoryServer {
 	}
 }
 
-func (cs *CategoryServer) Create(idUser uint, category models.Category) (uint, error) {
+func (cs *CategoryServer) CreateCategory(userID uint, category domain.CategoryInput) (uint, error) {
 
 	if err := validator.New().Struct(category); err != nil {
-		return 0, err
+		return 0, fmt.Errorf("error validate: %w", err)
 	}
 
-	newCategory := ModelsToDomain(category)
-
-	id, err := cs.d.CreateCategory(idUser, newCategory)
+	id, err := cs.d.CreateCategoryDatabase(userID, category)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("error create category: %w", err)
 	}
 
 	return id, nil
 }
 
-func (cs *CategoryServer) Get(idUser uint, idCategory uint) (models.Category, error) {
+func (cs *CategoryServer) ReadCategory(idCategory uint) (domain.CategoryOutput, error) {
 
-	category, err := cs.d.ReadCategory(idUser, idCategory)
+	category, err := cs.d.ReadCategoryDatabase(idCategory)
 	if err != nil {
-		return models.Category{}, err
-	}
-
-	ResultCategory := DomainToModels(category)
-	return ResultCategory, nil
-}
-
-func (cs *CategoryServer) Update(idUser uint, idCategory uint, newCategory models.Category) (uint, error) {
-
-	if err := validator.New().Struct(newCategory); err != nil {
-		return 0, err
-	}
-
-	cat := ModelsToDomain(newCategory)
-
-	category, err := cs.d.UpdateCategory(idUser, idCategory, cat)
-	if err != nil {
-		return 0, err
+		return domain.CategoryOutput{}, fmt.Errorf("error read category: %w", err)
 	}
 
 	return category, nil
 }
 
-func (cs *CategoryServer) Delete(idUser uint, idCategory uint) error {
+func (cs *CategoryServer) UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error) {
 
-	err := cs.d.DeleteCategory(idUser, idCategory)
+	if err := validator.New().Struct(newCategory); err != nil {
+		return domain.CategoryOutput{}, fmt.Errorf("error validate: %w", err)
+	}
+
+	category, err := cs.d.UpdateCategoryDatabase(idCategory, newCategory)
 	if err != nil {
-		return err
+		return domain.CategoryOutput{}, fmt.Errorf("error update category: %w", err)
+	}
+
+	return category, nil
+}
+
+func (cs *CategoryServer) DeleteCategory(idCategory uint) error {
+
+	err := cs.d.DeleteCategoryDatabase(idCategory)
+	if err != nil {
+		return fmt.Errorf("error delete user: %w", err)
 	}
 
 	return nil

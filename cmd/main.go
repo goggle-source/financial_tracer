@@ -8,9 +8,11 @@ import (
 	"github.com/financial_tracer/internal/config"
 	"github.com/financial_tracer/internal/handlers"
 	categoryHandlers "github.com/financial_tracer/internal/handlers/categories"
+	transactionHandlers "github.com/financial_tracer/internal/handlers/transaction"
 	userHandlers "github.com/financial_tracer/internal/handlers/user"
 	"github.com/financial_tracer/internal/infastructure/db/postgresql"
 	"github.com/financial_tracer/internal/servic/category"
+	"github.com/financial_tracer/internal/servic/transaction"
 	"github.com/financial_tracer/internal/servic/user"
 	"github.com/sirupsen/logrus"
 )
@@ -23,11 +25,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	users := user.CreateUserServer(db)
+	users := user.CreateUserServer(db, cfg.App.SercretKey, log)
 	handlersUser := userHandlers.CreateHandlersUser(cfg.App.SercretKey, users, log)
 	categories := category.CreateCategoryServer(db)
 	handlersCategory := categoryHandlers.CreateHandlersCategory(categories, log)
-	r := handlers.Router(handlersUser, handlersCategory, log, cfg.App.SercretKey)
+	transactions := transaction.CreateTransactionServer(db)
+	handlersTransaction := transactionHandlers.CreateTransactionHandlers(transactions, log)
+	r := handlers.Router(handlersUser, handlersCategory, log, handlersTransaction, cfg.App.SercretKey)
 
 	srv := &http.Server{
 		Addr:         ":8080",

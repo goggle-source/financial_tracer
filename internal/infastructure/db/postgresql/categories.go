@@ -7,13 +7,15 @@ import (
 	"gorm.io/gorm"
 )
 
-func (d *Db) CreateCategory(id uint, category domain.Category) (uint, error) {
+func (d *Db) CreateCategoryDatabase(userID uint, category domain.CategoryInput) (uint, error) {
 	var user User
-
-	result := d.DB.First(&user, id)
+	result := d.DB.First(&user, userID)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return 0, domain.ErrorNotFound
+			return 0, ErrorNotFound
+		}
+		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
+			return 0, ErrorDuplicated
 		}
 		return 0, result.Error
 	}
@@ -25,66 +27,67 @@ func (d *Db) CreateCategory(id uint, category domain.Category) (uint, error) {
 	}
 
 	d.DB.Model(&user).Association("Categories").Append(&newCategory)
-	return user.ID, nil
+	return newCategory.ID, nil
 }
 
-func (d *Db) ReadCategory(idUser uint, idCategory uint) (domain.Category, error) {
+func (d *Db) ReadCategoryDatabase(idCategory uint) (domain.CategoryOutput, error) {
 
-	var user User
-
-	result := d.DB.Preload("categories").First(&user, idUser)
+	var category Category
+	result := d.DB.First(&category, idCategory)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return domain.Category{}, domain.ErrorNotFound
+			return domain.CategoryOutput{}, ErrorNotFound
 		}
-		return domain.Category{}, result.Error
+		return domain.CategoryOutput{}, result.Error
 	}
 
-	for _, category := range user.Categories {
-		if category.ID == idCategory {
-			return domain.Category{
-				Name:        category.Name,
-				Limit:       category.Limit,
-				Description: category.Description,
-			}, nil
-		}
+	modelCategory := domain.CategoryOutput{
+		Name:        category.Name,
+		Description: category.Description,
+		Limit:       category.Limit,
 	}
-	return domain.Category{}, domain.ErrorNotFound
+	return modelCategory, nil
 }
 
-func (d *Db) UpdateCategory(idUser uint, idCategory uint, newCategory domain.Category) (uint, error) {
+func (d *Db) UpdateCategoryDatabase(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error) {
 
-	var user User
-
-	result := d.DB.Preload("categories").First(&user, idUser)
+	var categor Category
+	result := d.DB.First(&categor, idCategory)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return 0, domain.ErrorNotFound
+			return domain.CategoryOutput{}, ErrorNotFound
 		}
-		return 0, result.Error
+		return domain.CategoryOutput{}, result.Error
+	}
+	categor.Name = newCategory.Name
+	categor.Limit = newCategory.Limit
+	categor.Description = newCategory.Description
+
+	result = d.DB.Save(&categor)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
+			return domain.CategoryOutput{}, ErrorDuplicated
+		}
+		return domain.CategoryOutput{}, result.Error
 	}
 
-	for _, category := range user.Categories {
-		if category.ID == idCategory {
-			category = Category{
-				Name:        newCategory.Name,
-				Limit:       newCategory.Limit,
-				Description: category.Description,
-			}
-			return category.ID, nil
-		}
+	ResponseCategory := domain.CategoryOutput{
+		Name:        categor.Name,
+		Description: categor.Description,
+		Limit:       categor.Limit,
 	}
-	return 0, domain.ErrorNotFound
+	return ResponseCategory, ErrorNotFound
 }
 
-func (d *Db) DeleteCategory(idUser uint, idCategory uint) error {
+func (d *Db) DeleteCategoryDatabase(idCategory uint) error {
 
-	result := d.DB.Where("user_id = ?", idUser).Delete(&Category{}, idCategory)
+	result := d.DB.Delete(&Category{}, idCategory)
 	if result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return domain.ErrorNotFound
-		}
 		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return ErrorNotFound
 	}
 
 	return nil

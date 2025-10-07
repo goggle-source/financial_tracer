@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/financial_tracer/internal/domain"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
@@ -27,24 +26,6 @@ func RegistrationError(c *gin.Context, op string, err error) {
 		return
 	}
 
-	if errMsg := ClientError(err); errMsg != "" {
-		ResponseError(c, http.StatusBadRequest, errMsg)
-		return
-	}
-
 	ResponseError(c, http.StatusInternalServerError, "error server")
 
-}
-
-func ClientError(err error) string {
-	clientErrors := map[error]string{
-		domain.ErrorNotFound:   "not found",
-		domain.ErrorDuplicated: "duplicated unique",
-		domain.ErrorValidData:  "error request",
-	}
-	value, ok := clientErrors[err]
-	if !ok {
-		return ""
-	}
-	return value
 }
