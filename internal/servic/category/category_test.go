@@ -5,6 +5,9 @@ import (
 	"testing"
 
 	"github.com/financial_tracer/internal/domain"
+	"github.com/financial_tracer/internal/infastructure/db/postgresql"
+	"github.com/go-playground/validator/v10"
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,8 +18,8 @@ func TestCreateCategory(t *testing.T) {
 		userID       uint
 		category     domain.CategoryInput
 		categoryID   uint
-		mokuErr      error
-		msgErr       string
+		mockErr      error
+		categoryErr  error
 		shouldCallDB bool
 	}
 
@@ -30,8 +33,8 @@ func TestCreateCategory(t *testing.T) {
 				Description: "траты на еду",
 			},
 			categoryID:   2,
-			mokuErr:      nil,
-			msgErr:       "",
+			mockErr:      nil,
+			categoryErr:  nil,
 			shouldCallDB: true,
 		},
 		{
@@ -43,8 +46,21 @@ func TestCreateCategory(t *testing.T) {
 				Description: "test case",
 			},
 			categoryID:   0,
-			mokuErr:      errors.New("error not found"),
-			msgErr:       "error create category",
+			mockErr:      postgresql.ErrorNotFound,
+			categoryErr:  ErrNoFound,
+			shouldCallDB: true,
+		},
+		{
+			Name:   "duplicated",
+			userID: 3,
+			category: domain.CategoryInput{
+				Name:        "food",
+				Limit:       10000,
+				Description: "траты на еду",
+			},
+			categoryID:   0,
+			mockErr:      postgresql.ErrorDuplicated,
+			categoryErr:  ErrDuplicated,
 			shouldCallDB: true,
 		},
 		{
@@ -56,8 +72,8 @@ func TestCreateCategory(t *testing.T) {
 				Description: "asfdasdfgAFG",
 			},
 			categoryID:   0,
-			mokuErr:      nil,
-			msgErr:       "error validate",
+			mockErr:      nil,
+			categoryErr:  validator.ValidationErrors{},
 			shouldCallDB: false,
 		},
 	}
@@ -66,19 +82,27 @@ func TestCreateCategory(t *testing.T) {
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
 
-			repoMock.On("CreateCategoryDatabase", test.userID, test.category).Return(test.categoryID, test.mokuErr)
+			repoMock.On("CreateCategoryDatabase", test.userID, test.category).Return(test.categoryID, test.mockErr)
 
-			servic := CreateCategoryServer(repoMock)
+			log := logrus.New()
+
+			servic := CreateCategoryServer(repoMock, log)
 			resultID, err := servic.CreateCategory(test.userID, test.category)
 
-			if test.mokuErr != nil {
+			if test.mockErr != nil || test.categoryErr != nil {
 				assert.Error(t, err)
-				if test.msgErr != "" {
-					assert.Contains(t, err.Error(), test.msgErr)
+				if test.Name == "valdiate" {
+					var verr validator.ValidationErrors
+					if !errors.As(err, &verr) {
+						t.Fatalf("err != validator.ValidationErrors: %v", err)
+					}
+				} else if !errors.Is(err, test.categoryErr) {
+					t.Fatalf("err != test.categorErr: %v", err)
 				}
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, test.categoryID, resultID)
 			}
-
-			assert.Equal(t, test.categoryID, resultID)
 			if test.shouldCallDB {
 				repoMock.AssertCalled(t, "CreateCategoryDatabase", test.userID, test.category)
 			}
@@ -89,11 +113,11 @@ func TestCreateCategory(t *testing.T) {
 func TestReadCategory(t *testing.T) {
 
 	type tests struct {
-		Name       string
-		category   domain.CategoryOutput
-		categoryID uint
-		mokuErr    error
-		msgErr     string
+		Name        string
+		category    domain.CategoryOutput
+		categoryID  uint
+		mockErr     error
+		categoryErr error
 	}
 
 	arrTests := []tests{
@@ -105,16 +129,16 @@ func TestReadCategory(t *testing.T) {
 				Limit:       10000,
 				Description: "траты на еду",
 			},
-			categoryID: 2,
-			mokuErr:    nil,
-			msgErr:     "",
+			categoryID:  2,
+			mockErr:     nil,
+			categoryErr: nil,
 		},
 		{
-			Name:       "not found",
-			category:   domain.CategoryOutput{},
-			categoryID: 0,
-			mokuErr:    errors.New("error not found"),
-			msgErr:     "error read category",
+			Name:        "not found",
+			category:    domain.CategoryOutput{},
+			categoryID:  0,
+			mockErr:     postgresql.ErrorNotFound,
+			categoryErr: ErrNoFound,
 		},
 	}
 	repoMock := new(DbMock)
@@ -122,21 +146,22 @@ func TestReadCategory(t *testing.T) {
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
 
-			repoMock.On("ReadCategoryDatabase", test.categoryID).Return(test.category, test.mokuErr)
+			repoMock.On("ReadCategoryDatabase", test.categoryID).Return(test.category, test.mockErr)
 
-			servic := CreateCategoryServer(repoMock)
+			log := logrus.New()
+
+			servic := CreateCategoryServer(repoMock, log)
 			resultCategory, err := servic.ReadCategory(test.categoryID)
 
-			if test.mokuErr != nil {
+			if test.mockErr != nil || test.categoryErr != nil {
 				assert.Error(t, err)
-				if test.msgErr != "" {
-					assert.Contains(t, err.Error(), test.msgErr)
+				if !errors.Is(err, test.categoryErr) {
+					t.Fatalf("err != test.categorErr: %v", err)
 				}
 			} else {
 				assert.NoError(t, err)
+				assert.Equal(t, test.category, resultCategory)
 			}
-
-			assert.Equal(t, test.category, resultCategory)
 			repoMock.AssertCalled(t, "ReadCategoryDatabase", test.categoryID)
 			repoMock.AssertExpectations(t)
 		})
@@ -150,8 +175,8 @@ func TestUpdateCategory(t *testing.T) {
 		newCategory  domain.CategoryInput
 		category     domain.CategoryOutput
 		categoryID   uint
-		mokuErr      error
-		msgErr       string
+		mockErr      error
+		categoryErr  error
 		shouldCallDB bool
 	}
 
@@ -170,8 +195,8 @@ func TestUpdateCategory(t *testing.T) {
 				Description: "на еду и средства",
 			},
 			categoryID:   2,
-			mokuErr:      nil,
-			msgErr:       "",
+			mockErr:      nil,
+			categoryErr:  nil,
 			shouldCallDB: true,
 		},
 		{
@@ -183,12 +208,25 @@ func TestUpdateCategory(t *testing.T) {
 			},
 			category:     domain.CategoryOutput{},
 			categoryID:   0,
-			mokuErr:      errors.New("error not found"),
-			msgErr:       "error update category",
+			mockErr:      postgresql.ErrorNotFound,
+			categoryErr:  ErrNoFound,
 			shouldCallDB: true,
 		},
 		{
-			Name: "validate",
+			Name: "duplicated",
+			newCategory: domain.CategoryInput{
+				Name:        "food",
+				Limit:       10000,
+				Description: "",
+			},
+			category:     domain.CategoryOutput{},
+			categoryID:   1,
+			mockErr:      postgresql.ErrorDuplicated,
+			categoryErr:  ErrDuplicated,
+			shouldCallDB: true,
+		},
+		{
+			Name: "valdiate",
 			newCategory: domain.CategoryInput{
 				Name:        "",
 				Limit:       0,
@@ -196,8 +234,8 @@ func TestUpdateCategory(t *testing.T) {
 			},
 			category:     domain.CategoryOutput{},
 			categoryID:   0,
-			mokuErr:      nil,
-			msgErr:       "error validate",
+			mockErr:      nil,
+			categoryErr:  validator.ValidationErrors{},
 			shouldCallDB: false,
 		},
 	}
@@ -206,16 +244,25 @@ func TestUpdateCategory(t *testing.T) {
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
 
-			repoMock.On("UpdateCategoryDatabase", test.categoryID, test.newCategory).Return(test.category, test.mokuErr)
+			repoMock.On("UpdateCategoryDatabase", test.categoryID, test.newCategory).Return(test.category, test.mockErr)
 
-			servic := CreateCategoryServer(repoMock)
+			log := logrus.New()
+
+			servic := CreateCategoryServer(repoMock, log)
 			_, err := servic.UpdateCategory(test.categoryID, test.newCategory)
 
-			if test.mokuErr != nil {
+			if test.mockErr != nil || test.categoryErr != nil {
 				assert.Error(t, err)
-				if test.msgErr != "" {
-					assert.Contains(t, err.Error(), test.msgErr)
+				if test.Name == "valdiate" {
+					var verr validator.ValidationErrors
+					if !errors.As(err, &verr) {
+						t.Fatalf("err != validator.ValidationErrors: %v", err)
+					}
+				} else if !errors.Is(err, test.categoryErr) {
+					t.Fatalf("err != test.categorErr: %v", err)
 				}
+			} else {
+				assert.NoError(t, err)
 			}
 
 			if test.shouldCallDB {
@@ -227,24 +274,24 @@ func TestUpdateCategory(t *testing.T) {
 
 func TestDeleteCategoryDatabase(t *testing.T) {
 	type tests struct {
-		Name       string
-		categoryID uint
-		mokuErr    error
-		msgErr     string
+		Name        string
+		categoryID  uint
+		mockErr     error
+		categoryErr error
 	}
 
 	arrTests := []tests{
 		{
-			Name:       "success",
-			categoryID: 2,
-			mokuErr:    nil,
-			msgErr:     "",
+			Name:        "success",
+			categoryID:  2,
+			mockErr:     nil,
+			categoryErr: nil,
 		},
 		{
-			Name:       "not found",
-			categoryID: 0,
-			mokuErr:    errors.New("error not found"),
-			msgErr:     "error delete user",
+			Name:        "not found",
+			categoryID:  0,
+			mockErr:     postgresql.ErrorNotFound,
+			categoryErr: ErrNoFound,
 		},
 	}
 	repoMock := new(DbMock)
@@ -252,16 +299,19 @@ func TestDeleteCategoryDatabase(t *testing.T) {
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
 
-			repoMock.On("DeleteCategoryDatabase", test.categoryID).Return(test.mokuErr)
+			repoMock.On("DeleteCategoryDatabase", test.categoryID).Return(test.mockErr)
+			log := logrus.New()
 
-			servic := CreateCategoryServer(repoMock)
+			servic := CreateCategoryServer(repoMock, log)
 			err := servic.DeleteCategory(test.categoryID)
 
-			if test.mokuErr != nil {
+			if test.mockErr != nil || test.categoryErr != nil {
 				assert.Error(t, err)
-				if test.msgErr != "" {
-					assert.Contains(t, err.Error(), test.msgErr)
+				if !errors.Is(err, test.categoryErr) {
+					t.Fatalf("err != test.categorErr: %v", err)
 				}
+			} else {
+				assert.NoError(t, err)
 			}
 			repoMock.AssertCalled(t, "DeleteCategoryDatabase", test.categoryID)
 

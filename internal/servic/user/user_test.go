@@ -6,6 +6,7 @@ import (
 
 	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/infastructure/db/postgresql"
+	"github.com/go-playground/validator/v10"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -18,7 +19,7 @@ func TestServerRegistrationUser(t *testing.T) {
 		user         domain.RegisterUser
 		userID       uint
 		mokuErr      error
-		msgErr       string
+		userErr      error
 		shouldCallDB bool
 	}
 
@@ -32,7 +33,7 @@ func TestServerRegistrationUser(t *testing.T) {
 			},
 			userID:       1,
 			mokuErr:      nil,
-			msgErr:       "",
+			userErr:      nil,
 			shouldCallDB: true,
 		},
 		{
@@ -44,7 +45,7 @@ func TestServerRegistrationUser(t *testing.T) {
 			},
 			userID:       0,
 			mokuErr:      errors.New("error database"),
-			msgErr:       "field registration user",
+			userErr:      ErrDatabase,
 			shouldCallDB: true,
 		},
 		{
@@ -56,8 +57,20 @@ func TestServerRegistrationUser(t *testing.T) {
 			},
 			userID:       0,
 			mokuErr:      nil,
-			msgErr:       "invalid validate",
+			userErr:      validator.ValidationErrors{},
 			shouldCallDB: false,
+		},
+		{
+			name: "error duplicated",
+			user: domain.RegisterUser{
+				Name:     "Sashasss",
+				Email:    "tanks1235@gmail.com",
+				Password: "adsafsgfGDgSD",
+			},
+			userID:       0,
+			mokuErr:      postgresql.ErrorDuplicated,
+			userErr:      ErrDuplicated,
+			shouldCallDB: true,
 		},
 	}
 
@@ -71,9 +84,19 @@ func TestServerRegistrationUser(t *testing.T) {
 			server := CreateUserServer(repoMock, "secret", log)
 			tokens, err := server.ServerRegistrationUser(test.user)
 
-			if test.msgErr != "" || test.mokuErr != nil {
+			if test.mokuErr != nil || test.userErr != nil {
 				assert.Error(t, err)
-				assert.Contains(t, err.Error(), test.msgErr)
+				if test.name == "error valdiate" {
+					var ValidationErrors validator.ValidationErrors
+
+					if !errors.As(err, &ValidationErrors) {
+						t.Error("err != validator.ValidatiobErrors")
+					}
+				} else {
+					if !errors.Is(err, test.userErr) {
+						t.Error("err != test.userErr")
+					}
+				}
 			} else {
 				assert.NoError(t, err)
 				assert.NotEmpty(t, tokens.AccessToken)
@@ -89,18 +112,18 @@ func TestServerRegistrationUser(t *testing.T) {
 
 func TestServerAuthenticationUser(t *testing.T) {
 	type test struct {
-		Name         string
+		name         string
 		inputUser    domain.AuthenticationUser
 		userID       uint
 		nameUser     string
 		mokuErr      error
-		msgErr       string
+		userErr      error
 		shouldCallDB bool
 	}
 
 	tests := []test{
 		{
-			Name: "success",
+			name: "success",
 			inputUser: domain.AuthenticationUser{
 				Email:    "jonn1342@gmail.com",
 				Password: "admin12241532",
@@ -108,11 +131,11 @@ func TestServerAuthenticationUser(t *testing.T) {
 			userID:       3,
 			nameUser:     "jonn",
 			mokuErr:      nil,
-			msgErr:       "",
+			userErr:      nil,
 			shouldCallDB: true,
 		},
 		{
-			Name: "error database",
+			name: "error database",
 			inputUser: domain.AuthenticationUser{
 				Email:    "sasha@gmail.com",
 				Password: "admin15412",
@@ -120,11 +143,11 @@ func TestServerAuthenticationUser(t *testing.T) {
 			userID:       0,
 			nameUser:     "",
 			mokuErr:      errors.New("error database"),
-			msgErr:       "field authentication user",
+			userErr:      ErrDatabase,
 			shouldCallDB: true,
 		},
 		{
-			Name: "error validate",
+			name: "error valdiate",
 			inputUser: domain.AuthenticationUser{
 				Email:    "aGfSGpGD",
 				Password: "no password",
@@ -132,11 +155,11 @@ func TestServerAuthenticationUser(t *testing.T) {
 			userID:       0,
 			nameUser:     "",
 			mokuErr:      nil,
-			msgErr:       "invalid validate",
+			userErr:      validator.ValidationErrors{},
 			shouldCallDB: false,
 		},
 		{
-			Name: "not found",
+			name: "not found",
 			inputUser: domain.AuthenticationUser{
 				Email:    "jonn@gmail.com",
 				Password: "12345678",
@@ -144,13 +167,13 @@ func TestServerAuthenticationUser(t *testing.T) {
 			userID:       0,
 			nameUser:     "",
 			mokuErr:      postgresql.ErrorNotFound,
-			msgErr:       "field authentication user",
+			userErr:      ErrNoFound,
 			shouldCallDB: true,
 		},
 	}
 
 	for _, ts := range tests {
-		t.Run(ts.Name, func(t *testing.T) {
+		t.Run(ts.name, func(t *testing.T) {
 			repoMock := new(DbMock)
 			log := logrus.New()
 
@@ -160,9 +183,19 @@ func TestServerAuthenticationUser(t *testing.T) {
 			server := CreateUserServer(repoMock, "secret", log)
 			tokens, err := server.ServerAuthenticationUser(ts.inputUser)
 
-			if ts.mokuErr != nil || ts.msgErr != "" {
+			if ts.mokuErr != nil || ts.userErr != nil {
 				assert.Error(t, err)
-				assert.Contains(t, err.Error(), ts.msgErr)
+				if ts.name == "error valdiate" {
+					var ValidationErrors validator.ValidationErrors
+
+					if !errors.As(err, &ValidationErrors) {
+						t.Error("err != validator.ValidatiobErrors")
+					}
+				} else {
+					if !errors.Is(err, ts.userErr) {
+						t.Error("err != test.userErr")
+					}
+				}
 			} else {
 				assert.NoError(t, err)
 				assert.NotEmpty(t, tokens.AccessToken)
@@ -178,75 +211,85 @@ func TestServerAuthenticationUser(t *testing.T) {
 
 func TestServerDeleteUser(t *testing.T) {
 	type test struct {
-		Name         string
+		name         string
 		user         domain.DeleteUser
 		mockErr      error
-		msgErr       string
+		userErr      error
 		shouldCallDB bool
 	}
 
 	arrTests := []test{
 		{
-			Name: "success",
+			name: "success",
 			user: domain.DeleteUser{
 				Email:    "jonn@gmail.com",
 				Password: "admin",
 			},
 			mockErr:      nil,
-			msgErr:       "",
+			userErr:      nil,
 			shouldCallDB: true,
 		},
 		{
-			Name: "error database",
+			name: "error database",
 			user: domain.DeleteUser{
 				Email:    "sasha@gmail.com",
 				Password: "admin15412",
 			},
 			mockErr:      errors.New("error database"),
-			msgErr:       "field delete user",
+			userErr:      ErrDatabase,
 			shouldCallDB: true,
 		},
 		{
-			Name: "error not found",
+			name: "error not found",
 			user: domain.DeleteUser{
 				Email:    "jonn11@gmail.com",
 				Password: "adminov",
 			},
 			mockErr:      postgresql.ErrorNotFound,
-			msgErr:       "field delete user",
+			userErr:      ErrNoFound,
 			shouldCallDB: true,
 		},
 		{
-			Name: "validate",
+			name: "error valdiate",
 			user: domain.DeleteUser{
 				Email:    "jonn@gmail.com",
 				Password: "",
 			},
 			mockErr:      nil,
-			msgErr:       "invalid validate",
+			userErr:      validator.ValidationErrors{},
 			shouldCallDB: false,
 		},
 	}
 
-	for _, test := range arrTests {
-		t.Run(test.Name, func(t *testing.T) {
+	for _, ts := range arrTests {
+		t.Run(ts.name, func(t *testing.T) {
 			repoMock := new(DbMock)
 			log := logrus.New()
 
-			repoMock.On("DeleteUser", test.user.Email, test.user.Password).Return(test.mockErr)
+			repoMock.On("DeleteUser", ts.user.Email, ts.user.Password).Return(ts.mockErr)
 
 			server := CreateUserServer(repoMock, "secret", log)
-			err := server.ServerDeleteUser(test.user)
+			err := server.ServerDeleteUser(ts.user)
 
-			if test.mockErr != nil || test.msgErr != "" {
+			if ts.mockErr != nil || ts.userErr != nil {
 				assert.Error(t, err)
-				assert.Contains(t, err.Error(), test.msgErr)
+				if ts.name == "error valdiate" {
+					var ValidationErrors validator.ValidationErrors
+
+					if !errors.As(err, &ValidationErrors) {
+						t.Error("err != validator.ValidatiobErrors")
+					}
+				} else {
+					if !errors.Is(err, ts.userErr) {
+						t.Error("err != test.userErr")
+					}
+				}
 			} else {
 				assert.NoError(t, err)
 			}
 
-			if test.shouldCallDB {
-				repoMock.AssertCalled(t, "DeleteUser", test.user.Email, test.user.Password)
+			if ts.shouldCallDB {
+				repoMock.AssertCalled(t, "DeleteUser", ts.user.Email, ts.user.Password)
 			}
 		})
 	}

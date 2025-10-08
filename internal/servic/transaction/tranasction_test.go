@@ -5,6 +5,9 @@ import (
 	"testing"
 
 	"github.com/financial_tracer/internal/domain"
+	"github.com/financial_tracer/internal/infastructure/db/postgresql"
+	"github.com/go-playground/validator/v10"
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,8 +18,8 @@ func TestCreateTransactionServic(t *testing.T) {
 		idUser        uint
 		idCategory    uint
 		idTransaction uint
-		mockErr       error
-		msgErr        string
+		repoErr       error
+		tranErr       error
 		shouldCallDB  bool
 	}
 
@@ -31,8 +34,8 @@ func TestCreateTransactionServic(t *testing.T) {
 			idUser:        1,
 			idCategory:    2,
 			idTransaction: 1,
-			mockErr:       nil,
-			msgErr:        "",
+			repoErr:       nil,
+			tranErr:       nil,
 			shouldCallDB:  true,
 		},
 		{
@@ -45,8 +48,8 @@ func TestCreateTransactionServic(t *testing.T) {
 			idUser:        1,
 			idCategory:    2,
 			idTransaction: 0,
-			mockErr:       errors.New("error not found"),
-			msgErr:        "error create transaction",
+			repoErr:       postgresql.ErrorNotFound,
+			tranErr:       ErrNoFound,
 			shouldCallDB:  true,
 		},
 		{
@@ -59,12 +62,26 @@ func TestCreateTransactionServic(t *testing.T) {
 			idUser:        4,
 			idCategory:    6,
 			idTransaction: 0,
-			mockErr:       errors.New("error database"),
-			msgErr:        "error create transaction",
+			repoErr:       errors.New("some db error"),
+			tranErr:       ErrDatabase,
 			shouldCallDB:  true,
 		},
 		{
-			name: "validate",
+			name: "error limit",
+			tran: domain.TransactionInput{
+				Name:        "лимит по категории",
+				Count:       999999,
+				Description: "превышение лимита",
+			},
+			idUser:        2,
+			idCategory:    9,
+			idTransaction: 0,
+			repoErr:       postgresql.ErrorLimit,
+			tranErr:       ErrLimit,
+			shouldCallDB:  true,
+		},
+		{
+			name: "error validate",
 			tran: domain.TransactionInput{
 				Name:        "",
 				Count:       0,
@@ -73,8 +90,8 @@ func TestCreateTransactionServic(t *testing.T) {
 			idUser:        5,
 			idCategory:    10,
 			idTransaction: 0,
-			mockErr:       nil,
-			msgErr:        "error validate",
+			repoErr:       nil,
+			tranErr:       validator.ValidationErrors{},
 			shouldCallDB:  false,
 		},
 	}
@@ -84,14 +101,22 @@ func TestCreateTransactionServic(t *testing.T) {
 			repoMock := new(DbMock)
 
 			repoMock.On("CreateTransaction", test.idUser, test.idCategory, test.tran).
-				Return(test.idTransaction, test.mockErr)
+				Return(test.idTransaction, test.repoErr)
+			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock)
+			server := CreateTransactionServer(repoMock, log)
 			id, err := server.CreateTransactionServic(test.idUser, test.idCategory, test.tran)
 
-			if test.mockErr != nil || test.msgErr != "" {
+			if test.repoErr != nil || test.tranErr != nil {
 				assert.Error(t, err)
-				assert.Contains(t, err.Error(), test.msgErr)
+				if test.name == "error validate" {
+					var verr validator.ValidationErrors
+					if !errors.As(err, &verr) {
+						t.Fatalf("err != test.tranErr: %v", err)
+					}
+				} else if !errors.Is(err, test.tranErr) {
+					t.Fatalf("err != test.tranErr: %v", err)
+				}
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, id, test.idTransaction)
@@ -109,8 +134,8 @@ func TestReadTransactionServer(t *testing.T) {
 		name          string
 		tran          domain.TransactionOutput
 		idTransaction uint
-		mockErr       error
-		msgErr        string
+		tranErr       error
+		svcErr        error
 	}
 
 	arrTest := []test{
@@ -124,8 +149,8 @@ func TestReadTransactionServer(t *testing.T) {
 				Description: "походил с девушкой по магазинам",
 			},
 			idTransaction: 4,
-			mockErr:       nil,
-			msgErr:        "",
+			tranErr:       nil,
+			svcErr:        nil,
 		},
 		{
 			name: "error database",
@@ -137,8 +162,8 @@ func TestReadTransactionServer(t *testing.T) {
 				Description: "купил себе компьютер по-мощнее для разработки собственной нейросети",
 			},
 			idTransaction: 0,
-			mockErr:       errors.New("error database"),
-			msgErr:        "error get transaction",
+			tranErr:       errors.New("some db err"),
+			svcErr:        ErrDatabase,
 		},
 		{
 			name: "not found",
@@ -150,8 +175,8 @@ func TestReadTransactionServer(t *testing.T) {
 				Description: "купил себе компьютер для игр",
 			},
 			idTransaction: 0,
-			mockErr:       errors.New("error not found"),
-			msgErr:        "error get transaction",
+			tranErr:       postgresql.ErrorNotFound,
+			svcErr:        ErrNoFound,
 		},
 	}
 
@@ -159,13 +184,16 @@ func TestReadTransactionServer(t *testing.T) {
 		t.Run(ts.name, func(t *testing.T) {
 			repoMock := new(DbMock)
 
-			repoMock.On("GetTransaction", ts.idTransaction).Return(ts.tran, ts.mockErr)
+			repoMock.On("GetTransaction", ts.idTransaction).Return(ts.tran, ts.tranErr)
+			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock)
+			server := CreateTransactionServer(repoMock, log)
 			tran, err := server.ReadTransactionServer(ts.idTransaction)
-			if ts.mockErr != nil || ts.msgErr != "" {
+			if ts.tranErr != nil || ts.svcErr != nil {
 				assert.Error(t, err)
-				assert.Contains(t, err.Error(), ts.msgErr)
+				if !errors.Is(err, ts.svcErr) {
+					t.Fatalf("err != ts.tranErr: %v", err)
+				}
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, tran, ts.tran)
@@ -182,8 +210,8 @@ func TestUpdateTransactionServer(t *testing.T) {
 		idTransaction uint
 		tranInput     domain.TransactionInput
 		tranOutput    domain.TransactionOutput
-		mockErr       error
-		msgErr        string
+		tranErr       error
+		svcErr        error
 		shouldCallDB  bool
 	}
 
@@ -203,8 +231,8 @@ func TestUpdateTransactionServer(t *testing.T) {
 				Count:       2000,
 				Description: "сходил в шаурмичную 2 раза",
 			},
-			mockErr:      nil,
-			msgErr:       "",
+			tranErr:      nil,
+			svcErr:       nil,
 			shouldCallDB: true,
 		},
 		{
@@ -216,12 +244,12 @@ func TestUpdateTransactionServer(t *testing.T) {
 				Description: "сходил в машазин",
 			},
 			tranOutput:   domain.TransactionOutput{},
-			mockErr:      errors.New("error database"),
-			msgErr:       "error update transaction",
+			tranErr:      errors.New("db error"),
+			svcErr:       ErrDatabase,
 			shouldCallDB: true,
 		},
 		{
-			name:          "validate",
+			name:          "error validate",
 			idTransaction: 0,
 			tranInput: domain.TransactionInput{
 				Name:        "",
@@ -229,8 +257,8 @@ func TestUpdateTransactionServer(t *testing.T) {
 				Description: "",
 			},
 			tranOutput:   domain.TransactionOutput{},
-			mockErr:      nil,
-			msgErr:       "error validate",
+			tranErr:      nil,
+			svcErr:       validator.ValidationErrors{},
 			shouldCallDB: false,
 		},
 	}
@@ -239,14 +267,22 @@ func TestUpdateTransactionServer(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			repoMock := new(DbMock)
 
-			repoMock.On("UpdateTransaction", test.idTransaction, test.tranInput).Return(test.tranOutput, test.mockErr)
+			repoMock.On("UpdateTransaction", test.idTransaction, test.tranInput).Return(test.tranOutput, test.tranErr)
+			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock)
+			server := CreateTransactionServer(repoMock, log)
 			tranOutput, err := server.UpdateTransactionServer(test.idTransaction, test.tranInput)
 
-			if test.mockErr != nil || test.msgErr != "" {
+			if test.tranErr != nil || test.svcErr != nil {
 				assert.Error(t, err)
-				assert.Contains(t, err.Error(), test.msgErr)
+				if test.name == "error validate" {
+					var verr validator.ValidationErrors
+					if !errors.As(err, &verr) {
+						t.Fatalf("err != validator.ValidationErrors: %v", err)
+					}
+				} else if !errors.Is(err, test.svcErr) {
+					t.Fatalf("err != test.tranErr: %v", err)
+				}
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, tranOutput, test.tranOutput)
@@ -263,28 +299,28 @@ func TestDeleteTransactionServer(t *testing.T) {
 	type test struct {
 		name          string
 		idTransaction uint
-		mockErr       error
-		msgErr        string
+		tranErr       error
+		svcErr        error
 	}
 
 	arrTest := []test{
 		{
 			name:          "success",
 			idTransaction: 2,
-			mockErr:       nil,
-			msgErr:        "",
+			tranErr:       nil,
+			svcErr:        nil,
 		},
 		{
 			name:          "not found",
 			idTransaction: 5,
-			mockErr:       errors.New("error not found"),
-			msgErr:        "error delete transaction",
+			tranErr:       postgresql.ErrorNotFound,
+			svcErr:        ErrNoFound,
 		},
 		{
 			name:          "error database",
 			idTransaction: 6,
-			mockErr:       errors.New("error database"),
-			msgErr:        "error delete transaction",
+			tranErr:       errors.New("db error"),
+			svcErr:        ErrDatabase,
 		},
 	}
 
@@ -292,13 +328,16 @@ func TestDeleteTransactionServer(t *testing.T) {
 		t.Run(ts.name, func(t *testing.T) {
 			repoMock := new(DbMock)
 
-			repoMock.On("DeleteTransaction", ts.idTransaction).Return(ts.mockErr)
+			repoMock.On("DeleteTransaction", ts.idTransaction).Return(ts.tranErr)
+			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock)
+			server := CreateTransactionServer(repoMock, log)
 			err := server.DeleteTransactionServer(ts.idTransaction)
-			if ts.mockErr != nil || ts.msgErr != "" {
+			if ts.tranErr != nil || ts.svcErr != nil {
 				assert.Error(t, err)
-				assert.Contains(t, err.Error(), ts.msgErr)
+				if !errors.Is(err, ts.svcErr) {
+					t.Fatalf("err != ts.tranErr: %v", err)
+				}
 			} else {
 				assert.NoError(t, err)
 			}
