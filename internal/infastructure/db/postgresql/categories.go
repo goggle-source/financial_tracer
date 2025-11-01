@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func (d *Db) CreateCategoryDatabase(userID uint, category domain.CategoryInput) (uint, error) {
+func (d *Db) CreateCategory(userID uint, category domain.CategoryInput) (uint, error) {
 	var user User
 	result := d.DB.First(&user, userID)
 	if result.Error != nil {
@@ -30,7 +30,7 @@ func (d *Db) CreateCategoryDatabase(userID uint, category domain.CategoryInput) 
 	return newCategory.ID, nil
 }
 
-func (d *Db) ReadCategoryDatabase(idCategory uint) (domain.CategoryOutput, error) {
+func (d *Db) GetCategory(idCategory uint) (domain.CategoryOutput, error) {
 
 	var category Category
 	result := d.DB.First(&category, idCategory)
@@ -49,7 +49,7 @@ func (d *Db) ReadCategoryDatabase(idCategory uint) (domain.CategoryOutput, error
 	return modelCategory, nil
 }
 
-func (d *Db) UpdateCategoryDatabase(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error) {
+func (d *Db) UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error) {
 
 	var categor Category
 	result := d.DB.First(&categor, idCategory)
@@ -79,7 +79,7 @@ func (d *Db) UpdateCategoryDatabase(idCategory uint, newCategory domain.Category
 	return ResponseCategory, ErrorNotFound
 }
 
-func (d *Db) DeleteCategoryDatabase(idCategory uint) error {
+func (d *Db) DeleteCategory(idCategory uint) error {
 
 	result := d.DB.Delete(&Category{}, idCategory)
 	if result.Error != nil {
@@ -91,4 +91,36 @@ func (d *Db) DeleteCategoryDatabase(idCategory uint) error {
 	}
 
 	return nil
+}
+
+func (d *Db) CategoriesType(typeFound string) ([]domain.CategoryOutput, error) {
+
+	var category []Category
+
+	result := d.DB.Find(&category, "type = ?", category)
+
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return []domain.CategoryOutput{}, ErrorNotFound
+		}
+
+		return []domain.CategoryOutput{}, result.Error
+	}
+
+	var arr []domain.CategoryOutput
+
+	for _, value := range category {
+		categor := domain.CategoryOutput{
+			UserID:      value.UserID,
+			Name:        value.Name,
+			Limit:       value.Limit,
+			Type:        value.Type,
+			Description: value.Description,
+		}
+
+		arr = append(arr, categor)
+	}
+
+	return arr, nil
+
 }

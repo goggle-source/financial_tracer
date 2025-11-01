@@ -22,6 +22,7 @@ type Category struct {
 	Name         string `gorm:"size:60;not null;unique"`
 	UserID       uint
 	Limit        int           `gorm:"not null"`
+	Type         string        `gorm:"size:100"`
 	Description  string        `gorm:"size:100"`
 	Transactions []Transaction `gorm:"foreignKey:CategoryID"`
 }

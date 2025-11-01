@@ -2,6 +2,7 @@ package categoryHandlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/handlers/api"
@@ -16,15 +17,41 @@ type ServicCategoryer interface {
 	DeleteCategory(idCategory uint) error
 }
 
-type CategoryHandlers struct {
-	categor ServicCategoryer
-	log     *logrus.Logger
+type CreateCategoryServic interface {
+	CreateCategory(idUser uint, category domain.CategoryInput) (uint, error)
 }
 
-func CreateHandlersCategory(categ ServicCategoryer, log *logrus.Logger) *CategoryHandlers {
+type GetCategoryServic interface {
+	GetCategory(idCategory uint) (domain.CategoryOutput, error)
+}
+
+type UpdateCategoryServic interface {
+	UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error)
+}
+
+type DeleteCategoryServic interface {
+	DeleteCategory(idCategory uint) error
+}
+
+type CategoryHandlers struct {
+	c   CreateCategoryServic
+	g   GetCategoryServic
+	u   UpdateCategoryServic
+	d   DeleteCategoryServic
+	log *logrus.Logger
+}
+
+func CreateHandlersCategory(c CreateCategoryServic,
+	g GetCategoryServic,
+	u UpdateCategoryServic,
+	d DeleteCategoryServic,
+	log *logrus.Logger) *CategoryHandlers {
 	return &CategoryHandlers{
-		categor: categ,
-		log:     log,
+		c:   c,
+		g:   g,
+		u:   u,
+		d:   d,
+		log: log,
 	}
 }
 
@@ -76,10 +103,10 @@ func (h *CategoryHandlers) PostCategory(c *gin.Context) {
 		Description: newCategory.Description,
 	}
 
-	idCategory, err := h.categor.CreateCategory(idUser.(uint), cat)
+	idCategory, err := h.c.CreateCategory(idUser.(uint), cat)
 	if err != nil {
 		h.log.WithField("op", op).Error("error create category")
-		api.RegistrationError(c, op, err)
+		api.RegistrationError(c, err)
 		return
 	}
 	api.ResponseOK(c, idCategory)
@@ -92,7 +119,7 @@ func (h *CategoryHandlers) PostCategory(c *gin.Context) {
 //	@Tags			categories
 //	@Accept			json
 //	@Produce		json
-//	@Param			req	body		IDCategory								true	"userID для получение категории"
+//	@Param			id	path		int								true	"userID для получение категории"
 //	@Success		200	{object}	api.SuccessResponse[domain.Category]	"success"
 //
 //	@Failure		401	{object}	api.ErrorResponse[string]				"Ошибка авторизации"
@@ -108,20 +135,21 @@ func (h *CategoryHandlers) GetCategory(c *gin.Context) {
 	const op = "handlers.GetCategory"
 
 	c.Writer.Header().Set("content-type", "application/json")
-	id := IDCategory{}
-	if err := c.ShouldBindJSON(&id); err != nil {
+	param := c.Param("id")
+	id, err := strconv.Atoi(param)
+	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
-		}).Error("error valid JSON")
-		api.ResponseError(c, http.StatusBadRequest, "error valid JSON")
+		}).Error("error get id category")
+		api.ResponseError(c, http.StatusBadRequest, "invalid id")
 		return
 	}
 
-	category, err := h.categor.ReadCategory(id.CategoryId)
+	category, err := h.g.GetCategory(uint(id))
 	if err != nil {
 		h.log.WithField("op", op).Error("error get category")
-		api.RegistrationError(c, op, err)
+		api.RegistrationError(c, err)
 		return
 	}
 	api.ResponseOK(c, category)
@@ -167,10 +195,10 @@ func (h *CategoryHandlers) UpdateCategory(c *gin.Context) {
 		Description: updateCategory.Description,
 	}
 
-	category, err := h.categor.UpdateCategory(updateCategory.CategoryId, newCategory)
+	category, err := h.u.UpdateCategory(updateCategory.CategoryId, newCategory)
 	if err != nil {
 		h.log.WithField("op", op).Error("error update category")
-		api.RegistrationError(c, op, err)
+		api.RegistrationError(c, err)
 		return
 	}
 	api.ResponseOK(c, category)
@@ -200,20 +228,22 @@ func (h *CategoryHandlers) DeleteCategory(c *gin.Context) {
 	const op = "handlers.DeleteCategory"
 
 	c.Writer.Header().Set("content-type", "application/json")
-	categoryId := IDCategory{}
-	if err := c.ShouldBindJSON(&categoryId); err != nil {
+	param := c.Param("id")
+	id, err := strconv.Atoi(param)
+
+	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
-		}).Error("error valid JSON")
-		api.ResponseError(c, http.StatusBadRequest, "error valid JSON")
+		}).Error("error get id")
+		api.ResponseError(c, http.StatusBadRequest, "invalid id")
 		return
 	}
 
-	err := h.categor.DeleteCategory(categoryId.CategoryId)
+	err = h.d.DeleteCategory(uint(id))
 	if err != nil {
 		h.log.WithField("op", op).Error("error delete category")
-		api.RegistrationError(c, op, err)
+		api.RegistrationError(c, err)
 		return
 	}
 	api.ResponseOK(c, "user delete")

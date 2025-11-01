@@ -10,21 +10,33 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type ServicUserer interface {
-	ServerRegistrationUser(us domain.RegisterUser) (jwttoken.ResponseJWTUser, error)
-	ServerAuthenticationUser(us domain.AuthenticationUser) (jwttoken.ResponseJWTUser, error)
-	ServerDeleteUser(us domain.DeleteUser) error
+type RegistrationUserServic interface {
+	RegistrationUser(us domain.RegisterUser) (jwttoken.ResponseJWTUser, error)
+}
+
+type AuthenticationUserServic interface {
+	AuthenticationUser(us domain.AuthenticationUser) (jwttoken.ResponseJWTUser, error)
+}
+
+type DeleteUserServic interface {
+	DeleteUser(us domain.DeleteUser) error
 }
 
 type HandlersUser struct {
 	SecretKey string
-	users     ServicUserer
+	r         RegistrationUserServic
+	a         AuthenticationUserServic
+	d         DeleteUserServic
 	log       *logrus.Logger
 }
 
-func CreateHandlersUser(secretKey string, user ServicUserer, log *logrus.Logger) *HandlersUser {
+func CreateHandlersUser(secretKey string, r RegistrationUserServic,
+	a AuthenticationUserServic,
+	d DeleteUserServic, log *logrus.Logger) *HandlersUser {
 	return &HandlersUser{
-		users:     user,
+		d:         d,
+		a:         a,
+		r:         r,
 		log:       log,
 		SecretKey: secretKey,
 	}
@@ -66,13 +78,13 @@ func (h *HandlersUser) Registration(c *gin.Context) {
 		Password: req.Password,
 	}
 
-	tokens, err := h.users.ServerRegistrationUser(user)
+	tokens, err := h.r.RegistrationUser(user)
 	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
 		}).Error("error registration user")
-		api.RegistrationError(c, op, err)
+		api.RegistrationError(c, err)
 		return
 	}
 
@@ -117,13 +129,13 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 		Password: req.Password,
 	}
 
-	tokens, err := h.users.ServerAuthenticationUser(user)
+	tokens, err := h.a.AuthenticationUser(user)
 	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
 		}).Error("error authentication user")
-		api.RegistrationError(c, op, err)
+		api.RegistrationError(c, err)
 		return
 
 	}
@@ -171,13 +183,13 @@ func (h *HandlersUser) DeleteUser(c *gin.Context) {
 		Password: req.Password,
 	}
 
-	err := h.users.ServerDeleteUser(users)
+	err := h.d.DeleteUser(users)
 	if err != nil {
 		h.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
 		}).Error("error delete user")
-		api.RegistrationError(c, op, err)
+		api.RegistrationError(c, err)
 		return
 
 	}

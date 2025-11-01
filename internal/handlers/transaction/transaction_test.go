@@ -8,9 +8,11 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"strconv"
 	"testing"
 
 	"github.com/financial_tracer/internal/domain"
+	"github.com/financial_tracer/internal/servic/transaction"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
 	"github.com/sirupsen/logrus"
@@ -82,8 +84,8 @@ func TestCreateTransactionServic(t *testing.T) {
 			idUser:        3,
 			idCategory:    3,
 			idTransaction: 0,
-			mockErr:       errors.New("error not found"),
-			status:        http.StatusBadRequest,
+			mockErr:       transaction.ErrNoFound,
+			status:        http.StatusNotFound,
 			shouldCallDB:  true,
 		},
 		{
@@ -97,7 +99,7 @@ func TestCreateTransactionServic(t *testing.T) {
 			idUser:        1,
 			idCategory:    2,
 			idTransaction: 0,
-			mockErr:       errors.New("error not found"),
+			mockErr:       transaction.ErrLimit,
 			status:        http.StatusBadRequest,
 			shouldCallDB:  true,
 		},
@@ -121,7 +123,7 @@ func TestCreateTransactionServic(t *testing.T) {
 
 			repoMock.On("CreateTransactionServic", ts.idUser, ts.idCategory, tranInput).Return(ts.idTransaction, ts.mockErr)
 
-			handler := CreateTransactionHandlers(repoMock, log)
+			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log)
 
 			req := http.Request{
 				Header: make(http.Header),
@@ -151,7 +153,7 @@ func TestCreateTransactionServic(t *testing.T) {
 func TestGetTransaction(t *testing.T) {
 	type test struct {
 		name    string
-		req     RequestIdTransaction
+		req     uint
 		output  domain.TransactionOutput
 		mockErr error
 		status  int
@@ -161,20 +163,21 @@ func TestGetTransaction(t *testing.T) {
 	cases := []test{
 		{
 			name:    "success",
-			req:     RequestIdTransaction{IdTransaction: 10},
+			req:     10,
 			output:  domain.TransactionOutput{UserID: 1, CategoryID: 2, Name: "food", Count: 100, Description: "desc"},
 			mockErr: nil,
 			status:  http.StatusOK,
 		},
 		{
 			name:    "not found",
-			req:     RequestIdTransaction{IdTransaction: 99},
+			req:     99,
 			output:  domain.TransactionOutput{},
-			mockErr: errors.New("error not found"),
-			status:  http.StatusBadRequest,
+			mockErr: transaction.ErrNoFound,
+			status:  http.StatusNotFound,
 		},
 		{
-			name:    "invalid json",
+			name:    "invalid id",
+			req:     0,
 			invalid: true,
 			status:  http.StatusBadRequest,
 		},
@@ -190,26 +193,36 @@ func TestGetTransaction(t *testing.T) {
 			log := logrus.New()
 
 			if !tc.invalid {
-				repoMock.On("ReadTransactionServer", tc.req.IdTransaction).Return(tc.output, tc.mockErr)
+				repoMock.On("ReadTransactionServer", tc.req).Return(tc.output, tc.mockErr)
 			}
 
-			handler := CreateTransactionHandlers(repoMock, log)
+			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
-			if tc.invalid {
-				req.Body = ioutil.NopCloser(bytes.NewBufferString("{"))
-			} else {
-				body, _ := json.Marshal(tc.req)
-				req.Body = ioutil.NopCloser(bytes.NewBuffer(body))
-			}
+
+			body, _ := json.Marshal(tc.req)
+			req.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+
 			req.Header.Set("content-type", "application/json")
 			c.Request = &req
+			strID := strconv.Itoa(int(tc.req))
+
+			if tc.req == 0 {
+				strID = "asdas"
+			}
+
+			c.Params = gin.Params{
+				{
+					Key:   "id",
+					Value: strID,
+				},
+			}
 
 			handler.GetTransaction(c)
 			assert.Equal(t, tc.status, w.Code)
 
 			if !tc.invalid {
-				repoMock.AssertCalled(t, "ReadTransactionServer", tc.req.IdTransaction)
+				repoMock.AssertCalled(t, "ReadTransactionServer", tc.req)
 			}
 		})
 	}
@@ -237,8 +250,8 @@ func TestUpdateTransaction(t *testing.T) {
 			name:    "not found",
 			req:     RequestUpdateTransaction{IdTransaction: 77, Name: "taxi", Count: 200, Description: "city"},
 			output:  domain.TransactionOutput{},
-			mockErr: errors.New("error not found"),
-			status:  http.StatusBadRequest,
+			mockErr: transaction.ErrNoFound,
+			status:  http.StatusNotFound,
 		},
 		{
 			name:    "invalid json",
@@ -261,7 +274,7 @@ func TestUpdateTransaction(t *testing.T) {
 				repoMock.On("UpdateTransactionServer", tc.req.IdTransaction, input).Return(tc.output, tc.mockErr)
 			}
 
-			handler := CreateTransactionHandlers(repoMock, log)
+			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log)
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalid {
 				req.Body = ioutil.NopCloser(bytes.NewBufferString("{"))
@@ -286,7 +299,7 @@ func TestUpdateTransaction(t *testing.T) {
 func TestDeleteTransaction(t *testing.T) {
 	type test struct {
 		name    string
-		req     RequestIdTransaction
+		req     uint
 		mockErr error
 		status  int
 		invalid bool
@@ -295,20 +308,23 @@ func TestDeleteTransaction(t *testing.T) {
 	cases := []test{
 		{
 			name:    "success",
-			req:     RequestIdTransaction{IdTransaction: 5},
+			req:     5,
 			mockErr: nil,
 			status:  http.StatusOK,
+			invalid: false,
 		},
 		{
 			name:    "not found",
-			req:     RequestIdTransaction{IdTransaction: 55},
-			mockErr: errors.New("error not found"),
-			status:  http.StatusBadRequest,
+			req:     55,
+			mockErr: transaction.ErrNoFound,
+			status:  http.StatusNotFound,
+			invalid: false,
 		},
 		{
-			name:    "invalid json",
-			invalid: true,
+			name:    "invalid id",
+			req:     0,
 			status:  http.StatusBadRequest,
+			invalid: true,
 		},
 	}
 
@@ -322,25 +338,32 @@ func TestDeleteTransaction(t *testing.T) {
 			log := logrus.New()
 
 			if !tc.invalid {
-				repoMock.On("DeleteTransactionServer", tc.req.IdTransaction).Return(tc.mockErr)
+				repoMock.On("DeleteTransactionServer", tc.req).Return(tc.mockErr)
 			}
 
-			handler := CreateTransactionHandlers(repoMock, log)
+			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log)
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
-			if tc.invalid {
-				req.Body = ioutil.NopCloser(bytes.NewBufferString("{"))
-			} else {
-				body, _ := json.Marshal(tc.req)
-				req.Body = ioutil.NopCloser(bytes.NewBuffer(body))
-			}
+
 			req.Header.Set("content-type", "application/json")
 			c.Request = &req
+			strID := strconv.Itoa(int(tc.req))
+
+			if tc.req == 0 {
+				strID = "asdas"
+			}
+
+			c.Params = gin.Params{
+				{
+					Key:   "id",
+					Value: strID,
+				},
+			}
 
 			handler.DeleteTransaction(c)
 			assert.Equal(t, tc.status, w.Code)
 
 			if !tc.invalid {
-				repoMock.AssertCalled(t, "DeleteTransactionServer", tc.req.IdTransaction)
+				repoMock.AssertCalled(t, "DeleteTransactionServer", tc.req)
 			}
 		})
 	}

@@ -2,6 +2,7 @@ package transactionHandlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/handlers/api"
@@ -9,22 +10,41 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type ServicTransactier interface {
-	CreateTransactionServic(idUser uint, idCategory uint, tran domain.TransactionInput) (uint, error)
-	ReadTransactionServer(idTransaction uint) (domain.TransactionOutput, error)
-	UpdateTransactionServer(idTransaction uint, newTransaction domain.TransactionInput) (domain.TransactionOutput, error)
-	DeleteTransactionServer(idTransaction uint) error
+type CreateTransactionServic interface {
+	CreateTransaction(idUser uint, idCategory uint, tran domain.TransactionInput) (uint, error)
+}
+
+type GetTransactionServic interface {
+	GetTransaction(idTransaction uint) (domain.TransactionOutput, error)
+}
+
+type UpdateTransactionServic interface {
+	UpdateTransaction(idTransaction uint, newTransaction domain.TransactionInput) (domain.TransactionOutput, error)
+}
+
+type DeleteTransactionServic interface {
+	DeleteTransaction(idTransaction uint) error
 }
 
 type TransactionHandlers struct {
-	transaction ServicTransactier
-	log         *logrus.Logger
+	c   CreateTransactionServic
+	g   GetTransactionServic
+	u   UpdateTransactionServic
+	d   DeleteTransactionServic
+	log *logrus.Logger
 }
 
-func CreateTransactionHandlers(s ServicTransactier, log *logrus.Logger) *TransactionHandlers {
+func CreateTransactionHandlers(c CreateTransactionServic,
+	g GetTransactionServic,
+	u UpdateTransactionServic,
+	d DeleteTransactionServic,
+	log *logrus.Logger) *TransactionHandlers {
 	return &TransactionHandlers{
-		transaction: s,
-		log:         log,
+		c:   c,
+		d:   d,
+		g:   g,
+		u:   u,
+		log: log,
 	}
 }
 
@@ -71,13 +91,13 @@ func (th *TransactionHandlers) PostTransaction(c *gin.Context) {
 		Description: transaction.Description,
 	}
 
-	id, err := th.transaction.CreateTransactionServic(idUser.(uint), transaction.IdCategory, newTransaction)
+	id, err := th.c.CreateTransaction(idUser.(uint), transaction.IdCategory, newTransaction)
 	if err != nil {
 		th.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
 		}).Error("error create transaction")
-		api.RegistrationError(c, op, err)
+		api.RegistrationError(c, err)
 		return
 	}
 	api.ResponseOK(c, id)
@@ -90,7 +110,7 @@ func (th *TransactionHandlers) PostTransaction(c *gin.Context) {
 //	@Tags			transaction
 //	@Accept			json
 //	@Produce		json
-//	@Param			req	body		RequestIdTransaction					true	"id транзакции"
+//	@Param			id	path		int										true	"id транзакции"
 //	@Success		200	{object}	api.SuccessResponse[domain.Transaction]	"good"
 //
 //	@Failure		401	{object}	api.ErrorResponse[string]				"Ошибка авторизации"
@@ -104,24 +124,26 @@ func (th *TransactionHandlers) PostTransaction(c *gin.Context) {
 //	@Security		jwtAuth
 func (th *TransactionHandlers) GetTransaction(c *gin.Context) {
 	const op = "handlers.GetTransaction"
-	var id RequestIdTransaction
 
-	if err := c.ShouldBindJSON(&id); err != nil {
+	idParam := c.Param("id")
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
 		th.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
-		}).Error("error valid JSON")
-		api.ResponseError(c, http.StatusBadRequest, "error valid JSON")
+		}).Error("invalid convert string in int", err)
+		api.ResponseError(c, http.StatusBadRequest, "invalid id")
 		return
 	}
 
-	transaction, err := th.transaction.ReadTransactionServer(id.IdTransaction)
+	transaction, err := th.g.GetTransaction(uint(id))
 	if err != nil {
 		th.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
 		}).Error("error get transaction")
-		api.RegistrationError(c, op, err)
+		api.RegistrationError(c, err)
 		return
 	}
 
@@ -165,13 +187,13 @@ func (th *TransactionHandlers) UpdateTransaction(c *gin.Context) {
 		Description: transaction.Description,
 	}
 
-	newTransaction, err := th.transaction.UpdateTransactionServer(transaction.IdTransaction, tran)
+	newTransaction, err := th.u.UpdateTransaction(transaction.IdTransaction, tran)
 	if err != nil {
 		th.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
 		}).Error("error update transaction")
-		api.RegistrationError(c, op, err)
+		api.RegistrationError(c, err)
 		return
 	}
 
@@ -199,24 +221,26 @@ func (th *TransactionHandlers) UpdateTransaction(c *gin.Context) {
 //	@Security		jwtAuth
 func (th *TransactionHandlers) DeleteTransaction(c *gin.Context) {
 	const op = "handlers.DeleteTransaction"
-	var id RequestIdTransaction
+	idParam := c.Param("id")
 
-	if err := c.ShouldBindJSON(&id); err != nil {
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
 		th.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
-		}).Error("error valid JSON")
-		api.ResponseError(c, http.StatusBadRequest, "error valid JSON")
+		}).Error("invalid convert string in int", err)
+		api.ResponseError(c, http.StatusBadRequest, "invalid id")
 		return
 	}
 
-	err := th.transaction.DeleteTransactionServer(id.IdTransaction)
+	err = th.d.DeleteTransaction(uint(id))
+
 	if err != nil {
 		th.log.WithFields(logrus.Fields{
 			"op":  op,
 			"err": err,
 		}).Error("error delete transaction")
-		api.RegistrationError(c, op, err)
+		api.RegistrationError(c, err)
 		return
 	}
 

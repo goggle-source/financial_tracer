@@ -104,8 +104,8 @@ func TestCreateTransactionServic(t *testing.T) {
 				Return(test.idTransaction, test.repoErr)
 			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock, log)
-			id, err := server.CreateTransactionServic(test.idUser, test.idCategory, test.tran)
+			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log)
+			id, err := server.CreateTransaction(test.idUser, test.idCategory, test.tran)
 
 			if test.repoErr != nil || test.tranErr != nil {
 				assert.Error(t, err)
@@ -187,8 +187,8 @@ func TestReadTransactionServer(t *testing.T) {
 			repoMock.On("GetTransaction", ts.idTransaction).Return(ts.tran, ts.tranErr)
 			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock, log)
-			tran, err := server.ReadTransactionServer(ts.idTransaction)
+			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log)
+			tran, err := server.GetTransaction(ts.idTransaction)
 			if ts.tranErr != nil || ts.svcErr != nil {
 				assert.Error(t, err)
 				if !errors.Is(err, ts.svcErr) {
@@ -270,8 +270,8 @@ func TestUpdateTransactionServer(t *testing.T) {
 			repoMock.On("UpdateTransaction", test.idTransaction, test.tranInput).Return(test.tranOutput, test.tranErr)
 			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock, log)
-			tranOutput, err := server.UpdateTransactionServer(test.idTransaction, test.tranInput)
+			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log)
+			tranOutput, err := server.UpdateTransaction(test.idTransaction, test.tranInput)
 
 			if test.tranErr != nil || test.svcErr != nil {
 				assert.Error(t, err)
@@ -331,8 +331,8 @@ func TestDeleteTransactionServer(t *testing.T) {
 			repoMock.On("DeleteTransaction", ts.idTransaction).Return(ts.tranErr)
 			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock, log)
-			err := server.DeleteTransactionServer(ts.idTransaction)
+			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log)
+			err := server.DeleteTransaction(ts.idTransaction)
 			if ts.tranErr != nil || ts.svcErr != nil {
 				assert.Error(t, err)
 				if !errors.Is(err, ts.svcErr) {

@@ -26,6 +26,7 @@ type User struct {
 type CategoryInput struct {
 	Name        string `json:"name" validate:"required,max=60,min=3"`
 	Limit       int    `json:"limit" validate:"required"`
+	Type        string `json:"type" validate:"max=100"`
 	Description string `json:"description" validate:"max=100"`
 }
 
@@ -33,6 +34,7 @@ type CategoryOutput struct {
 	UserID      uint
 	Name        string `json:"name"`
 	Limit       int    `json:"limit"`
+	Type        string `json:"type"`
 	Description string `json:"description"`
 }
 

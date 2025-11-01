@@ -10,31 +10,51 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type DatabaseTransactionRepository interface {
+type CreateTransactionRepository interface {
 	CreateTransaction(idUser uint, idCategory uint, tran domain.TransactionInput) (uint, error)
+}
+
+type GetTransactionRepository interface {
 	GetTransaction(TransactionId uint) (domain.TransactionOutput, error)
+}
+
+type UpdateTransactionRepository interface {
 	UpdateTransaction(transactionId uint, newTransaction domain.TransactionInput) (domain.TransactionOutput, error)
+}
+
+type DeleteTransactionRepository interface {
 	DeleteTransaction(transactionId uint) error
 }
 
 type TransactionServer struct {
-	d   DatabaseTransactionRepository
+	d   DeleteTransactionRepository
+	c   CreateTransactionRepository
+	g   GetTransactionRepository
+	u   UpdateTransactionRepository
 	log *logrus.Logger
 }
 
-func CreateTransactionServer(d DatabaseTransactionRepository, log *logrus.Logger) *TransactionServer {
+func CreateTransactionServer(d DeleteTransactionRepository,
+	c CreateTransactionRepository,
+	g GetTransactionRepository,
+	u UpdateTransactionRepository,
+	log *logrus.Logger) *TransactionServer {
+
 	return &TransactionServer{
 		d:   d,
+		g:   g,
+		c:   c,
+		u:   u,
 		log: log,
 	}
 }
 
-func (ts *TransactionServer) CreateTransactionServic(idUser uint, idCategory uint, tran domain.TransactionInput) (uint, error) {
+func (ts *TransactionServer) CreateTransaction(idUser uint, idCategory uint, tran domain.TransactionInput) (uint, error) {
 	const op = "transaction.CreateTransactionServic"
 
 	log := ts.log.WithFields(logrus.Fields{
-		"op":      op,
-		"user_id": idUser,
+		"op":          op,
+		"user_id":     idUser,
 		"category_id": idCategory,
 	})
 
@@ -46,7 +66,7 @@ func (ts *TransactionServer) CreateTransactionServic(idUser uint, idCategory uin
 		return 0, fmt.Errorf("%s error validate: %w", op, err)
 	}
 
-	id, err := ts.d.CreateTransaction(idUser, idCategory, tran)
+	id, err := ts.c.CreateTransaction(idUser, idCategory, tran)
 	if err != nil {
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("error create transaction")
@@ -65,8 +85,8 @@ func (ts *TransactionServer) CreateTransactionServic(idUser uint, idCategory uin
 	return id, nil
 }
 
-func (ts *TransactionServer) ReadTransactionServer(idTransaction uint) (domain.TransactionOutput, error) {
-	const op = "transaction.ReadTransactionServer"
+func (ts *TransactionServer) GetTransaction(idTransaction uint) (domain.TransactionOutput, error) {
+	const op = "transaction.GetTransactionServer"
 	log := ts.log.WithFields(logrus.Fields{
 		"op":             op,
 		"transaction_id": idTransaction,
@@ -74,7 +94,7 @@ func (ts *TransactionServer) ReadTransactionServer(idTransaction uint) (domain.T
 
 	log.Info("start read transaction")
 
-	transaction, err := ts.d.GetTransaction(idTransaction)
+	transaction, err := ts.g.GetTransaction(idTransaction)
 	if err != nil {
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("error get transaction")
@@ -86,12 +106,12 @@ func (ts *TransactionServer) ReadTransactionServer(idTransaction uint) (domain.T
 		return domain.TransactionOutput{}, fmt.Errorf("%s error get transaction: %w", op, ErrDatabase)
 	}
 
-	log.Info("success read transaction")
+	log.Info("success get transaction")
 
 	return transaction, nil
 }
 
-func (ts *TransactionServer) UpdateTransactionServer(idTransaction uint, newTransaction domain.TransactionInput) (domain.TransactionOutput, error) {
+func (ts *TransactionServer) UpdateTransaction(idTransaction uint, newTransaction domain.TransactionInput) (domain.TransactionOutput, error) {
 	const op = "transaction.UpdateTransactionServer"
 
 	log := ts.log.WithFields(logrus.Fields{
@@ -107,7 +127,7 @@ func (ts *TransactionServer) UpdateTransactionServer(idTransaction uint, newTran
 		return domain.TransactionOutput{}, fmt.Errorf("%s invalid validate: %w", op, err)
 	}
 
-	transaction, err := ts.d.UpdateTransaction(idTransaction, newTransaction)
+	transaction, err := ts.u.UpdateTransaction(idTransaction, newTransaction)
 	if err != nil {
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("transaction is not found")
@@ -123,7 +143,7 @@ func (ts *TransactionServer) UpdateTransactionServer(idTransaction uint, newTran
 	return transaction, nil
 }
 
-func (ts *TransactionServer) DeleteTransactionServer(idTransaction uint) error {
+func (ts *TransactionServer) DeleteTransaction(idTransaction uint) error {
 	const op = "transaction.DeleteTransactionServer"
 
 	log := ts.log.WithFields(logrus.Fields{

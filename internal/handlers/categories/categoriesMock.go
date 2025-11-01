@@ -13,7 +13,7 @@ func (m *categoryServiceMock) CreateCategory(idUser uint, category domain.Catego
 	args := m.Called(idUser, category)
 	return args.Get(0).(uint), args.Error(1)
 }
-func (m *categoryServiceMock) ReadCategory(idCategory uint) (domain.CategoryOutput, error) {
+func (m *categoryServiceMock) GetCategory(idCategory uint) (domain.CategoryOutput, error) {
 	args := m.Called(idCategory)
 	return args.Get(0).(domain.CategoryOutput), args.Error(1)
 }

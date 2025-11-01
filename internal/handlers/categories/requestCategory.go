@@ -7,11 +7,6 @@ type RequestCreateCategory struct {
 	Description string `json:"description" binding:"required"`
 }
 
-// IDCategory represents GetIdCategory category request
-type IDCategory struct {
-	CategoryId uint `json:"category_id"`
-}
-
 // ResponseUpdateCategory represents UpdateCategory
 type RequestUpdateCategory struct {
 	Name        string `json:"name" binding:"required"`

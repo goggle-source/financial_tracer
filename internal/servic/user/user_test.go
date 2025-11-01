@@ -81,8 +81,8 @@ func TestServerRegistrationUser(t *testing.T) {
 
 			repoMock.On("RegistrationUser", mock.AnythingOfType("domain.User")).Return(test.userID, test.user.Name, test.mokuErr)
 
-			server := CreateUserServer(repoMock, "secret", log)
-			tokens, err := server.ServerRegistrationUser(test.user)
+			server := CreateUserServer(repoMock, repoMock, repoMock, "secret", log)
+			tokens, err := server.RegistrationUser(test.user)
 
 			if test.mokuErr != nil || test.userErr != nil {
 				assert.Error(t, err)
@@ -180,8 +180,8 @@ func TestServerAuthenticationUser(t *testing.T) {
 			repoMock.On("AuthenticationUser", ts.inputUser.Email, ts.inputUser.Password).
 				Return(ts.userID, ts.nameUser, ts.mokuErr)
 
-			server := CreateUserServer(repoMock, "secret", log)
-			tokens, err := server.ServerAuthenticationUser(ts.inputUser)
+			server := CreateUserServer(repoMock, repoMock, repoMock, "secret", log)
+			tokens, err := server.AuthenticationUser(ts.inputUser)
 
 			if ts.mokuErr != nil || ts.userErr != nil {
 				assert.Error(t, err)
@@ -268,8 +268,8 @@ func TestServerDeleteUser(t *testing.T) {
 
 			repoMock.On("DeleteUser", ts.user.Email, ts.user.Password).Return(ts.mockErr)
 
-			server := CreateUserServer(repoMock, "secret", log)
-			err := server.ServerDeleteUser(ts.user)
+			server := CreateUserServer(repoMock, repoMock, repoMock, "secret", log)
+			err := server.DeleteUser(ts.user)
 
 			if ts.mockErr != nil || ts.userErr != nil {
 				assert.Error(t, err)

@@ -8,9 +8,11 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"strconv"
 	"testing"
 
 	"github.com/financial_tracer/internal/domain"
+	"github.com/financial_tracer/internal/servic/category"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
 	"github.com/sirupsen/logrus"
@@ -82,7 +84,7 @@ func TestPostCategory(t *testing.T) {
 			log := logrus.New()
 
 			svc.On("CreateCategory", tc.userID, tc.body).Return(tc.categoryID, tc.mockErr)
-			h := CreateHandlersCategory(svc, log)
+			h := CreateHandlersCategory(svc, svc, svc, svc, log)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalidJSON {
@@ -108,30 +110,28 @@ func TestGetCategory(t *testing.T) {
 
 	tests := []struct {
 		name         string
-		req          IDCategory
+		req          uint
 		output       domain.CategoryOutput
 		mockErr      error
 		status       int
-		invalidJSON  bool
 		shouldCallDB bool
 	}{
 		{
 			name:         "success",
-			req:          IDCategory{CategoryId: 5},
+			req:          5,
 			output:       domain.CategoryOutput{UserID: 1, Name: "food", Limit: 1000, Description: "desc"},
 			status:       http.StatusOK,
 			shouldCallDB: true,
 		},
 		{
 			name:         "not found",
-			req:          IDCategory{CategoryId: 55},
-			mockErr:      errors.New("error not found"),
-			status:       http.StatusBadRequest,
+			req:          5,
+			mockErr:      category.ErrNoFound,
+			status:       http.StatusNotFound,
 			shouldCallDB: true,
 		},
 		{
 			name:         "invalid json",
-			invalidJSON:  true,
 			status:       http.StatusBadRequest,
 			shouldCallDB: false,
 		},
@@ -144,23 +144,37 @@ func TestGetCategory(t *testing.T) {
 
 			svc := new(categoryServiceMock)
 			log := logrus.New()
-			svc.On("ReadCategory", tc.req.CategoryId).Return(tc.output, tc.mockErr)
-			h := CreateHandlersCategory(svc, log)
+			if tc.shouldCallDB {
+				svc.On("GetCategory", tc.req).Return(tc.output, tc.mockErr)
+			}
+
+			h := CreateHandlersCategory(svc, svc, svc, svc, log)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
-			if tc.invalidJSON {
-				req.Body = ioutil.NopCloser(bytes.NewBufferString("{"))
-			} else {
-				b, _ := json.Marshal(tc.req)
-				req.Body = ioutil.NopCloser(bytes.NewBuffer(b))
-			}
+
+			b, _ := json.Marshal(tc.req)
+			req.Body = ioutil.NopCloser(bytes.NewBuffer(b))
+
 			req.Header.Set("content-type", "application/json")
 			c.Request = &req
+			var strID string
+
+			if tc.req == 0 {
+				strID = "adsa"
+			} else {
+				strID = strconv.Itoa(int(tc.req))
+			}
+			c.Params = gin.Params{
+				{
+					Key:   "id",
+					Value: strID,
+				},
+			}
 
 			h.GetCategory(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "ReadCategory", tc.req.CategoryId)
+				svc.AssertCalled(t, "GetCategory", tc.req)
 			}
 		})
 	}
@@ -188,8 +202,8 @@ func TestUpdateCategory(t *testing.T) {
 		{
 			name:         "not found",
 			req:          RequestUpdateCategory{Name: "new", Limit: 200, Description: "d", CategoryId: 77},
-			mockErr:      errors.New("error not found"),
-			status:       http.StatusBadRequest,
+			mockErr:      category.ErrNoFound,
+			status:       http.StatusNotFound,
 			shouldCallDB: true,
 		},
 		{
@@ -210,7 +224,7 @@ func TestUpdateCategory(t *testing.T) {
 			input := domain.CategoryInput{Name: tc.req.Name, Limit: tc.req.Limit, Description: tc.req.Description}
 
 			svc.On("UpdateCategory", tc.req.CategoryId, input).Return(tc.output, tc.mockErr)
-			h := CreateHandlersCategory(svc, log)
+			h := CreateHandlersCategory(svc, svc, svc, svc, log)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalidJSON {
@@ -236,28 +250,27 @@ func TestDeleteCategory(t *testing.T) {
 
 	tests := []struct {
 		name         string
-		req          IDCategory
+		req          uint
 		mockErr      error
 		status       int
-		invalidJSON  bool
 		shouldCallDB bool
 	}{
 		{
 			name:         "success",
-			req:          IDCategory{CategoryId: 5},
+			req:          5,
 			status:       http.StatusOK,
 			shouldCallDB: true,
 		},
 		{
 			name:         "not found",
-			req:          IDCategory{CategoryId: 55},
-			mockErr:      errors.New("error not found"),
-			status:       http.StatusBadRequest,
+			req:          55,
+			mockErr:      category.ErrNoFound,
+			status:       http.StatusNotFound,
 			shouldCallDB: true,
 		},
 		{
-			name:         "invalid json",
-			invalidJSON:  true,
+			name:         "invalid id",
+			req:          0,
 			status:       http.StatusBadRequest,
 			shouldCallDB: false,
 		},
@@ -270,23 +283,37 @@ func TestDeleteCategory(t *testing.T) {
 
 			svc := new(categoryServiceMock)
 			log := logrus.New()
-			svc.On("DeleteCategory", tc.req.CategoryId).Return(tc.mockErr)
-			h := CreateHandlersCategory(svc, log)
+			if tc.shouldCallDB {
+				svc.On("DeleteCategory", tc.req).Return(tc.mockErr)
+			}
+
+			h := CreateHandlersCategory(svc, svc, svc, svc, log)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
-			if tc.invalidJSON {
-				req.Body = ioutil.NopCloser(bytes.NewBufferString("{"))
-			} else {
-				b, _ := json.Marshal(tc.req)
-				req.Body = ioutil.NopCloser(bytes.NewBuffer(b))
-			}
+
+			b, _ := json.Marshal(tc.req)
+			req.Body = ioutil.NopCloser(bytes.NewBuffer(b))
+
 			req.Header.Set("content-type", "application/json")
 			c.Request = &req
+			var strID string
+			if tc.req == 0 {
+				strID = "asdad"
+			} else {
+				strID = strconv.Itoa(int(tc.req))
+			}
+
+			c.Params = gin.Params{
+				{
+					Key:   "id",
+					Value: strID,
+				},
+			}
 
 			h.DeleteCategory(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "DeleteCategory", tc.req.CategoryId)
+				svc.AssertCalled(t, "DeleteCategory", tc.req)
 			}
 		})
 	}

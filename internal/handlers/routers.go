@@ -62,9 +62,9 @@ func Router(users *userHandlers.HandlersUser, category *categoryHandlers.Categor
 	go transaction.Use(middlewares.JWToken(secretKey, log))
 	{
 		go transaction.POST("/create", tran.PostTransaction)
-		go transaction.GET("/get", tran.GetTransaction)
+		go transaction.GET("/get/{id}", tran.GetTransaction)
 		go transaction.PUT("/update", tran.UpdateTransaction)
-		go transaction.DELETE("/delete", tran.DeleteTransaction)
+		go transaction.DELETE("/delete/{id}", tran.DeleteTransaction)
 	}
 
 	return r

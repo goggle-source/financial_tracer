@@ -12,9 +12,15 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type DatabaseUserRepository interface {
+type RegistrationuserRepository interface {
 	RegistrationUser(user domain.User) (uint, string, error)
+}
+
+type DeleteUserRepository interface {
 	DeleteUser(email string, password string) error
+}
+
+type AuthenticationUserRepository interface {
 	AuthenticationUser(email string, password string) (uint, string, error)
 }
 
@@ -24,19 +30,23 @@ type UserValid struct {
 
 type UserServer struct {
 	log       *logrus.Logger
-	d         DatabaseUserRepository
+	r         RegistrationuserRepository
+	d         DeleteUserRepository
+	a         AuthenticationUserRepository
 	SecretKey string
 }
 
-func CreateUserServer(d DatabaseUserRepository, sk string, log *logrus.Logger) *UserServer {
+func CreateUserServer(r RegistrationuserRepository, d DeleteUserRepository, a AuthenticationUserRepository, sk string, log *logrus.Logger) *UserServer {
 	return &UserServer{
 		log:       log,
 		d:         d,
+		r:         r,
+		a:         a,
 		SecretKey: sk,
 	}
 }
 
-func (c *UserServer) ServerRegistrationUser(us domain.RegisterUser) (jwttoken.ResponseJWTUser, error) {
+func (c *UserServer) RegistrationUser(us domain.RegisterUser) (jwttoken.ResponseJWTUser, error) {
 	const op = "user.ServerRegistrationUser"
 
 	log := c.log.WithField("op", op)
@@ -62,7 +72,7 @@ func (c *UserServer) ServerRegistrationUser(us domain.RegisterUser) (jwttoken.Re
 		PasswordHash: passwordHash,
 	}
 
-	id, name, err := c.d.RegistrationUser(user)
+	id, name, err := c.r.RegistrationUser(user)
 	if err != nil {
 		if errors.Is(err, postgresql.ErrorDuplicated) {
 			log.WithField("err", err).Error("field duplicated")
@@ -84,7 +94,7 @@ func (c *UserServer) ServerRegistrationUser(us domain.RegisterUser) (jwttoken.Re
 	return tokens, nil
 }
 
-func (c *UserServer) ServerAuthenticationUser(us domain.AuthenticationUser) (jwttoken.ResponseJWTUser, error) {
+func (c *UserServer) AuthenticationUser(us domain.AuthenticationUser) (jwttoken.ResponseJWTUser, error) {
 	const op = "user.ServerAuthenticationUser"
 
 	log := c.log.WithField("op", op)
@@ -97,7 +107,7 @@ func (c *UserServer) ServerAuthenticationUser(us domain.AuthenticationUser) (jwt
 		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s invalid validate: %w", op, err)
 	}
 
-	id, name, err := c.d.AuthenticationUser(us.Email, us.Password)
+	id, name, err := c.a.AuthenticationUser(us.Email, us.Password)
 	if err != nil {
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("not found")
@@ -120,7 +130,7 @@ func (c *UserServer) ServerAuthenticationUser(us domain.AuthenticationUser) (jwt
 	return token, nil
 }
 
-func (c *UserServer) ServerDeleteUser(us domain.DeleteUser) error {
+func (c *UserServer) DeleteUser(us domain.DeleteUser) error {
 	const op = "user.ServerDeleteUser"
 
 	log := c.log.WithField("op", op)

@@ -3,7 +3,6 @@ package userHandlers
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -11,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/financial_tracer/internal/domain"
-	"github.com/financial_tracer/internal/infastructure/db/postgresql"
+	"github.com/financial_tracer/internal/servic/user"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
 	"github.com/sirupsen/logrus"
@@ -54,7 +53,7 @@ func TestRegistration(t *testing.T) {
 			userID:       0,
 			userName:     "",
 			status:       http.StatusBadRequest,
-			mockErr:      postgresql.ErrorDuplicated,
+			mockErr:      user.ErrDuplicated,
 			shouldCallDB: true,
 		},
 		{
@@ -74,7 +73,7 @@ func TestRegistration(t *testing.T) {
 			userID:       0,
 			userName:     "",
 			status:       http.StatusInternalServerError,
-			mockErr:      errors.New("error database"),
+			mockErr:      user.ErrServic,
 			shouldCallDB: true,
 		},
 	}
@@ -87,9 +86,9 @@ func TestRegistration(t *testing.T) {
 			svc := new(userServiceMock)
 			log := logrus.New()
 
-			svc.On("ServerRegistrationUser", tc.user).Return(tc.userID, tc.userName, tc.mockErr)
+			svc.On("RegistrationUser", tc.user).Return(tc.userID, tc.mockErr)
 
-			h := CreateHandlersUser("secret", svc, log)
+			h := CreateHandlersUser("secret", svc, svc, svc, log)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalidJSON {
@@ -104,7 +103,7 @@ func TestRegistration(t *testing.T) {
 			h.Registration(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "ServerRegistrationUser", tc.user)
+				svc.AssertCalled(t, "RegistrationUser", tc.user)
 			}
 		})
 	}
@@ -140,8 +139,8 @@ func TestAuthentication(t *testing.T) {
 			user:         domain.AuthenticationUser{Email: "missing@example.com", Password: "x"},
 			userID:       0,
 			userName:     "",
-			status:       http.StatusBadRequest,
-			mockErr:      postgresql.ErrorNotFound,
+			status:       http.StatusNotFound,
+			mockErr:      user.ErrNoFound,
 			shouldCallDB: true,
 		},
 		{
@@ -160,9 +159,9 @@ func TestAuthentication(t *testing.T) {
 			svc := new(userServiceMock)
 			log := logrus.New()
 
-			svc.On("ServerAuthenticationUser", tc.user).Return(tc.userID, tc.userName, tc.mockErr)
+			svc.On("AuthenticationUser", tc.user).Return(tc.userID, tc.userName, tc.mockErr)
 
-			h := CreateHandlersUser("secret", svc, log)
+			h := CreateHandlersUser("secret", svc, svc, svc, log)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalidJSON {
@@ -177,7 +176,7 @@ func TestAuthentication(t *testing.T) {
 			h.Authentication(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "ServerAuthenticationUser", tc.user)
+				svc.AssertCalled(t, "AuthenticationUser", tc.user)
 			}
 		})
 	}
@@ -207,8 +206,8 @@ func TestDeleteUser(t *testing.T) {
 			name:         "not found",
 			body:         UserRequest{Email: "missing@example.com", Password: "x"},
 			user:         domain.DeleteUser{Email: "missing@example.com", Password: "x"},
-			mockErr:      postgresql.ErrorNotFound,
-			status:       http.StatusBadRequest,
+			mockErr:      user.ErrNoFound,
+			status:       http.StatusNotFound,
 			shouldCallDB: true,
 		},
 		{
@@ -227,9 +226,9 @@ func TestDeleteUser(t *testing.T) {
 			svc := new(userServiceMock)
 			log := logrus.New()
 
-			svc.On("ServerDeleteUser", tc.user).Return(tc.mockErr)
+			svc.On("DeleteUser", tc.user).Return(tc.mockErr)
 
-			h := CreateHandlersUser("secret", svc, log)
+			h := CreateHandlersUser("secret", svc, svc, svc, log)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalidJSON {
@@ -244,7 +243,7 @@ func TestDeleteUser(t *testing.T) {
 			h.DeleteUser(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "ServerDeleteUser", tc.user)
+				svc.AssertCalled(t, "DeleteUser", tc.user)
 			}
 		})
 	}
@@ -256,7 +255,7 @@ func TestGetAccessToken(t *testing.T) {
 	c, _ := gin.CreateTestContext(w)
 
 	log := logrus.New()
-	h := CreateHandlersUser("secret", nil, log)
+	h := CreateHandlersUser("secret", nil, nil, nil, log)
 
 	// invalid json
 	req := http.Request{Header: make(http.Header), URL: &url.URL{}}

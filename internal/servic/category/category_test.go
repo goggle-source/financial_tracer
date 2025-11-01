@@ -28,9 +28,10 @@ func TestCreateCategory(t *testing.T) {
 			Name:   "success",
 			userID: 1,
 			category: domain.CategoryInput{
-				Name:        "food",
+				Name:        "chicken",
 				Limit:       10000,
-				Description: "траты на еду",
+				Type:        "траты на еду",
+				Description: "сходил в ресторан",
 			},
 			categoryID:   2,
 			mockErr:      nil,
@@ -82,11 +83,11 @@ func TestCreateCategory(t *testing.T) {
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
 
-			repoMock.On("CreateCategoryDatabase", test.userID, test.category).Return(test.categoryID, test.mockErr)
+			repoMock.On("CreateCategory", test.userID, test.category).Return(test.categoryID, test.mockErr)
 
 			log := logrus.New()
 
-			servic := CreateCategoryServer(repoMock, log)
+			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log)
 			resultID, err := servic.CreateCategory(test.userID, test.category)
 
 			if test.mockErr != nil || test.categoryErr != nil {
@@ -104,13 +105,13 @@ func TestCreateCategory(t *testing.T) {
 				assert.Equal(t, test.categoryID, resultID)
 			}
 			if test.shouldCallDB {
-				repoMock.AssertCalled(t, "CreateCategoryDatabase", test.userID, test.category)
+				repoMock.AssertCalled(t, "CreateCategory", test.userID, test.category)
 			}
 		})
 	}
 }
 
-func TestReadCategory(t *testing.T) {
+func TestGetCategory(t *testing.T) {
 
 	type tests struct {
 		Name        string
@@ -146,23 +147,24 @@ func TestReadCategory(t *testing.T) {
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
 
-			repoMock.On("ReadCategoryDatabase", test.categoryID).Return(test.category, test.mockErr)
+			repoMock.On("GetCategory", test.categoryID).Return(test.category, test.mockErr)
 
 			log := logrus.New()
 
-			servic := CreateCategoryServer(repoMock, log)
-			resultCategory, err := servic.ReadCategory(test.categoryID)
+			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log)
+			resultCategory, err := servic.GetCategory(test.categoryID)
 
-			if test.mockErr != nil || test.categoryErr != nil {
+			if test.categoryErr != nil {
 				assert.Error(t, err)
 				if !errors.Is(err, test.categoryErr) {
 					t.Fatalf("err != test.categorErr: %v", err)
 				}
+
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, test.category, resultCategory)
 			}
-			repoMock.AssertCalled(t, "ReadCategoryDatabase", test.categoryID)
+			repoMock.AssertCalled(t, "GetCategory", test.categoryID)
 			repoMock.AssertExpectations(t)
 		})
 	}
@@ -244,11 +246,11 @@ func TestUpdateCategory(t *testing.T) {
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
 
-			repoMock.On("UpdateCategoryDatabase", test.categoryID, test.newCategory).Return(test.category, test.mockErr)
+			repoMock.On("UpdateCategory", test.categoryID, test.newCategory).Return(test.category, test.mockErr)
 
 			log := logrus.New()
 
-			servic := CreateCategoryServer(repoMock, log)
+			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log)
 			_, err := servic.UpdateCategory(test.categoryID, test.newCategory)
 
 			if test.mockErr != nil || test.categoryErr != nil {
@@ -266,7 +268,7 @@ func TestUpdateCategory(t *testing.T) {
 			}
 
 			if test.shouldCallDB {
-				repoMock.AssertCalled(t, "UpdateCategoryDatabase", test.categoryID, test.newCategory)
+				repoMock.AssertCalled(t, "UpdateCategory", test.categoryID, test.newCategory)
 			}
 		})
 	}
@@ -299,10 +301,10 @@ func TestDeleteCategoryDatabase(t *testing.T) {
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
 
-			repoMock.On("DeleteCategoryDatabase", test.categoryID).Return(test.mockErr)
+			repoMock.On("DeleteCategory", test.categoryID).Return(test.mockErr)
 			log := logrus.New()
 
-			servic := CreateCategoryServer(repoMock, log)
+			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log)
 			err := servic.DeleteCategory(test.categoryID)
 
 			if test.mockErr != nil || test.categoryErr != nil {
@@ -313,8 +315,99 @@ func TestDeleteCategoryDatabase(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 			}
-			repoMock.AssertCalled(t, "DeleteCategoryDatabase", test.categoryID)
+			repoMock.AssertCalled(t, "DeleteCategory", test.categoryID)
 
+			repoMock.AssertExpectations(t)
+		})
+	}
+}
+
+func TestCategoryType(t *testing.T) {
+	type tests struct {
+		Name         string
+		typeFound    string
+		categories   []domain.CategoryOutput
+		mockErr      error
+		categoryErr  error
+		shouldCallDB bool
+	}
+
+	arrTests := []tests{
+		{
+			Name:      "success",
+			typeFound: "траты на еду",
+			categories: []domain.CategoryOutput{
+				{
+					UserID:      1,
+					Name:        "food",
+					Limit:       10000,
+					Type:        "траты на еду",
+					Description: "траты на еду",
+				},
+				{
+					UserID:      1,
+					Name:        "restaurant",
+					Limit:       5000,
+					Type:        "траты на еду",
+					Description: "ресторан",
+				},
+			},
+			mockErr:      nil,
+			categoryErr:  nil,
+			shouldCallDB: true,
+		},
+		{
+			Name:         "empty type",
+			typeFound:    "",
+			categories:   []domain.CategoryOutput{},
+			mockErr:      nil,
+			categoryErr:  ErrValidateType,
+			shouldCallDB: false,
+		},
+		{
+			Name:         "not found",
+			typeFound:    "несуществующий тип",
+			categories:   []domain.CategoryOutput{},
+			mockErr:      postgresql.ErrorNotFound,
+			categoryErr:  ErrNoFound,
+			shouldCallDB: true,
+		},
+		{
+			Name:         "database error",
+			typeFound:    "тип категории",
+			categories:   []domain.CategoryOutput{},
+			mockErr:      errors.New("database connection error"),
+			categoryErr:  ErrDatabase,
+			shouldCallDB: true,
+		},
+	}
+
+	for _, test := range arrTests {
+		t.Run(test.Name, func(t *testing.T) {
+			repoMock := new(DbMock)
+
+			if test.shouldCallDB {
+				repoMock.On("CategoriesType", test.typeFound).Return(test.categories, test.mockErr)
+			}
+
+			log := logrus.New()
+			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log)
+			resultCategories, err := servic.CategoryType(test.typeFound)
+
+			if test.categoryErr != nil {
+				assert.Error(t, err)
+				if !errors.Is(err, test.categoryErr) {
+					t.Fatalf("err != test.categoryErr: %v", err)
+				}
+				assert.Empty(t, resultCategories)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, test.categories, resultCategories)
+			}
+
+			if test.shouldCallDB {
+				repoMock.AssertCalled(t, "CategoriesType", test.typeFound)
+			}
 			repoMock.AssertExpectations(t)
 		})
 	}

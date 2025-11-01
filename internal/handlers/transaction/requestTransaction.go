@@ -8,11 +8,6 @@ type RequestCreateTransaction struct {
 	Description string `json:"description"`
 }
 
-// RequestIdTransaction represents registration transaction request
-type RequestIdTransaction struct {
-	IdTransaction uint `json:"transaction_id"`
-}
-
 // RequestUpdateTransaction represents registration transaction request
 type RequestUpdateTransaction struct {
 	IdTransaction uint   `json:"transaction_id" binding:"required"`
