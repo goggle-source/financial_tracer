@@ -1,92 +1,119 @@
 basePath: /financial_tracker
 definitions:
-  github_com_financial_tracer_internal_handlers_api.ErrorResponse:
+  api.ErrorResponse:
     properties:
       error: {}
     type: object
-  github_com_financial_tracer_internal_handlers_api.SuccessResponse:
+  api.SuccessResponse:
     properties:
       value: {}
     type: object
-  internal_handlers_categories.IDCategory:
-    properties:
-      category_id:
-        type: integer
-    type: object
-  internal_handlers_categories.RequestCreateCategory:
+  categoryHandlers.RequestCreateCategory:
     properties:
       description:
+        example: Shopping in the store
         type: string
       limit:
         type: integer
       name:
+        example: jonn
         type: string
+    required:
+    - description
+    - limit
+    - name
     type: object
-  internal_handlers_categories.RequestUpdateCategory:
-    properties:
-      Description:
-        type: string
-      category_id:
-        type: integer
-      limit:
-        type: integer
-      name:
-        type: string
-    type: object
-  internal_handlers_transaction.RequestCreateTransaction:
+  categoryHandlers.RequestUpdateCategory:
     properties:
       category_id:
+        example: 2
         type: integer
       description:
+        example: car expenses
         type: string
       limit:
+        example: 2000
         type: integer
       name:
+        example: jonn
         type: string
+    required:
+    - description
+    - limit
+    - name
     type: object
-  internal_handlers_transaction.RequestIdTransaction:
+  transactionHandlers.RequestCreateTransaction:
     properties:
+      category_id:
+        example: 2
+        type: integer
+      description:
+        example: spending on food
+        type: string
+      limit:
+        example: 1000
+        type: integer
+      name:
+        example: jonn
+        type: string
+    required:
+    - category_id
+    - limit
+    - name
+    type: object
+  transactionHandlers.RequestUpdateTransaction:
+    properties:
+      description:
+        example: going to a restaurant
+        type: string
+      limit:
+        example: 2000
+        type: integer
+      name:
+        example: jonn
+        type: string
       transaction_id:
+        example: 1
         type: integer
+    required:
+    - limit
+    - name
+    - transaction_id
     type: object
-  internal_handlers_transaction.RequestUpdateTransaction:
-    properties:
-      description:
-        type: string
-      limit:
-        type: integer
-      name:
-        type: string
-      transaction_id:
-        type: integer
-    type: object
-  internal_handlers_user.RefreshToken:
+  userHandlers.RefreshToken:
     properties:
       refresh_token:
         type: string
+    required:
+    - refresh_token
     type: object
-  internal_handlers_user.UserAuthentication:
+  userHandlers.UserRegistration:
     properties:
       email:
-        type: string
-      password:
-        type: string
-    type: object
-  internal_handlers_user.UserDelete:
-    properties:
-      email:
-        type: string
-      password:
-        type: string
-    type: object
-  internal_handlers_user.UserRegistration:
-    properties:
-      email:
+        example: jonn@gmail.com
         type: string
       name:
+        example: jonn
         type: string
       password:
+        example: securitycod123
         type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  userHandlers.UserRequest:
+    properties:
+      email:
+        example: jonn@gmail.com
+        type: string
+      password:
+        example: securitycod123
+        type: string
+    required:
+    - email
+    - password
     type: object
 host: localhost:8080
 info:
@@ -111,106 +138,100 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/internal_handlers_categories.RequestCreateCategory'
+          $ref: '#/definitions/categoryHandlers.RequestCreateCategory'
       produces:
       - application/json
       responses:
         "200":
           description: Успешное создание категории
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректный данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "401":
           description: Ошибка авторизации
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "501":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       security:
       - jwtAuth: []
       summary: Создание Категории
       tags:
       - categories
-  /category/delete:
+  /category/delete/{id}:
     delete:
-      consumes:
-      - application/json
       description: Удаление категории конкретного пользователя
       parameters:
       - description: userID для удаление категории
-        in: body
-        name: req
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/internal_handlers_categories.IDCategory'
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректные данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "401":
           description: Ошибка авторизации
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "404":
           description: Категория не найдена
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       security:
       - jwtAuth: []
       summary: Удаление категории
       tags:
       - categories
-  /category/get:
+  /category/get//{id}:
     get:
-      consumes:
-      - application/json
       description: Получение категории для конкретного пользователя
       parameters:
       - description: userID для получение категории
-        in: body
-        name: req
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/internal_handlers_categories.IDCategory'
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректный данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "401":
           description: Ошибка авторизации
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "404":
           description: Категория не найдена
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       security:
       - jwtAuth: []
       summary: Получение категории
@@ -227,62 +248,62 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/internal_handlers_categories.RequestUpdateCategory'
+          $ref: '#/definitions/categoryHandlers.RequestUpdateCategory'
       produces:
       - application/json
       responses:
         "200":
           description: success
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректный данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "401":
           description: Ошибка авторизации
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "404":
           description: Категория не найдена
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       security:
       - jwtAuth: []
       summary: обновление пользователя
       tags:
       - categories
-  /registration/get_accsess_token:
+  /registration/get_access_token:
     post:
       consumes:
       - application/json
       description: Получение токена
       parameters:
-      - description: для получение accsess токена
+      - description: для получение access токена
         in: body
         name: req
         required: true
         schema:
-          $ref: '#/definitions/internal_handlers_user.RefreshToken'
+          $ref: '#/definitions/userHandlers.RefreshToken'
       produces:
       - application/json
       responses:
         "200":
           description: Получение access токена
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректные входные данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       summary: Получение токена
       tags:
       - registration
@@ -297,26 +318,26 @@ paths:
         name: credentials
         required: true
         schema:
-          $ref: '#/definitions/internal_handlers_user.UserAuthentication'
+          $ref: '#/definitions/userHandlers.UserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Авторизация пользователя
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректные данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "404":
           description: Пользователь не найден
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       summary: Аутентификация пользователя
       tags:
       - registration
@@ -331,22 +352,22 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/internal_handlers_user.UserRegistration'
+          $ref: '#/definitions/userHandlers.UserRegistration'
       produces:
       - application/json
       responses:
         "200":
           description: Регистрация пользователя
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректные данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       summary: Регистрация пользователя
       tags:
       - registration
@@ -361,26 +382,26 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/internal_handlers_transaction.RequestCreateTransaction'
+          $ref: '#/definitions/transactionHandlers.RequestCreateTransaction'
       produces:
       - application/json
       responses:
         "200":
           description: Транзакция создана успешно
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректные данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "401":
           description: Ошибка авторизации
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       security:
       - jwtAuth: []
       summary: Создание транзакции
@@ -388,39 +409,36 @@ paths:
       - transaction
   /transaction/delete:
     delete:
-      consumes:
-      - application/json
       description: Удаление 1 транзакции для 1 пользователя
       parameters:
       - description: id транзакции
-        in: body
+        in: path
         name: req
         required: true
-        schema:
-          $ref: '#/definitions/internal_handlers_transaction.RequestIdTransaction'
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: Транзакция удалена
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректные данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "401":
           description: Ошибка авторизации
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "404":
           description: Транзакция не найдена
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       security:
       - jwtAuth: []
       summary: Удаление транзакции
@@ -428,39 +446,36 @@ paths:
       - transaction
   /transaction/get:
     get:
-      consumes:
-      - application/json
       description: Получение 1 транзакции для 1 пользователя
       parameters:
       - description: id транзакции
-        in: body
-        name: req
+        in: path
+        name: id
         required: true
-        schema:
-          $ref: '#/definitions/internal_handlers_transaction.RequestIdTransaction'
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: good
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректные данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "401":
           description: Ошибка авторизации
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "404":
           description: Транзакция не найдена
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       security:
       - jwtAuth: []
       summary: Получение транзакции
@@ -477,30 +492,30 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/internal_handlers_transaction.RequestUpdateTransaction'
+          $ref: '#/definitions/transactionHandlers.RequestUpdateTransaction'
       produces:
       - application/json
       responses:
         "200":
           description: Транзакция обновлена
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректные данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "401":
           description: Ошибка авторизации
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "404":
           description: Транзакция не найдена
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       security:
       - jwtAuth: []
       summary: Обновление транзакции
@@ -517,26 +532,26 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/internal_handlers_user.UserDelete'
+          $ref: '#/definitions/userHandlers.UserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Удаление пользователя
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.SuccessResponse'
+            $ref: '#/definitions/api.SuccessResponse'
         "400":
           description: Некорректные данные
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "404":
           description: Пользователь не найден
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/github_com_financial_tracer_internal_handlers_api.ErrorResponse'
+            $ref: '#/definitions/api.ErrorResponse'
       security:
       - jwtAuth: []
       summary: Удаление пользователя

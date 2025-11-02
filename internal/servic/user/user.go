@@ -2,7 +2,6 @@ package user
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/infastructure/db/postgresql"
@@ -33,6 +32,7 @@ type UserServer struct {
 	r         RegistrationuserRepository
 	d         DeleteUserRepository
 	a         AuthenticationUserRepository
+	validate  validator.Validate
 	SecretKey string
 }
 
@@ -42,6 +42,7 @@ func CreateUserServer(r RegistrationuserRepository, d DeleteUserRepository, a Au
 		d:         d,
 		r:         r,
 		a:         a,
+		validate:  *validator.New(),
 		SecretKey: sk,
 	}
 }
@@ -53,17 +54,17 @@ func (c *UserServer) RegistrationUser(us domain.RegisterUser) (jwttoken.Response
 
 	log.Info("registration user")
 
-	if err := validator.New().Struct(us); err != nil {
+	if err := c.validate.Struct(us); err != nil {
 		log.WithFields(logrus.Fields{"err": err}).Error("invalid validate")
 
-		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s invalid validate: %w", op, err)
+		return jwttoken.ResponseJWTUser{}, err
 	}
 
 	passwordHash, err := hashPassword.Hash(us.Password)
 	if err != nil {
 		logrus.WithFields(logrus.Fields{"err": err}).Error("field hash password")
 
-		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s field hash password: %w", op, ErrServic)
+		return jwttoken.ResponseJWTUser{}, ErrServic
 	}
 
 	user := domain.User{
@@ -77,16 +78,16 @@ func (c *UserServer) RegistrationUser(us domain.RegisterUser) (jwttoken.Response
 		if errors.Is(err, postgresql.ErrorDuplicated) {
 			log.WithField("err", err).Error("field duplicated")
 
-			return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s field duplicated: %w", op, ErrDuplicated)
+			return jwttoken.ResponseJWTUser{}, ErrDuplicated
 		}
 		log.WithField("err", err).Error("field registration user")
-		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s field registration user: %w", op, ErrDatabase)
+		return jwttoken.ResponseJWTUser{}, ErrDatabase
 	}
 
 	tokens, err := jwttoken.PostJWT(c.SecretKey, id, name)
 	if err != nil {
 		log.WithField("err", err).Error("field create JWT token")
-		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s field create JWT token: %w", op, ErrServic)
+		return jwttoken.ResponseJWTUser{}, ErrServic
 	}
 
 	log.Info("success registration user")
@@ -101,10 +102,10 @@ func (c *UserServer) AuthenticationUser(us domain.AuthenticationUser) (jwttoken.
 
 	log.Info("start authentication user")
 
-	if err := validator.New().Struct(us); err != nil {
+	if err := c.validate.Struct(us); err != nil {
 		log.WithField("err", err).Error("invalid validate")
 
-		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s invalid validate: %w", op, err)
+		return jwttoken.ResponseJWTUser{}, err
 	}
 
 	id, name, err := c.a.AuthenticationUser(us.Email, us.Password)
@@ -112,17 +113,17 @@ func (c *UserServer) AuthenticationUser(us domain.AuthenticationUser) (jwttoken.
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("not found")
 
-			return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s not found: %w", op, ErrNoFound)
+			return jwttoken.ResponseJWTUser{}, ErrNoFound
 		}
 		log.WithField("err", err).Error("field authentication user")
-		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s field authentication user: %w", op, ErrDatabase)
+		return jwttoken.ResponseJWTUser{}, ErrDatabase
 	}
 
 	token, err := jwttoken.PostJWT(c.SecretKey, id, name)
 	if err != nil {
 		log.WithField("err", err).Error("field create JWT token")
 
-		return jwttoken.ResponseJWTUser{}, fmt.Errorf("%s field create JWT token: %w", op, ErrServic)
+		return jwttoken.ResponseJWTUser{}, ErrServic
 	}
 
 	log.Info("success authentication user")
@@ -137,20 +138,20 @@ func (c *UserServer) DeleteUser(us domain.DeleteUser) error {
 
 	log.Info("start delete user")
 
-	if err := validator.New().Struct(us); err != nil {
+	if err := c.validate.Struct(us); err != nil {
 		log.WithField("err", err).Error("invalid validate")
 
-		return fmt.Errorf("%s invalid validate: %w", op, err)
+		return err
 	}
 
 	err := c.d.DeleteUser(us.Email, us.Password)
 	if err != nil {
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("not found")
-			return fmt.Errorf("%s not found: %w", op, ErrNoFound)
+			return ErrNoFound
 		}
 		log.WithField("err", err).Error("field delete user")
-		return fmt.Errorf("%s field delete user: %w", op, ErrDatabase)
+		return ErrDatabase
 	}
 
 	log.Info("success delete user")

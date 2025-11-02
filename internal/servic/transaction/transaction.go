@@ -2,7 +2,6 @@ package transaction
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/infastructure/db/postgresql"
@@ -27,11 +26,12 @@ type DeleteTransactionRepository interface {
 }
 
 type TransactionServer struct {
-	d   DeleteTransactionRepository
-	c   CreateTransactionRepository
-	g   GetTransactionRepository
-	u   UpdateTransactionRepository
-	log *logrus.Logger
+	d        DeleteTransactionRepository
+	c        CreateTransactionRepository
+	g        GetTransactionRepository
+	u        UpdateTransactionRepository
+	log      *logrus.Logger
+	validate validator.Validate
 }
 
 func CreateTransactionServer(d DeleteTransactionRepository,
@@ -41,11 +41,12 @@ func CreateTransactionServer(d DeleteTransactionRepository,
 	log *logrus.Logger) *TransactionServer {
 
 	return &TransactionServer{
-		d:   d,
-		g:   g,
-		c:   c,
-		u:   u,
-		log: log,
+		d:        d,
+		g:        g,
+		c:        c,
+		u:        u,
+		log:      log,
+		validate: *validator.New(),
 	}
 }
 
@@ -60,25 +61,25 @@ func (ts *TransactionServer) CreateTransaction(idUser uint, idCategory uint, tra
 
 	log.Info("start create transaction")
 
-	if err := validator.New().Struct(&tran); err != nil {
+	if err := ts.validate.Struct(&tran); err != nil {
 		log.WithField("err", err).Error("error validate")
 
-		return 0, fmt.Errorf("%s error validate: %w", op, err)
+		return 0, err
 	}
 
 	id, err := ts.c.CreateTransaction(idUser, idCategory, tran)
 	if err != nil {
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("error create transaction")
-			return 0, fmt.Errorf("%s error create transaction: %w", op, ErrNoFound)
+			return 0, ErrNoFound
 		}
 		if errors.Is(err, postgresql.ErrorLimit) {
 			log.WithField("err", err).Error("error create transaction")
-			return 0, fmt.Errorf("%s error create transaction: %w", op, ErrLimit)
+			return 0, ErrLimit
 		}
 		log.WithField("err", err).Error("error create transaction")
 
-		return 0, fmt.Errorf("%s error create transaction: %w", op, ErrDatabase)
+		return 0, ErrDatabase
 	}
 	log.Info("success create transaction")
 
@@ -99,11 +100,11 @@ func (ts *TransactionServer) GetTransaction(idTransaction uint) (domain.Transact
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("error get transaction")
 
-			return domain.TransactionOutput{}, fmt.Errorf("%s error get transaction: %w", op, ErrNoFound)
+			return domain.TransactionOutput{}, ErrNoFound
 		}
 		log.WithField("err", err).Error("error get transaction")
 
-		return domain.TransactionOutput{}, fmt.Errorf("%s error get transaction: %w", op, ErrDatabase)
+		return domain.TransactionOutput{}, ErrDatabase
 	}
 
 	log.Info("success get transaction")
@@ -121,10 +122,10 @@ func (ts *TransactionServer) UpdateTransaction(idTransaction uint, newTransactio
 
 	log.Info("start update transaction")
 
-	if err := validator.New().Struct(&newTransaction); err != nil {
+	if err := ts.validate.Struct(&newTransaction); err != nil {
 		log.WithField("err", err).Error("invalid validate")
 
-		return domain.TransactionOutput{}, fmt.Errorf("%s invalid validate: %w", op, err)
+		return domain.TransactionOutput{}, err
 	}
 
 	transaction, err := ts.u.UpdateTransaction(idTransaction, newTransaction)
@@ -132,11 +133,11 @@ func (ts *TransactionServer) UpdateTransaction(idTransaction uint, newTransactio
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("transaction is not found")
 
-			return domain.TransactionOutput{}, fmt.Errorf("%s transaction is not found: %w", op, ErrNoFound)
+			return domain.TransactionOutput{}, ErrNoFound
 		}
 		log.WithField("err", err).Error("field update transaction")
 
-		return domain.TransactionOutput{}, fmt.Errorf("%s field update transaction: %w", op, ErrDatabase)
+		return domain.TransactionOutput{}, ErrDatabase
 	}
 	log.Info("success update transaction")
 
@@ -158,11 +159,11 @@ func (ts *TransactionServer) DeleteTransaction(idTransaction uint) error {
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("error delete transaction")
 
-			return fmt.Errorf("%s error delete transaction: %w", op, ErrNoFound)
+			return ErrNoFound
 		}
 		log.WithField("err", err).Error("error delete transaction")
 
-		return fmt.Errorf("%s error delete transaction: %w", op, ErrDatabase)
+		return ErrDatabase
 	}
 
 	log.Info("success delete transaction")

@@ -49,25 +49,25 @@ func CreateHandlersUser(secretKey string, r RegistrationUserServic,
 //	@Tags			registration
 //	@Accept			json
 //	@Produce		json
-//	@Param			user	body		UserRegistration						true	"Данные для регистрации пользователя"
-//	@Success		200		{object}	api.SuccessResponse[ResponseJWTUser]	"Регистрация пользователя"
+//	@Param			user	body		UserRegistration	true	"Данные для регистрации пользователя"
+//	@Success		200		{object}	api.SuccessResponse	"Регистрация пользователя"
 //
-//	@Failure		400		{object}	api.ErrorResponse[[]map[string]string]	"Некорректные входные данные"
-//	@Failure		500		{object}	api.ErrorResponse[string]				"Ошибка сервера"
-//	@Failure		400		{object}	api.ErrorResponse[string]				"Некорректные данные"
+//	@Failure		400		{object}	api.ErrorResponse	"Некорректные входные данные"
+//	@Failure		500		{object}	api.ErrorResponse	"Ошибка сервера"
+//	@Failure		400		{object}	api.ErrorResponse	"Некорректные данные"
 //
 //	@Router			/registration/register [post]
 func (h *HandlersUser) Registration(c *gin.Context) {
 	const op = "handler.RegistrationUser"
 
-	c.Writer.Header().Set("content-type", "application/json")
+	log := h.log.WithField("op", op)
+
+	log.Info("start registration user")
+
 	var req UserRegistration
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": err,
-		}).Error("Error valid JSON")
+		log.WithField("err", err).Error("Error valid JSON")
 		api.ResponseError(c, http.StatusBadRequest, "error valid JSON")
 		return
 	}
@@ -80,13 +80,12 @@ func (h *HandlersUser) Registration(c *gin.Context) {
 
 	tokens, err := h.r.RegistrationUser(user)
 	if err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": err,
-		}).Error("error registration user")
+		log.WithField("err", err).Error("error registration user")
 		api.RegistrationError(c, err)
 		return
 	}
+
+	log.Info("success registration user")
 
 	api.ResponseOK(c, tokens)
 
@@ -100,26 +99,26 @@ func (h *HandlersUser) Registration(c *gin.Context) {
 //
 //	@Accept			json
 //	@Produce		json
-//	@Param			credentials	body		UserAuthentication						true	"Данные для авторизации пользователя"
-//	@Success		200			{object}	api.SuccessResponse[ResponseJWTUser]	"Авторизация пользователя"
+//	@Param			credentials	body		UserRequest			true	"Данные для авторизации пользователя"
+//	@Success		200			{object}	api.SuccessResponse	"Авторизация пользователя"
 //
-//	@Failure		400			{object}	api.ErrorResponse[[]map[string]string]	"Некорректные входные данные"
-//	@Failure		500			{object}	api.ErrorResponse[string]				"Ошибка сервера"
-//	@Failure		400			{object}	api.ErrorResponse[string]				"Некорректные данные"
-//	@Failure		404			{object}	api.ErrorResponse[string]				"Пользователь не найден"
+//	@Failure		400			{object}	api.ErrorResponse	"Некорректные входные данные"
+//	@Failure		500			{object}	api.ErrorResponse	"Ошибка сервера"
+//	@Failure		400			{object}	api.ErrorResponse	"Некорректные данные"
+//	@Failure		404			{object}	api.ErrorResponse	"Пользователь не найден"
 //
 //	@Router			/registration/login [post]
 func (h *HandlersUser) Authentication(c *gin.Context) {
 	const op = "handlers.GetUser"
 
-	c.Writer.Header().Set("content-type", "application/json")
+	log := h.log.WithField("op", op)
+
+	log.Info("start authentication user")
+
 	var req UserRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": err,
-		}).Error("error valid JSON")
+		log.WithField("err", err).Error("error valid JSON")
 		api.ResponseError(c, http.StatusBadRequest, "error valid JSON")
 		return
 	}
@@ -131,14 +130,13 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 
 	tokens, err := h.a.AuthenticationUser(user)
 	if err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": err,
-		}).Error("error authentication user")
+		log.WithField("err", err).Error("error authentication user")
 		api.RegistrationError(c, err)
 		return
 
 	}
+
+	log.Info("success authentication user")
 
 	api.ResponseOK(c, tokens)
 }
@@ -152,13 +150,13 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 //
 //	@Accept			json
 //	@Produce		json
-//	@Param			req	body		UserDelete								true	"данные для удаление пользователя"
-//	@Success		200	{object}	api.SuccessResponse[string]				"Удаление пользователя"
+//	@Param			req	body		UserRequest			true	"данные для удаление пользователя"
+//	@Success		200	{object}	api.SuccessResponse	"Удаление пользователя"
 //
-//	@Failure		400	{object}	api.ErrorResponse[[]map[string]string]	"Некорректные входные данные"
-//	@Failure		500	{object}	api.ErrorResponse[string]				"Ошибка сервера"
-//	@Failure		400	{object}	api.ErrorResponse[string]				"Некорректные данные"
-//	@Failure		404	{object}	api.ErrorResponse[string]				"Пользователь не найден"
+//	@Failure		400	{object}	api.ErrorResponse	"Некорректные входные данные"
+//	@Failure		500	{object}	api.ErrorResponse	"Ошибка сервера"
+//	@Failure		400	{object}	api.ErrorResponse	"Некорректные данные"
+//	@Failure		404	{object}	api.ErrorResponse	"Пользователь не найден"
 //
 //	@Router			/user/delete [post]
 //
@@ -166,14 +164,14 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 func (h *HandlersUser) DeleteUser(c *gin.Context) {
 	const op = "handlers.DeleteUser"
 
-	c.Writer.Header().Set("content-type", "application/json")
+	log := h.log.WithField("op", op)
+
+	log.Info("start delete user")
+
 	var req UserRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": err,
-		}).Error("error valid JSON")
+		log.WithField("err", err).Error("error valid JSON")
 		api.ResponseError(c, http.StatusBadRequest, "error valid JSON")
 		return
 	}
@@ -185,14 +183,13 @@ func (h *HandlersUser) DeleteUser(c *gin.Context) {
 
 	err := h.d.DeleteUser(users)
 	if err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": err,
-		}).Error("error delete user")
+		log.WithField("err", err).Error("error delete user")
 		api.RegistrationError(c, err)
 		return
 
 	}
+
+	log.Info("success delete user")
 
 	api.ResponseOK(c, "user delete")
 }
@@ -206,49 +203,43 @@ func (h *HandlersUser) DeleteUser(c *gin.Context) {
 //
 //	@Accept			json
 //	@Produce		json
-//	@Param			req	body		RefreshToken				true	"для получение access токена"
-//	@Success		200	{object}	api.SuccessResponse[string]	"Получение access токена"
+//	@Param			req	body		RefreshToken		true	"для получение access токена"
+//	@Success		200	{object}	api.SuccessResponse	"Получение access токена"
 //
-//	@Failure		400	{object}	api.ErrorResponse[string]	"Некорректные входные данные"
+//	@Failure		400	{object}	api.ErrorResponse	"Некорректные входные данные"
 //
-//	@Failure		500	{object}	api.ErrorResponse[string]	"Ошибка сервера"
+//	@Failure		500	{object}	api.ErrorResponse	"Ошибка сервера"
 //
 //	@Router			/registration/get_access_token [post]
 func (h *HandlersUser) GetAccessToken(c *gin.Context) {
 	const op = "handlers.GetAccsessToken"
 
-	c.Writer.Header().Set("content-type", "application/json")
+	log := h.log.WithField("op", op)
+
+	log.Info("start get access token")
+
 	var req RefreshToken
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": err,
-		}).Error("error valid JSON")
+		log.WithField("err", err).Error("error valid JSON")
 		api.ResponseError(c, http.StatusBadRequest, "error valid JSON")
 		return
 	}
 
 	i, name, err := jwttoken.CheckAccess(req.RefreshToken, h.SecretKey, h.log)
 	if err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": err,
-		}).Error("error check token")
+		log.WithField("err", err).Error("error check token")
 		api.ResponseError(c, http.StatusBadRequest, "error valid token")
 		return
 	}
 
 	tokens, err := jwttoken.JWTAccessToken(h.SecretKey, i, name)
 	if err != nil {
-		h.log.WithFields(logrus.Fields{
-			"op":  op,
-			"err": err,
-		}).Error("error create tokens")
+		log.WithField("err", err).Error("error create tokens")
 		api.ResponseError(c, http.StatusInternalServerError, "error server")
 		return
 	}
 
-	h.log.Info("create access token")
+	log.Info("create access token")
 	api.ResponseOK(c, tokens)
 }

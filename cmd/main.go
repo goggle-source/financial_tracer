@@ -28,7 +28,7 @@ func main() {
 	users := user.CreateUserServer(db, db, db, cfg.App.SercretKey, log)
 	handlersUser := userHandlers.CreateHandlersUser(cfg.App.SercretKey, users, users, users, log)
 	categories := category.CreateCategoryServer(db, db, db, db, db, log)
-	handlersCategory := categoryHandlers.CreateHandlersCategory(categories, categories, categories, categories, log)
+	handlersCategory := categoryHandlers.CreateHandlersCategory(categories, categories, categories, categories, categories, log)
 	transactions := transaction.CreateTransactionServer(db, db, db, db, log)
 	handlersTransaction := transactionHandlers.CreateTransactionHandlers(transactions, transactions, transactions, transactions, log)
 	r := handlers.Router(handlersUser, handlersCategory, log, handlersTransaction, cfg.App.SercretKey)

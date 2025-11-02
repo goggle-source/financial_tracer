@@ -12,6 +12,7 @@ type SuccessResponse struct {
 }
 
 func ResponseOK(c *gin.Context, value any) {
+	c.Writer.Header().Set("content-type", "application/json")
 	c.JSON(http.StatusOK, SuccessResponse{
 		Value: value,
 	})
@@ -23,6 +24,7 @@ type ErrorResponse struct {
 }
 
 func ResponseError(c *gin.Context, status int, messageError any) {
+	c.Writer.Header().Set("content-type", "application/json")
 	c.JSON(status, ErrorResponse{
 		MessageError: messageError,
 	})

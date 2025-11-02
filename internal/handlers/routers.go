@@ -53,10 +53,11 @@ func Router(users *userHandlers.HandlersUser, category *categoryHandlers.Categor
 	categories := api.Group("/category")
 	go categories.Use(middlewares.JWToken(secretKey, log))
 	{
-		go categories.GET("/get", category.GetCategory)
+		go categories.GET("/get/{id}", category.GetCategory)
+		go categories.GET("/get/type/{id}", category.CategoryType)
 		go categories.POST("/create", category.PostCategory)
 		go categories.PUT("/update", category.UpdateCategory)
-		go categories.DELETE("/delete", category.DeleteCategory)
+		go categories.DELETE("/delete{id}", category.DeleteCategory)
 	}
 	transaction := api.Group("/transaction")
 	go transaction.Use(middlewares.JWToken(secretKey, log))

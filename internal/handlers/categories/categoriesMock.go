@@ -25,3 +25,8 @@ func (m *categoryServiceMock) DeleteCategory(idCategory uint) error {
 	args := m.Called(idCategory)
 	return args.Error(0)
 }
+
+func (m *categoryServiceMock) CategoryType(typeFound string) ([]domain.CategoryOutput, error) {
+	args := m.Called(typeFound)
+	return args.Get(0).([]domain.CategoryOutput), args.Error(1)
+}

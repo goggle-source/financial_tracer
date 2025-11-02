@@ -153,3 +153,153 @@
 {"exp":52069100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-09-21T19:28:30+03:00"}
 {"level":"fatal","msg":"error conn database: failed to connect to `user=teamlid database=f`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connectex: No connection could be made because the target machine actively refused it.\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connectex: No connection could be made because the target machine actively refused it.","time":"2025-10-26T16:02:07+03:00"}
 {"level":"fatal","msg":"error conn database: failed to connect to `user=teamlid database=f`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connectex: No connection could be made because the target machine actively refused it.\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connectex: No connection could be made because the target machine actively refused it.","time":"2025-10-28T17:10:07+03:00"}
+{"fields.time":"2025-11-02T18:09:50.6182191+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-02T18:09:50+03:00"}
+{"exp":505700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-02T18:09:50+03:00"}
+{"fields.time":"2025-11-02T18:09:50.6497622+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-02T18:09:50+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-02T18:09:50+03:00"}
+{"fields.time":"2025-11-02T18:09:50.6518188+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-02T18:09:50+03:00"}
+{"fields.time":"2025-11-02T18:09:50.6525036+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-02T18:09:50+03:00"}
+{"exp":581600,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-02T18:09:50+03:00"}
+{"exp":17072000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-02T18:09:50+03:00"}
+{"fields.time":"2025-11-02T18:09:50.963989+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-02T18:09:50+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-02T18:09:50+03:00"}
+{"fields.time":"2025-11-02T18:09:51.0225457+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-02T18:09:51+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-02T18:09:51+03:00"}
+{"fields.time":"2025-11-02T18:10:11.6054128+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-02T18:10:11+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-02T18:10:11+03:00"}
+{"err":"Key: 'RegisterUser.Name' Error:Field validation for 'Name' failed on the 'min' tag","level":"error","msg":"invalid validate","op":"user.ServerRegistrationUser","time":"2025-11-02T18:10:11+03:00"}
+{"err":"user.ServerRegistrationUser invalid validate: Key: 'RegisterUser.Name' Error:Field validation for 'Name' failed on the 'min' tag","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-02T18:10:11+03:00"}
+{"exp":507400,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-02T18:10:11+03:00"}
+{"fields.time":"2025-11-02T18:10:54.8609165+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-02T18:10:54+03:00"}
+{"exp":19784700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-02T18:10:54+03:00"}
+{"fields.time":"2025-11-02T18:10:54.9003932+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-02T18:10:54+03:00"}
+{"exp":508800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-02T18:10:54+03:00"}
+{"fields.time":"2025-11-02T18:10:54.900902+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-02T18:10:54+03:00"}
+{"fields.time":"2025-11-02T18:10:54.9014206+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-02T18:10:54+03:00"}
+{"exp":520900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-02T18:10:54+03:00"}
+{"exp":8251700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-02T18:10:54+03:00"}
+{"fields.time":"2025-11-02T18:10:55.3205928+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-02T18:10:55+03:00"}
+{"exp":505800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-02T18:10:55+03:00"}
+{"fields.time":"2025-11-02T18:10:55.3210986+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-02T18:10:55+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-02T18:10:55+03:00"}
+{"fields.time":"2025-11-02T18:10:59.3300315+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-02T18:10:59+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-02T18:10:59+03:00"}
+{"err":"Key: 'RegisterUser.Name' Error:Field validation for 'Name' failed on the 'min' tag","level":"error","msg":"invalid validate","op":"user.ServerRegistrationUser","time":"2025-11-02T18:10:59+03:00"}
+{"err":"user.ServerRegistrationUser invalid validate: Key: 'RegisterUser.Name' Error:Field validation for 'Name' failed on the 'min' tag","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-02T18:10:59+03:00"}
+{"exp":507200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-02T18:10:59+03:00"}
+{"fields.time":"2025-11-02T18:12:58.9742288+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-02T18:12:58+03:00"}
+{"exp":18736800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-02T18:12:58+03:00"}
+{"fields.time":"2025-11-02T18:12:59.0120503+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-02T18:12:59+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-02T18:12:59+03:00"}
+{"fields.time":"2025-11-02T18:12:59.0125559+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-02T18:12:59+03:00"}
+{"fields.time":"2025-11-02T18:12:59.0125559+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-02T18:12:59+03:00"}
+{"exp":1070100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-02T18:12:59+03:00"}
+{"exp":9358700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-02T18:12:59+03:00"}
+{"fields.time":"2025-11-02T18:12:59.1503177+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-02T18:12:59+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-02T18:12:59+03:00"}
+{"fields.time":"2025-11-02T18:12:59.1533703+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-02T18:12:59+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-02T18:12:59+03:00"}
+{"fields.time":"2025-11-02T18:13:04.2601827+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-02T18:13:04+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-02T18:13:04+03:00"}
+{"level":"info","msg":"success registration user","op":"user.ServerRegistrationUser","time":"2025-11-02T18:13:04+03:00"}
+{"exp":56684100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-02T18:13:04+03:00"}
+{"fields.time":"2025-11-02T18:13:54.1400251+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:13:54+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-11-02T18:13:54+03:00"}
+{"exp":0,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:13:54+03:00"}
+{"fields.time":"2025-11-02T18:14:14.0676366+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:14:14+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-11-02T18:14:14+03:00"}
+{"exp":509100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:14:14+03:00"}
+{"fields.time":"2025-11-02T18:14:18.2988386+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:14:18+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-11-02T18:14:18+03:00"}
+{"exp":0,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:14:18+03:00"}
+{"fields.time":"2025-11-02T18:15:09.5302014+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:15:09+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-11-02T18:15:09+03:00"}
+{"exp":1043100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:15:09+03:00"}
+{"fields.time":"2025-11-02T18:15:37.2672732+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:15:37+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-11-02T18:15:37+03:00"}
+{"exp":1507000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:15:37+03:00"}
+{"fields.time":"2025-11-02T18:15:55.3760334+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:15:55+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-11-02T18:15:55+03:00"}
+{"exp":0,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:15:55+03:00"}
+{"fields.time":"2025-11-02T18:16:30.9528879+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:16:30+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-11-02T18:16:30+03:00"}
+{"exp":0,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:16:30+03:00"}
+{"fields.time":"2025-11-02T18:17:48.5625357+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:17:48+03:00"}
+{"level":"info","msg":"5","time":"2025-11-02T18:17:48+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-02T18:17:48+03:00","user_id":5}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-02T18:17:48+03:00","user_id":5}
+{"exp":32296400,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:17:48+03:00"}
+{"fields.time":"2025-11-02T18:17:57.8500654+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:17:57+03:00"}
+{"level":"info","msg":"5","time":"2025-11-02T18:17:57+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-02T18:17:57+03:00","user_id":5}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-02T18:17:57+03:00","user_id":5}
+{"exp":5476800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:17:57+03:00"}
+{"fields.time":"2025-11-02T18:20:23.8201187+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:20:23+03:00"}
+{"level":"info","msg":"5","time":"2025-11-02T18:20:23+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-02T18:20:23+03:00","user_id":5}
+{"err":"duplicated key not allowed","level":"error","msg":"invalid create category","op":"category.CreateCategory","time":"2025-11-02T18:20:23+03:00","user_id":5}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-02T18:20:23+03:00"}
+{"exp":26926900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:20:23+03:00"}
+{"fields.time":"2025-11-02T18:30:20.5214613+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:30:20+03:00"}
+{"level":"info","msg":"5","time":"2025-11-02T18:30:20+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-02T18:30:20+03:00","user_id":5}
+{"err":"duplicated key not allowed","level":"error","msg":"invalid create category","op":"category.CreateCategory","time":"2025-11-02T18:30:20+03:00","user_id":5}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-02T18:30:20+03:00"}
+{"exp":25976600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:30:20+03:00"}
+{"fields.time":"2025-11-02T18:30:30.0767662+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:30:30+03:00"}
+{"level":"info","msg":"5","time":"2025-11-02T18:30:30+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-02T18:30:30+03:00","user_id":5}
+{"err":"duplicated key not allowed","level":"error","msg":"invalid create category","op":"category.CreateCategory","time":"2025-11-02T18:30:30+03:00","user_id":5}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-02T18:30:30+03:00"}
+{"exp":5831000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:30:30+03:00"}
+{"fields.time":"2025-11-02T18:30:56.4417747+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:30:56+03:00"}
+{"level":"info","msg":"5","time":"2025-11-02T18:30:56+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-02T18:30:56+03:00","user_id":5}
+{"err":"duplicated key not allowed","level":"error","msg":"invalid create category","op":"category.CreateCategory","time":"2025-11-02T18:30:56+03:00","user_id":5}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-02T18:30:56+03:00"}
+{"exp":28310500,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:30:56+03:00"}
+{"fields.time":"2025-11-02T18:32:22.2749375+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:32:22+03:00"}
+{"level":"info","msg":"\u003cnil\u003e","time":"2025-11-02T18:32:22+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-11-02T18:32:22+03:00"}
+{"exp":22206600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:32:22+03:00"}
+{"fields.time":"2025-11-02T18:32:31.9484764+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-02T18:32:31+03:00"}
+{"level":"info","msg":"\u003cnil\u003e","time":"2025-11-02T18:32:31+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-11-02T18:32:31+03:00"}
+{"exp":522800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-02T18:32:31+03:00"}
+{"fields.time":"2025-11-02T18:32:49.2200337+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-02T18:32:49+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-02T18:32:49+03:00"}
+{"err":"duplicated unique","level":"error","msg":"field duplicated","op":"user.ServerRegistrationUser","time":"2025-11-02T18:32:49+03:00"}
+{"err":"user.ServerRegistrationUser field duplicated: the email has already been registered","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-02T18:32:49+03:00"}
+{"exp":53040000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-02T18:32:49+03:00"}
+{"fields.time":"2025-11-02T18:35:49.2670338+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-02T18:35:49+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-02T18:35:49+03:00"}
+{"err":"duplicated unique","level":"error","msg":"field duplicated","op":"user.ServerRegistrationUser","time":"2025-11-02T18:35:49+03:00"}
+{"err":"user.ServerRegistrationUser field duplicated: the email has already been registered","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-02T18:35:49+03:00"}
+{"exp":72772900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-02T18:35:49+03:00"}
+{"fields.time":"2025-11-02T18:36:23.8488251+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-02T18:36:23+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-02T18:36:23+03:00"}
+{"err":"duplicated unique","level":"error","msg":"field duplicated","op":"user.ServerRegistrationUser","time":"2025-11-02T18:36:23+03:00"}
+{"err":"user.ServerRegistrationUser field duplicated: the email has already been registered","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-02T18:36:23+03:00"}
+{"exp":72111600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-02T18:36:23+03:00"}
+{"fields.time":"2025-11-02T18:38:52.1115865+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-02T18:38:52+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-02T18:38:52+03:00"}
+{"err":"duplicated unique","level":"error","msg":"field duplicated","op":"user.ServerRegistrationUser","time":"2025-11-02T18:38:52+03:00"}
+{"err":"user.ServerRegistrationUser: the email has already been registered","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-02T18:38:52+03:00"}
+{"exp":73496700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-02T18:38:52+03:00"}
+{"fields.time":"2025-11-02T19:48:14.6408362+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-02T19:48:14+03:00"}
+{"exp":19273800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-02T19:48:14+03:00"}
+{"fields.time":"2025-11-02T19:48:14.6802565+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-02T19:48:14+03:00"}
+{"exp":508900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-02T19:48:14+03:00"}
+{"fields.time":"2025-11-02T19:48:14.6807654+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-02T19:48:14+03:00"}
+{"fields.time":"2025-11-02T19:48:14.6807654+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-02T19:48:14+03:00"}
+{"exp":537100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-02T19:48:14+03:00"}
+{"exp":8947800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-02T19:48:14+03:00"}
+{"fields.time":"2025-11-02T19:48:15.1027623+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-02T19:48:15+03:00"}
+{"fields.time":"2025-11-02T19:48:15.1027623+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-02T19:48:15+03:00"}
+{"exp":507900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-02T19:48:15+03:00"}
+{"exp":507900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-02T19:48:15+03:00"}
+{"fields.time":"2025-11-02T19:48:19.1044281+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-02T19:48:19+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-02T19:48:19+03:00"}
+{"err":"duplicated unique","level":"error","msg":"field duplicated","op":"user.ServerRegistrationUser","time":"2025-11-02T19:48:19+03:00"}
+{"err":"the email has already been registered","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-02T19:48:19+03:00"}
+{"exp":53102900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-02T19:48:19+03:00"}

@@ -14,9 +14,6 @@ func (d *Db) CreateCategory(userID uint, category domain.CategoryInput) (uint, e
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return 0, ErrorNotFound
 		}
-		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
-			return 0, ErrorDuplicated
-		}
 		return 0, result.Error
 	}
 
@@ -26,7 +23,13 @@ func (d *Db) CreateCategory(userID uint, category domain.CategoryInput) (uint, e
 		Description: category.Description,
 	}
 
-	d.DB.Model(&user).Association("Categories").Append(&newCategory)
+	err := d.DB.Model(&user).Association("Categories").Append(&newCategory)
+	if err != nil {
+		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
+			return 0, ErrorDuplicated
+		}
+		return 0, err
+	}
 	return newCategory.ID, nil
 }
 

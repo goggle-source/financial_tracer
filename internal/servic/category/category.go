@@ -2,7 +2,6 @@ package category
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/infastructure/db/postgresql"
@@ -31,12 +30,13 @@ type CategoryTypeRepository interface {
 }
 
 type CategoryServer struct {
-	d   DeleteCategoryRepository
-	c   CreateCategoryRepository
-	g   GetCategoryRepository
-	u   UpdateCategoryRepository
-	t   CategoryTypeRepository
-	log *logrus.Logger
+	d        DeleteCategoryRepository
+	c        CreateCategoryRepository
+	g        GetCategoryRepository
+	u        UpdateCategoryRepository
+	t        CategoryTypeRepository
+	log      *logrus.Logger
+	validate validator.Validate
 }
 
 func CreateCategoryServer(d DeleteCategoryRepository,
@@ -46,12 +46,13 @@ func CreateCategoryServer(d DeleteCategoryRepository,
 	t CategoryTypeRepository,
 	log *logrus.Logger) *CategoryServer {
 	return &CategoryServer{
-		d:   d,
-		c:   c,
-		g:   g,
-		u:   u,
-		t:   t,
-		log: log,
+		d:        d,
+		c:        c,
+		g:        g,
+		u:        u,
+		t:        t,
+		log:      log,
+		validate: *validator.New(),
 	}
 }
 
@@ -65,10 +66,10 @@ func (cs *CategoryServer) CreateCategory(userID uint, category domain.CategoryIn
 
 	log.Info("start create category")
 
-	if err := validator.New().Struct(category); err != nil {
+	if err := cs.validate.Struct(category); err != nil {
 		log.WithField("err", err).Error("invalid validate")
 
-		return 0, fmt.Errorf("%s invalid validate: %w", op, err)
+		return 0, err
 	}
 
 	id, err := cs.c.CreateCategory(userID, category)
@@ -76,16 +77,16 @@ func (cs *CategoryServer) CreateCategory(userID uint, category domain.CategoryIn
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("category is not found")
 
-			return 0, fmt.Errorf("%s category is not found: %w", op, ErrNoFound)
+			return 0, ErrNoFound
 		}
 		if errors.Is(err, postgresql.ErrorDuplicated) {
 			log.WithField("err", err).Error("field duiplicated category")
 
-			return 0, fmt.Errorf("%s field duiplicated category: %w", op, ErrDuplicated)
+			return 0, ErrDuplicated
 		}
 		log.WithField("err", err).Error("invalid create category")
 
-		return 0, fmt.Errorf("%s invalid create category: %w", op, ErrDatabase)
+		return 0, ErrDatabase
 	}
 
 	log.Info("success create category")
@@ -101,16 +102,18 @@ func (cs *CategoryServer) GetCategory(idCategory uint) (domain.CategoryOutput, e
 		"category_id": idCategory,
 	})
 
+	log.Info("start get category")
+
 	category, err := cs.g.GetCategory(idCategory)
 	if err != nil {
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("category is not found")
 
-			return domain.CategoryOutput{}, fmt.Errorf("%s category is not found: %w", op, ErrNoFound)
+			return domain.CategoryOutput{}, ErrNoFound
 		}
 		log.WithField("err", err).Error("invalid get category")
 
-		return domain.CategoryOutput{}, fmt.Errorf("%s invalid get category: %w", op, ErrDatabase)
+		return domain.CategoryOutput{}, ErrDatabase
 	}
 	log.Info("success get category")
 
@@ -127,10 +130,10 @@ func (cs *CategoryServer) UpdateCategory(idCategory uint, newCategory domain.Cat
 
 	log.Info("start update category")
 
-	if err := validator.New().Struct(newCategory); err != nil {
+	if err := cs.validate.Struct(newCategory); err != nil {
 		log.WithField("err", err).Error("invalid validate")
 
-		return domain.CategoryOutput{}, fmt.Errorf("%s invalid validate: %w", op, err)
+		return domain.CategoryOutput{}, err
 	}
 
 	category, err := cs.u.UpdateCategory(idCategory, newCategory)
@@ -138,16 +141,16 @@ func (cs *CategoryServer) UpdateCategory(idCategory uint, newCategory domain.Cat
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("category is not found")
 
-			return domain.CategoryOutput{}, fmt.Errorf("%s category is not found: %w", op, ErrNoFound)
+			return domain.CategoryOutput{}, ErrNoFound
 		}
 		if errors.Is(err, postgresql.ErrorDuplicated) {
 			log.WithField("err", err).Error("field duiplicated category")
 
-			return domain.CategoryOutput{}, fmt.Errorf("%s field duiplicated category: %w", op, ErrDuplicated)
+			return domain.CategoryOutput{}, ErrDuplicated
 		}
 		log.WithField("err", err).Error("invalid update category")
 
-		return domain.CategoryOutput{}, fmt.Errorf("%s invalid update category: %w", op, ErrDatabase)
+		return domain.CategoryOutput{}, ErrDatabase
 	}
 	log.Info("success update category")
 
@@ -169,11 +172,11 @@ func (cs *CategoryServer) DeleteCategory(idCategory uint) error {
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("category is not found")
 
-			return fmt.Errorf("%s category is not found: %w", op, ErrNoFound)
+			return ErrNoFound
 		}
 		log.WithField("err", err).Error("invalid delete user")
 
-		return fmt.Errorf("%s invalid delete user: %w", op, ErrDatabase)
+		return ErrDatabase
 	}
 
 	log.Info("success delete category")
@@ -184,18 +187,30 @@ func (cs *CategoryServer) DeleteCategory(idCategory uint) error {
 func (cs *CategoryServer) CategoryType(typeFound string) ([]domain.CategoryOutput, error) {
 	const op = "category.CategoryType"
 
+	log := cs.log.WithFields(logrus.Fields{
+		"op":   op,
+		"type": typeFound,
+	})
+
+	log.Info("start gets categories type")
+
 	if typeFound == "" {
-		return []domain.CategoryOutput{}, fmt.Errorf("%s: %w", op, ErrValidateType)
+		log.Error("invalid type")
+		return []domain.CategoryOutput{}, ErrValidateType
 	}
 
 	result, err := cs.t.CategoriesType(typeFound)
 	if err != nil {
 		if errors.Is(err, postgresql.ErrorNotFound) {
-			return []domain.CategoryOutput{}, fmt.Errorf("%s: %w", op, ErrNoFound)
+			log.WithField("err", err).Error("category is not found")
+			return []domain.CategoryOutput{}, ErrNoFound
 		}
 
-		return []domain.CategoryOutput{}, fmt.Errorf("%s: %w", op, ErrDatabase)
+		log.WithField("err", err).Error("err database")
+		return []domain.CategoryOutput{}, ErrDatabase
 	}
+
+	log.Info("gets categories type")
 
 	return result, nil
 }

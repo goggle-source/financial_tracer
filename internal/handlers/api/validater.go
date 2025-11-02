@@ -25,13 +25,14 @@ func RegistrationError(c *gin.Context, err error) {
 	}
 
 	value := validateClientsErrors(err)
+	fmt.Println(value)
 	prov := errInfo{}
-	if value != prov {
-		ResponseError(c, value.code, value.message)
+	if value == prov {
+		ResponseError(c, http.StatusInternalServerError, "server error")
 		return
 	}
 
-	ResponseError(c, http.StatusInternalServerError, "server error")
+	ResponseError(c, value.code, value.message)
 
 }
 
@@ -61,38 +62,52 @@ func validateClientsErrors(err error) errInfo {
 			code:    http.StatusBadRequest,
 			message: "over the limit",
 		},
+
 		transaction.ErrNoFound: {
 			code:    http.StatusNotFound,
 			message: "transaction is not found",
 		},
+
+		category.ErrValidateType: {
+			code:    http.StatusBadRequest,
+			message: "param is not valid",
+		},
+
 		category.ErrDuplicated: {
 			code:    http.StatusBadRequest,
 			message: "this category already exists",
 		},
+
 		category.ErrNoFound: {
 			code:    http.StatusNotFound,
 			message: "category is not fuond",
 		},
+
 		user.ErrDuplicated: {
 			code:    http.StatusBadRequest,
 			message: "this user already exists",
 		},
+
 		user.ErrNoFound: {
 			code:    http.StatusNotFound,
 			message: "user is not found",
 		},
+
 		user.ErrServic: {
 			code:    http.StatusInternalServerError,
 			message: "server error",
 		},
+
 		user.ErrDatabase: {
 			code:    http.StatusInternalServerError,
 			message: "server error",
 		},
+
 		category.ErrDatabase: {
 			code:    http.StatusInternalServerError,
 			message: "server error",
 		},
+
 		transaction.ErrDatabase: {
 			code:    http.StatusInternalServerError,
 			message: "server error",
