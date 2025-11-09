@@ -2,6 +2,7 @@ package cash
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/financial_tracer/internal/config"
 	"github.com/financial_tracer/internal/domain"
@@ -24,8 +25,9 @@ func CreateRealRedis(cfg config.Config) RealRedis {
 	}
 }
 
-func (r *RealRedis) HsetCategory(ctx context.Context, key string, category domain.CategoryOutput) error {
-	return r.r.HSet(context.Background(), key,
+func (r *RealRedis) HsetCategory(ctx context.Context, id uint, category domain.CategoryOutput) error {
+	strId := strconv.FormatUint(uint64(id), 10)
+	return r.r.HSet(context.Background(), "category:"+strId,
 		"userID", category.UserID,
 		"name", category.Name,
 		"type", category.Type,
@@ -33,8 +35,9 @@ func (r *RealRedis) HsetCategory(ctx context.Context, key string, category domai
 		"limit", category.Limit).Err()
 }
 
-func (r *RealRedis) HgetCategory(ctx context.Context, key string) (map[string]string, error) {
-	result, err := r.r.HGetAll(ctx, key).Result()
+func (r *RealRedis) HgetCategory(ctx context.Context, id uint) (map[string]string, error) {
+	strId := strconv.FormatUint(uint64(id), 10)
+	result, err := r.r.HGetAll(ctx, "category:"+strId).Result()
 	if err != nil {
 		return map[string]string{}, err
 	}
@@ -42,6 +45,7 @@ func (r *RealRedis) HgetCategory(ctx context.Context, key string) (map[string]st
 	return result, nil
 }
 
-func (r *RealRedis) HdelCategory(ctx context.Context, key string) error {
-	return r.r.HDel(ctx, key).Err()
+func (r *RealRedis) HdelCategory(ctx context.Context, id uint) error {
+	strId := strconv.FormatUint(uint64(id), 10)
+	return r.r.HDel(ctx, "category:"+strId).Err()
 }

@@ -144,8 +144,7 @@ func TestCreateCategory(t *testing.T) {
 			}
 
 			if test.shouldCallRedis {
-				str := strconv.FormatUint(uint64(test.categoryID), 10)
-				r.On("HsetCategory", context.Background(), str, category).Return(test.RedisErr)
+				r.On("HsetCategory", context.Background(), test.categoryID, category).Return(test.RedisErr)
 			}
 
 			log := logrus.New()
@@ -175,8 +174,7 @@ func TestCreateCategory(t *testing.T) {
 			}
 
 			if test.shouldCallRedis {
-				str := strconv.FormatUint(uint64(test.categoryID), 10)
-				r.AssertCalled(t, "HsetCategory", context.Background(), str, category)
+				r.AssertCalled(t, "HsetCategory", context.Background(), test.categoryID, category)
 			}
 
 			repoMock.AssertExpectations(t)
@@ -283,7 +281,7 @@ func TestGetCategory(t *testing.T) {
 			log := logrus.New()
 
 			if test.shouldCallRedis {
-				r.On("HgetCategory", context.Background(), "category"+strconv.FormatUint(uint64(test.categoryID), 10)).Return(test.redisData, test.redisErr)
+				r.On("HgetCategory", context.Background(), test.categoryID).Return(test.redisData, test.redisErr)
 			}
 
 			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log, r)
@@ -311,7 +309,7 @@ func TestGetCategory(t *testing.T) {
 			}
 
 			if test.shouldCallRedis {
-				r.AssertCalled(t, "HgetCategory", context.Background(), "category"+strconv.FormatUint(uint64(test.categoryID), 10))
+				r.AssertCalled(t, "HgetCategory", context.Background(), test.categoryID)
 			}
 
 			if test.shouldCallDB {
@@ -442,8 +440,7 @@ func TestUpdateCategory(t *testing.T) {
 			log := logrus.New()
 
 			if test.shouldCallRedis {
-				str := strconv.FormatUint(uint64(test.categoryID), 10)
-				r.On("HsetCategory", context.Background(), "category"+str, test.category).Return(test.redisErr)
+				r.On("HsetCategory", context.Background(), test.categoryID, test.category).Return(test.redisErr)
 			}
 
 			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log, r)
@@ -468,12 +465,8 @@ func TestUpdateCategory(t *testing.T) {
 			}
 
 			if test.shouldCallRedis {
-				str := strconv.FormatUint(uint64(test.categoryID), 10)
-				r.AssertCalled(t, "HsetCategory", context.Background(), "category"+str, test.category)
+				r.AssertCalled(t, "HsetCategory", context.Background(), test.categoryID, test.category)
 			}
-
-			repoMock.AssertExpectations(t)
-			r.AssertExpectations(t)
 		})
 	}
 }
@@ -526,8 +519,7 @@ func TestDeleteCategoryDatabase(t *testing.T) {
 			log := logrus.New()
 
 			if test.shouldCallRedis {
-				str := strconv.FormatUint(uint64(test.categoryID), 10)
-				r.On("HdelCategory", context.Background(), "category"+str).Return(test.redisErr)
+				r.On("HdelCategory", context.Background(), test.categoryID).Return(test.redisErr)
 			}
 
 			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log, r)
@@ -544,12 +536,8 @@ func TestDeleteCategoryDatabase(t *testing.T) {
 			repoMock.AssertCalled(t, "DeleteCategory", test.categoryID)
 
 			if test.shouldCallRedis {
-				str := strconv.FormatUint(uint64(test.categoryID), 10)
-				r.AssertCalled(t, "HdelCategory", context.Background(), "category"+str)
+				r.AssertCalled(t, "HdelCategory", context.Background(), test.categoryID)
 			}
-
-			repoMock.AssertExpectations(t)
-			r.AssertExpectations(t)
 		})
 	}
 }

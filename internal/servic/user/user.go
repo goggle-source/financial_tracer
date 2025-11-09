@@ -1,10 +1,7 @@
 package user
 
 import (
-	"errors"
-
 	"github.com/financial_tracer/internal/domain"
-	"github.com/financial_tracer/internal/infastructure/db/postgresql"
 	"github.com/financial_tracer/internal/lib/hashPassword"
 	jwttoken "github.com/financial_tracer/internal/lib/jwtToken"
 	"github.com/go-playground/validator/v10"
@@ -63,7 +60,7 @@ func (c *UserServer) RegistrationUser(us domain.RegisterUser) (jwttoken.Response
 
 	passwordHash, err := hashPassword.Hash(us.Password)
 	if err != nil {
-		logrus.WithFields(logrus.Fields{"err": err}).Error("field hash password")
+		log.WithFields(logrus.Fields{"err": err}).Error("field hash password")
 
 		return jwttoken.ResponseJWTUser{}, ErrServic
 	}
@@ -76,13 +73,8 @@ func (c *UserServer) RegistrationUser(us domain.RegisterUser) (jwttoken.Response
 
 	id, name, err := c.r.RegistrationUser(user)
 	if err != nil {
-		if errors.Is(err, postgresql.ErrorDuplicated) {
-			log.WithField("err", err).Error("field duplicated")
-
-			return jwttoken.ResponseJWTUser{}, ErrDuplicated
-		}
-		log.WithField("err", err).Error("field registration user")
-		return jwttoken.ResponseJWTUser{}, ErrDatabase
+		log.Error("error registration user: ", err)
+		return jwttoken.ResponseJWTUser{}, RegisterErrDatabase(err)
 	}
 
 	tokens, err := jwttoken.PostJWT(c.SecretKey, id, name)
@@ -111,13 +103,8 @@ func (c *UserServer) AuthenticationUser(us domain.AuthenticationUser) (jwttoken.
 
 	id, name, err := c.a.AuthenticationUser(us.Email, us.Password)
 	if err != nil {
-		if errors.Is(err, postgresql.ErrorNotFound) {
-			log.WithField("err", err).Error("not found")
-
-			return jwttoken.ResponseJWTUser{}, ErrNoFound
-		}
-		log.WithField("err", err).Error("field authentication user")
-		return jwttoken.ResponseJWTUser{}, ErrDatabase
+		log.Error("error authentication user: ", err)
+		return jwttoken.ResponseJWTUser{}, RegisterErrDatabase(err)
 	}
 
 	token, err := jwttoken.PostJWT(c.SecretKey, id, name)
@@ -147,12 +134,8 @@ func (c *UserServer) DeleteUser(us domain.DeleteUser) error {
 
 	err := c.d.DeleteUser(us.Email, us.Password)
 	if err != nil {
-		if errors.Is(err, postgresql.ErrorNotFound) {
-			log.WithField("err", err).Error("not found")
-			return ErrNoFound
-		}
-		log.WithField("err", err).Error("field delete user")
-		return ErrDatabase
+		log.Error("error delete user: ", err)
+		return RegisterErrDatabase(err)
 	}
 
 	log.Info("success delete user")

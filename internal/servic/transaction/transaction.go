@@ -1,10 +1,7 @@
 package transaction
 
 import (
-	"errors"
-
 	"github.com/financial_tracer/internal/domain"
-	"github.com/financial_tracer/internal/infastructure/db/postgresql"
 	"github.com/go-playground/validator/v10"
 	"github.com/sirupsen/logrus"
 )
@@ -69,17 +66,8 @@ func (ts *TransactionServer) CreateTransaction(idUser uint, idCategory uint, tra
 
 	id, err := ts.c.CreateTransaction(idUser, idCategory, tran)
 	if err != nil {
-		if errors.Is(err, postgresql.ErrorNotFound) {
-			log.WithField("err", err).Error("error create transaction")
-			return 0, ErrNoFound
-		}
-		if errors.Is(err, postgresql.ErrorLimit) {
-			log.WithField("err", err).Error("error create transaction")
-			return 0, ErrLimit
-		}
-		log.WithField("err", err).Error("error create transaction")
-
-		return 0, ErrDatabase
+		log.Error("error create transaction: ", err)
+		return 0, RegisterErrDatabase(err)
 	}
 	log.Info("success create transaction")
 
@@ -97,14 +85,8 @@ func (ts *TransactionServer) GetTransaction(idTransaction uint) (domain.Transact
 
 	transaction, err := ts.g.GetTransaction(idTransaction)
 	if err != nil {
-		if errors.Is(err, postgresql.ErrorNotFound) {
-			log.WithField("err", err).Error("error get transaction")
-
-			return domain.TransactionOutput{}, ErrNoFound
-		}
-		log.WithField("err", err).Error("error get transaction")
-
-		return domain.TransactionOutput{}, ErrDatabase
+		log.Error("error get transaction: ", err)
+		return domain.TransactionOutput{}, RegisterErrDatabase(err)
 	}
 
 	log.Info("success get transaction")
@@ -130,14 +112,8 @@ func (ts *TransactionServer) UpdateTransaction(idTransaction uint, newTransactio
 
 	transaction, err := ts.u.UpdateTransaction(idTransaction, newTransaction)
 	if err != nil {
-		if errors.Is(err, postgresql.ErrorNotFound) {
-			log.WithField("err", err).Error("transaction is not found")
-
-			return domain.TransactionOutput{}, ErrNoFound
-		}
-		log.WithField("err", err).Error("field update transaction")
-
-		return domain.TransactionOutput{}, ErrDatabase
+		log.Error("error update transaction: ", err)
+		return domain.TransactionOutput{}, RegisterErrDatabase(err)
 	}
 	log.Info("success update transaction")
 
@@ -156,14 +132,8 @@ func (ts *TransactionServer) DeleteTransaction(idTransaction uint) error {
 
 	err := ts.d.DeleteTransaction(idTransaction)
 	if err != nil {
-		if errors.Is(err, postgresql.ErrorNotFound) {
-			log.WithField("err", err).Error("error delete transaction")
-
-			return ErrNoFound
-		}
-		log.WithField("err", err).Error("error delete transaction")
-
-		return ErrDatabase
+		log.Error("error delete transaction: ", err)
+		return RegisterErrDatabase(err)
 	}
 
 	log.Info("success delete transaction")

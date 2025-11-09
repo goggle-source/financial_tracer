@@ -2,11 +2,9 @@ package category
 
 import (
 	"context"
-	"errors"
 	"strconv"
 
 	"github.com/financial_tracer/internal/domain"
-	"github.com/financial_tracer/internal/infastructure/db/postgresql"
 	"github.com/go-playground/validator/v10"
 	"github.com/sirupsen/logrus"
 )
@@ -32,9 +30,9 @@ type CategoryTypeRepository interface {
 }
 
 type Redis interface {
-	HsetCategory(ctx context.Context, key string, category domain.CategoryOutput) error
-	HgetCategory(ctx context.Context, key string) (map[string]string, error)
-	HdelCategory(ctx context.Context, key string) error
+	HsetCategory(ctx context.Context, id uint, category domain.CategoryOutput) error
+	HgetCategory(ctx context.Context, id uint) (map[string]string, error)
+	HdelCategory(ctx context.Context, id uint) error
 }
 
 type CategoryServer struct {
@@ -85,25 +83,13 @@ func (cs *CategoryServer) CreateCategory(userID uint, category domain.CategoryIn
 
 	id, err := cs.c.CreateCategory(userID, category)
 	if err != nil {
-		if errors.Is(err, postgresql.ErrorNotFound) {
-			log.WithField("err", err).Error("category is not found")
-
-			return 0, ErrNoFound
-		}
-		if errors.Is(err, postgresql.ErrorDuplicated) {
-			log.WithField("err", err).Error("field duiplicated category")
-
-			return 0, ErrDuplicated
-		}
-		log.WithField("err", err).Error("invalid create category")
-
-		return 0, ErrDatabase
+		log.Error("error create category: ", err)
+		return 0, RegsiterErrorDatabase(err)
 	}
 
 	canal := make(chan error)
 
 	go func(canal chan error) {
-		str := strconv.FormatUint(uint64(id), 10)
 		category := domain.CategoryOutput{
 			Name:        category.Name,
 			Description: category.Description,
@@ -111,7 +97,7 @@ func (cs *CategoryServer) CreateCategory(userID uint, category domain.CategoryIn
 			Limit:       category.Limit,
 			UserID:      userID,
 		}
-		err := cs.rbd.HsetCategory(context.Background(), str, category)
+		err := cs.rbd.HsetCategory(context.Background(), id, category)
 		canal <- err
 	}(canal)
 
@@ -133,9 +119,8 @@ func (cs *CategoryServer) GetCategory(idCategory uint) (domain.CategoryOutput, e
 	})
 
 	log.Info("start get category")
-	str := strconv.FormatUint(uint64(idCategory), 10)
 
-	result, err := cs.rbd.HgetCategory(context.Background(), "category"+str)
+	result, err := cs.rbd.HgetCategory(context.Background(), idCategory)
 	if err == nil {
 		log.Info("get cateogry is cash: ", result)
 		limit, _ := strconv.Atoi(result["limit"])
@@ -153,16 +138,8 @@ func (cs *CategoryServer) GetCategory(idCategory uint) (domain.CategoryOutput, e
 
 	category, err := cs.g.GetCategory(idCategory)
 	if err != nil {
-
-		if errors.Is(err, postgresql.ErrorNotFound) {
-			log.WithField("err", err).Error("category is not found")
-
-			return domain.CategoryOutput{}, ErrNoFound
-		}
-
-		log.WithField("err", err).Error("invalid get category")
-
-		return domain.CategoryOutput{}, ErrDatabase
+		log.Error("error get category: ", err)
+		return domain.CategoryOutput{}, RegsiterErrorDatabase(err)
 	}
 	log.Info("success get category")
 
@@ -187,26 +164,14 @@ func (cs *CategoryServer) UpdateCategory(idCategory uint, newCategory domain.Cat
 
 	category, err := cs.u.UpdateCategory(idCategory, newCategory)
 	if err != nil {
-		if errors.Is(err, postgresql.ErrorNotFound) {
-			log.WithField("err", err).Error("category is not found")
-
-			return domain.CategoryOutput{}, ErrNoFound
-		}
-		if errors.Is(err, postgresql.ErrorDuplicated) {
-			log.WithField("err", err).Error("field duiplicated category")
-
-			return domain.CategoryOutput{}, ErrDuplicated
-		}
-		log.WithField("err", err).Error("invalid update category")
-
-		return domain.CategoryOutput{}, ErrDatabase
+		log.Error("error update category: ", err)
+		return domain.CategoryOutput{}, RegsiterErrorDatabase(err)
 	}
 
 	canal := make(chan error, 1)
 
 	go func(chan error) {
-		str := strconv.FormatUint(uint64(idCategory), 10)
-		err := cs.rbd.HsetCategory(context.Background(), "category"+str, category)
+		err := cs.rbd.HsetCategory(context.Background(), idCategory, category)
 		canal <- err
 	}(canal)
 
@@ -231,21 +196,14 @@ func (cs *CategoryServer) DeleteCategory(idCategory uint) error {
 
 	err := cs.d.DeleteCategory(idCategory)
 	if err != nil {
-		if errors.Is(err, postgresql.ErrorNotFound) {
-			log.WithField("err", err).Error("category is not found")
-
-			return ErrNoFound
-		}
-		log.WithField("err", err).Error("invalid delete user")
-
-		return ErrDatabase
+		log.Error("error delete category: ", err)
+		return RegsiterErrorDatabase(err)
 	}
 
 	canal := make(chan error)
 
 	go func(canal chan error) {
-		str := strconv.FormatUint(uint64(idCategory), 10)
-		err := cs.rbd.HdelCategory(context.Background(), "category"+str)
+		err := cs.rbd.HdelCategory(context.Background(), idCategory)
 		canal <- err
 	}(canal)
 
@@ -275,13 +233,8 @@ func (cs *CategoryServer) CategoryType(typeFound string) ([]domain.CategoryOutpu
 
 	result, err := cs.t.CategoriesType(typeFound)
 	if err != nil {
-		if errors.Is(err, postgresql.ErrorNotFound) {
-			log.WithField("err", err).Error("category is not found")
-			return []domain.CategoryOutput{}, ErrNoFound
-		}
-
-		log.WithField("err", err).Error("err database")
-		return []domain.CategoryOutput{}, ErrDatabase
+		log.Error("error find category type: ", err)
+		return []domain.CategoryOutput{}, RegsiterErrorDatabase(err)
 	}
 
 	log.Info("gets categories type")
