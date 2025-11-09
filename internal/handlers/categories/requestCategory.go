@@ -4,6 +4,7 @@ package categoryHandlers
 type RequestCreateCategory struct {
 	Name        string `json:"name" binding:"required" example:"jonn"`
 	Limit       int    `json:"limit" binding:"required" exemple:"2000"`
+	Type        string `json:"type" exemple:"store"`
 	Description string `json:"description" binding:"required" example:"Shopping in the store"`
 }
 
@@ -12,5 +13,6 @@ type RequestUpdateCategory struct {
 	Name        string `json:"name" binding:"required" example:"jonn"`
 	Limit       int    `json:"limit" binding:"required" example:"2000"`
 	Description string `json:"description" binding:"required" example:"car expenses"`
+	Type        string `json:"type" example:"car"`
 	CategoryId  uint   `json:"category_id" example:"2"`
 }

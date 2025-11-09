@@ -10,6 +10,7 @@ import (
 	categoryHandlers "github.com/financial_tracer/internal/handlers/categories"
 	transactionHandlers "github.com/financial_tracer/internal/handlers/transaction"
 	userHandlers "github.com/financial_tracer/internal/handlers/user"
+	"github.com/financial_tracer/internal/infastructure/cash"
 	"github.com/financial_tracer/internal/infastructure/db/postgresql"
 	"github.com/financial_tracer/internal/servic/category"
 	"github.com/financial_tracer/internal/servic/transaction"
@@ -25,9 +26,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	red := cash.CreateRealRedis(*cfg)
+
 	users := user.CreateUserServer(db, db, db, cfg.App.SercretKey, log)
 	handlersUser := userHandlers.CreateHandlersUser(cfg.App.SercretKey, users, users, users, log)
-	categories := category.CreateCategoryServer(db, db, db, db, db, log)
+	categories := category.CreateCategoryServer(db, db, db, db, db, log, &red)
 	handlersCategory := categoryHandlers.CreateHandlersCategory(categories, categories, categories, categories, categories, log)
 	transactions := transaction.CreateTransactionServer(db, db, db, db, log)
 	handlersTransaction := transactionHandlers.CreateTransactionHandlers(transactions, transactions, transactions, transactions, log)

@@ -38,7 +38,6 @@ type CategoryOutput struct {
 	Description string `json:"description"`
 }
 
-// @Name	Transaction
 type TransactionInput struct {
 	Name        string `json:"name" validate:"required,max=60,min=3"`
 	Count       int    `json:"count" validate:"required"`

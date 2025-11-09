@@ -36,7 +36,8 @@ type UserServer struct {
 	SecretKey string
 }
 
-func CreateUserServer(r RegistrationuserRepository, d DeleteUserRepository, a AuthenticationUserRepository, sk string, log *logrus.Logger) *UserServer {
+func CreateUserServer(r RegistrationuserRepository, d DeleteUserRepository, a AuthenticationUserRepository, sk string,
+	log *logrus.Logger) *UserServer {
 	return &UserServer{
 		log:       log,
 		d:         d,

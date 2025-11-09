@@ -63,7 +63,7 @@ func CreateTransactionHandlers(c CreateTransactionServic,
 //	@Failure		400	{object}	api.ErrorResponse			"Некорректные входные данные"
 //	@Failure		500	{object}	api.ErrorResponse			"Ошибка сервера"
 //	@Failure		400	{object}	api.ErrorResponse			"Некорректные данные"
-//	@Router			/transaction/create [post]
+//	@Router			/transaction/ [post]
 //
 //	@Security		jwtAuth
 func (th *TransactionHandlers) PostTransaction(c *gin.Context) {
@@ -120,7 +120,7 @@ func (th *TransactionHandlers) PostTransaction(c *gin.Context) {
 //	@Failure		500	{object}	api.ErrorResponse	"Ошибка сервера"
 //	@Failure		400	{object}	api.ErrorResponse	"Некорректные данные"
 //	@Failure		404	{object}	api.ErrorResponse	"Транзакция не найдена"
-//	@Router			/transaction/get [get]
+//	@Router			/transaction/{id} [get]
 //
 //	@Security		jwtAuth
 func (th *TransactionHandlers) GetTransaction(c *gin.Context) {
@@ -167,7 +167,7 @@ func (th *TransactionHandlers) GetTransaction(c *gin.Context) {
 //	@Failure		500	{object}	api.ErrorResponse			"Ошибка сервера"
 //	@Failure		400	{object}	api.ErrorResponse			"Некорректные данные"
 //	@Failure		404	{object}	api.ErrorResponse			"Транзакция не найдена"
-//	@Router			/transaction/update [put]
+//	@Router			/transaction/ [put]
 //
 //	@Security		jwtAuth
 func (th *TransactionHandlers) UpdateTransaction(c *gin.Context) {
@@ -207,7 +207,7 @@ func (th *TransactionHandlers) UpdateTransaction(c *gin.Context) {
 //	@Description	Удаление 1 транзакции для 1 пользователя
 //	@Tags			transaction
 //	@Produce		json
-//	@Param			req	path		int					true	"id транзакции"
+//	@Param			id	path		int					true	"id транзакции"
 //	@Success		200	{object}	api.SuccessResponse	"Транзакция удалена"
 //
 //	@Failure		401	{object}	api.ErrorResponse	"Ошибка авторизации"
@@ -216,7 +216,7 @@ func (th *TransactionHandlers) UpdateTransaction(c *gin.Context) {
 //	@Failure		500	{object}	api.ErrorResponse	"Ошибка сервера"
 //	@Failure		400	{object}	api.ErrorResponse	"Некорректные данные"
 //	@Failure		404	{object}	api.ErrorResponse	"Транзакция не найдена"
-//	@Router			/transaction/delete [delete]
+//	@Router			/transaction/{id} [delete]
 //
 //	@Security		jwtAuth
 func (th *TransactionHandlers) DeleteTransaction(c *gin.Context) {

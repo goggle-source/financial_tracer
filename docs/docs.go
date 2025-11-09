@@ -22,7 +22,68 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/category/create": {
+        "/category/": {
+            "put": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "description": "Обновление всех характеристики категории",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "обновление пользователя",
+                "parameters": [
+                    {
+                        "description": "данные для обновление категории",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/categoryHandlers.RequestUpdateCategory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "$ref": "#/definitions/api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный данные",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Категория не найдена",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -79,26 +140,26 @@ const docTemplate = `{
                 }
             }
         },
-        "/category/delete/{id}": {
-            "delete": {
+        "/category/type/{type}": {
+            "get": {
                 "security": [
                     {
                         "jwtAuth": []
                     }
                 ],
-                "description": "Удаление категории конкретного пользователя",
+                "description": "получение категории или категорий по определенномк типу, который передается в URL пути",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "categories"
                 ],
-                "summary": "Удаление категории",
+                "summary": "получение категории или категорий по типу",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "userID для удаление категории",
-                        "name": "id",
+                        "type": "string",
+                        "description": "тип, по которому будут выбиратся категории или категория",
+                        "name": "type",
                         "in": "path",
                         "required": true
                     }
@@ -116,12 +177,6 @@ const docTemplate = `{
                             "$ref": "#/definitions/api.ErrorResponse"
                         }
                     },
-                    "401": {
-                        "description": "Ошибка авторизации",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
                     "404": {
                         "description": "Категория не найдена",
                         "schema": {
@@ -137,7 +192,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/category/get//{id}": {
+        "/category/{id}": {
             "get": {
                 "security": [
                     {
@@ -155,7 +210,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "userID для получение категории",
+                        "description": "ID категории",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -193,35 +248,28 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/category/update": {
-            "put": {
+            },
+            "delete": {
                 "security": [
                     {
                         "jwtAuth": []
                     }
                 ],
-                "description": "Обновление всех характеристики категории",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Удаление категории конкретного пользователя",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "categories"
                 ],
-                "summary": "обновление пользователя",
+                "summary": "Удаление категории",
                 "parameters": [
                     {
-                        "description": "данные для обновление категории",
-                        "name": "req",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/categoryHandlers.RequestUpdateCategory"
-                        }
+                        "type": "integer",
+                        "description": "ID категории",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -232,7 +280,7 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Некорректный данные",
+                        "description": "Некорректные данные",
                         "schema": {
                             "$ref": "#/definitions/api.ErrorResponse"
                         }
@@ -402,180 +450,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/transaction/create": {
-            "post": {
-                "security": [
-                    {
-                        "jwtAuth": []
-                    }
-                ],
-                "description": "Создание 1 транзакции для пользователя",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "transaction"
-                ],
-                "summary": "Создание транзакции",
-                "parameters": [
-                    {
-                        "description": "данные для создание пользователя",
-                        "name": "req",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/transactionHandlers.RequestCreateTransaction"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Транзакция создана успешно",
-                        "schema": {
-                            "$ref": "#/definitions/api.SuccessResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Некорректные данные",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Ошибка авторизации",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка сервера",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/transaction/delete": {
-            "delete": {
-                "security": [
-                    {
-                        "jwtAuth": []
-                    }
-                ],
-                "description": "Удаление 1 транзакции для 1 пользователя",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "transaction"
-                ],
-                "summary": "Удаление транзакции",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id транзакции",
-                        "name": "req",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Транзакция удалена",
-                        "schema": {
-                            "$ref": "#/definitions/api.SuccessResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Некорректные данные",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Ошибка авторизации",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Транзакция не найдена",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка сервера",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/transaction/get": {
-            "get": {
-                "security": [
-                    {
-                        "jwtAuth": []
-                    }
-                ],
-                "description": "Получение 1 транзакции для 1 пользователя",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "transaction"
-                ],
-                "summary": "Получение транзакции",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id транзакции",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "good",
-                        "schema": {
-                            "$ref": "#/definitions/api.SuccessResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Некорректные данные",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Ошибка авторизации",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Транзакция не найдена",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Ошибка сервера",
-                        "schema": {
-                            "$ref": "#/definitions/api.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/transaction/update": {
+        "/transaction/": {
             "put": {
                 "security": [
                     {
@@ -636,10 +511,179 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "description": "Создание 1 транзакции для пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Создание транзакции",
+                "parameters": [
+                    {
+                        "description": "данные для создание пользователя",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/transactionHandlers.RequestCreateTransaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Транзакция создана успешно",
+                        "schema": {
+                            "$ref": "#/definitions/api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
             }
         },
-        "/user/delete": {
-            "post": {
+        "/transaction/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "description": "Получение 1 транзакции для 1 пользователя",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Получение транзакции",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id транзакции",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "good",
+                        "schema": {
+                            "$ref": "#/definitions/api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Транзакция не найдена",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "description": "Удаление 1 транзакции для 1 пользователя",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Удаление транзакции",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id транзакции",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Транзакция удалена",
+                        "schema": {
+                            "$ref": "#/definitions/api.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Ошибка авторизации",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Транзакция не найдена",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/api.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/": {
+            "delete": {
                 "security": [
                     {
                         "jwtAuth": []
@@ -727,6 +771,9 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "jonn"
+                },
+                "type": {
+                    "type": "string"
                 }
             }
         },
@@ -753,6 +800,10 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "jonn"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "car"
                 }
             }
         },
@@ -873,7 +924,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8080",
-	BasePath:         "/financial_tracker",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Финансовый Трекер",
 	Description:      "API для работы с финансовым трекером",

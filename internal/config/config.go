@@ -7,9 +7,10 @@ import (
 )
 
 type Config struct {
-	App    AppB       `mapstructure:"app"`
-	Server HTTPServer `mapstructure:"server"`
-	DB     DataBase   `mapstructure:"database"`
+	App    AppB        `mapstructure:"app"`
+	Server HTTPServer  `mapstructure:"server"`
+	DB     DataBase    `mapstructure:"database"`
+	Redis  RedisConfig `mapstructure:"Redis"`
 }
 
 type AppB struct {
@@ -31,6 +32,12 @@ type DataBase struct {
 	PortDb   string `mapstructure:"portDb"`
 	DbName   string `mapstructure:"dbName"`
 	Time     string `mapstructure:"TimeZone"`
+}
+
+type RedisConfig struct {
+	Addr     string `mapstructure:"addr"`
+	Password string `mapstructure:"password"`
+	DB       int    `mapstructure:"DB"`
 }
 
 func LoadConfig() *Config {

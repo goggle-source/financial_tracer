@@ -18,7 +18,7 @@ func (d *Db) CreateTransaction(idUser uint, idCategory uint, tran domain.Transac
 		Description: tran.Description,
 	}
 	var categor Category
-	result := tx.Select("limit").First(categor, idCategory)
+	result := tx.Select("limit").First(&categor, idCategory)
 	if result.Error != nil {
 		tx.Rollback()
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -68,7 +68,7 @@ func (d *Db) UpdateTransaction(transactionId uint, newTransaction domain.Transac
 		Description: newTransaction.Description,
 	}
 
-	result := d.DB.Updates(&transaction)
+	result := d.DB.Where("id = ?", transactionId).Updates(&transaction)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return domain.TransactionOutput{}, ErrorNotFound

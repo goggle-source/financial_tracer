@@ -1,11 +1,12 @@
 package handlers
 
 import (
-	_ "github.com/financial_tracer/docs"
+	"github.com/financial_tracer/docs"
 	categoryHandlers "github.com/financial_tracer/internal/handlers/categories"
 	"github.com/financial_tracer/internal/handlers/middlewares"
 	transactionHandlers "github.com/financial_tracer/internal/handlers/transaction"
 	userHandlers "github.com/financial_tracer/internal/handlers/user"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	swaggerFiles "github.com/swaggo/files"
@@ -20,7 +21,6 @@ import (
 // @contact.url				https://github.com/goggle-source
 // @contact.email				asssv0423348@gmail.com
 // @host						localhost:8080
-// @BasePath					/financial_tracker
 //
 // @securityDefinitions.apiKey	jwtAuth
 // @in							header
@@ -30,43 +30,47 @@ func Router(users *userHandlers.HandlersUser, category *categoryHandlers.Categor
 	r := gin.Default()
 
 	api := r.Group("/financial_tracker")
-	go api.Use(middlewares.Logging(log))
-	go api.Use(middlewares.CORSMiddleware())
+	api.Use(middlewares.Logging(log))
+	api.Use(middlewares.CORSMiddleware())
 
-	go api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	registration := api.Group("/registration")
 	{
 
-		go registration.POST("/register", users.Registration)
-		go registration.POST("/login", users.Authentication)
+		registration.POST("/register", users.Registration)
+		registration.POST("/login", users.Authentication)
 
-		go registration.POST("/get_access_token", users.GetAccessToken)
+		registration.POST("/access_token", users.GetAccessToken)
 	}
 
 	user := api.Group("/user")
-	go user.Use(middlewares.Logging(log))
-	go user.Use(middlewares.JWToken(secretKey, log))
+	user.Use(middlewares.Logging(log))
+	user.Use(middlewares.JWToken(secretKey, log))
 	{
-		go user.POST("/delete", users.DeleteUser)
+		user.DELETE("/", users.DeleteUser)
 	}
 
 	categories := api.Group("/category")
-	go categories.Use(middlewares.JWToken(secretKey, log))
+	categories.Use(middlewares.JWToken(secretKey, log))
 	{
-		go categories.GET("/get/{id}", category.GetCategory)
-		go categories.GET("/get/type/{id}", category.CategoryType)
-		go categories.POST("/create", category.PostCategory)
-		go categories.PUT("/update", category.UpdateCategory)
-		go categories.DELETE("/delete{id}", category.DeleteCategory)
+		categories.GET("/:id", category.GetCategory)
+		categories.GET("/type/:type", category.CategoryType)
+		categories.POST("/", category.PostCategory)
+		categories.PUT("/", category.UpdateCategory)
+		categories.DELETE("/:id", category.DeleteCategory)
 	}
+
 	transaction := api.Group("/transaction")
-	go transaction.Use(middlewares.JWToken(secretKey, log))
+	transaction.Use(middlewares.JWToken(secretKey, log))
 	{
-		go transaction.POST("/create", tran.PostTransaction)
-		go transaction.GET("/get/{id}", tran.GetTransaction)
-		go transaction.PUT("/update", tran.UpdateTransaction)
-		go transaction.DELETE("/delete/{id}", tran.DeleteTransaction)
+		transaction.POST("/", tran.PostTransaction)
+		transaction.GET("/:id", tran.GetTransaction)
+		transaction.PUT("/", tran.UpdateTransaction)
+		transaction.DELETE("/:id", tran.DeleteTransaction)
 	}
+
+	docs.SwaggerInfo.BasePath = "/financial_tracker"
+	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	pprof.Register(api, "/debug/pprof")
 
 	return r
 }

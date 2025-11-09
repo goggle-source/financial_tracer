@@ -20,12 +20,13 @@ func (d *Db) CreateCategory(userID uint, category domain.CategoryInput) (uint, e
 	newCategory := Category{
 		Name:        category.Name,
 		Limit:       category.Limit,
+		Type:        category.Type,
 		Description: category.Description,
 	}
 
 	err := d.DB.Model(&user).Association("Categories").Append(&newCategory)
 	if err != nil {
-		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
+		if errors.Is(err, gorm.ErrDuplicatedKey) {
 			return 0, ErrorDuplicated
 		}
 		return 0, err
@@ -47,6 +48,7 @@ func (d *Db) GetCategory(idCategory uint) (domain.CategoryOutput, error) {
 	modelCategory := domain.CategoryOutput{
 		Name:        category.Name,
 		Description: category.Description,
+		Type:        category.Type,
 		Limit:       category.Limit,
 	}
 	return modelCategory, nil
@@ -62,11 +64,12 @@ func (d *Db) UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (
 		}
 		return domain.CategoryOutput{}, result.Error
 	}
-	categor.Name = newCategory.Name
-	categor.Limit = newCategory.Limit
-	categor.Description = newCategory.Description
 
-	result = d.DB.Save(&categor)
+	result = d.DB.Model(&categor).Updates(Category{Name: newCategory.Name,
+		Description: newCategory.Description,
+		Type:        newCategory.Type},
+	)
+
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
 			return domain.CategoryOutput{}, ErrorDuplicated
@@ -77,20 +80,17 @@ func (d *Db) UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (
 	ResponseCategory := domain.CategoryOutput{
 		Name:        categor.Name,
 		Description: categor.Description,
+		Type:        categor.Type,
 		Limit:       categor.Limit,
 	}
-	return ResponseCategory, ErrorNotFound
+	return ResponseCategory, nil
 }
 
 func (d *Db) DeleteCategory(idCategory uint) error {
 
-	result := d.DB.Delete(&Category{}, idCategory)
+	result := d.DB.Unscoped().Delete(&Category{}, idCategory)
 	if result.Error != nil {
 		return result.Error
-	}
-
-	if result.RowsAffected == 0 {
-		return ErrorNotFound
 	}
 
 	return nil
@@ -100,7 +100,7 @@ func (d *Db) CategoriesType(typeFound string) ([]domain.CategoryOutput, error) {
 
 	var category []Category
 
-	result := d.DB.Find(&category, "type = ?", category)
+	result := d.DB.Where("type = ?", typeFound).Find(&category, category)
 
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -114,7 +114,7 @@ func (d *Db) CategoriesType(typeFound string) ([]domain.CategoryOutput, error) {
 
 	for _, value := range category {
 		categor := domain.CategoryOutput{
-			UserID:      value.UserID,
+			UserID:      0,
 			Name:        value.Name,
 			Limit:       value.Limit,
 			Type:        value.Type,

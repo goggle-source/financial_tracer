@@ -80,7 +80,7 @@ func CreateHandlersCategory(c CreateCategoryServic,
 //
 //	@Failure		501	{object}	api.ErrorResponse		"Ошибка сервера"
 //
-//	@Router			/category/create [post]
+//	@Router			/category/ [post]
 //
 //	@Security		jwtAuth
 func (h *CategoryHandlers) PostCategory(c *gin.Context) {
@@ -90,7 +90,7 @@ func (h *CategoryHandlers) PostCategory(c *gin.Context) {
 
 	log.Info("start create category")
 
-	newCategory := domain.CategoryInput{}
+	var newCategory RequestCreateCategory
 	if err := c.ShouldBindJSON(&newCategory); err != nil {
 		log.WithField("err", err).Error("error valid JSON")
 		api.ResponseError(c, http.StatusBadRequest, "error valid JSON")
@@ -108,6 +108,7 @@ func (h *CategoryHandlers) PostCategory(c *gin.Context) {
 	cat := domain.CategoryInput{
 		Name:        newCategory.Name,
 		Limit:       newCategory.Limit,
+		Type:        newCategory.Type,
 		Description: newCategory.Description,
 	}
 
@@ -129,7 +130,7 @@ func (h *CategoryHandlers) PostCategory(c *gin.Context) {
 //	@Description	Получение категории для конкретного пользователя
 //	@Tags			categories
 //	@Produce		json
-//	@Param			id	path		int					true	"userID для получение категории"
+//	@Param			id	path		int					true	"ID категории"
 //	@Success		200	{object}	api.SuccessResponse	"success"
 //
 //	@Failure		401	{object}	api.ErrorResponse	"Ошибка авторизации"
@@ -138,7 +139,7 @@ func (h *CategoryHandlers) PostCategory(c *gin.Context) {
 //	@Failure		400	{object}	api.ErrorResponse	"Некорректный данные"
 //	@Failure		404	{object}	api.ErrorResponse	"Категория не найдена"
 //
-//	@Router			/category/get//{id} [get]
+//	@Router			/category/{id} [get]
 //
 //	@Security		jwtAuth
 func (h *CategoryHandlers) GetCategory(c *gin.Context) {
@@ -181,7 +182,7 @@ func (h *CategoryHandlers) GetCategory(c *gin.Context) {
 //	@Failure		400	{object}	api.ErrorResponse		"Некорректный данные"
 //	@Failure		404	{object}	api.ErrorResponse		"Категория не найдена"
 //
-//	@Router			/category/update [put]
+//	@Router			/category/ [put]
 //
 //	@Security		jwtAuth
 func (h *CategoryHandlers) UpdateCategory(c *gin.Context) {
@@ -202,6 +203,7 @@ func (h *CategoryHandlers) UpdateCategory(c *gin.Context) {
 	newCategory := domain.CategoryInput{
 		Name:        updateCategory.Name,
 		Limit:       updateCategory.Limit,
+		Type:        updateCategory.Type,
 		Description: updateCategory.Description,
 	}
 
@@ -223,7 +225,7 @@ func (h *CategoryHandlers) UpdateCategory(c *gin.Context) {
 //	@Description	Удаление категории конкретного пользователя
 //	@Tags			categories
 //	@Produce		json
-//	@Param			id	path		int					true	"userID для удаление категории"
+//	@Param			id	path		int					true	"ID категории"
 //	@Success		200	{object}	api.SuccessResponse	"success"
 //
 //	@Failure		401	{object}	api.ErrorResponse	"Ошибка авторизации"
@@ -233,7 +235,7 @@ func (h *CategoryHandlers) UpdateCategory(c *gin.Context) {
 //	@Failure		400	{object}	api.ErrorResponse	"Некорректные данные"
 //	@Failure		404	{object}	api.ErrorResponse	"Категория не найдена"
 //
-//	@Router			/category/delete/{id} [delete]
+//	@Router			/category/{id} [delete]
 //
 //	@Security		jwtAuth
 func (h *CategoryHandlers) DeleteCategory(c *gin.Context) {
@@ -264,20 +266,20 @@ func (h *CategoryHandlers) DeleteCategory(c *gin.Context) {
 	api.ResponseOK(c, "user delete")
 }
 
-//CategoryType godoc
-//@Summary получение категории или категорий по типу
-//@Description получение категории или категорий по определенномк типу, который передается в URL пути
-//@Tags categories
-//@Produce json
-//@Param type path string true "тип, по которому будут выбиратся категории или категория"
-//@Success 200 {object}  api.SuccessResponse "success"
+// CategoryType godoc
+// @Summary получение категории или категорий по типу
+// @Description получение категории или категорий по определенномк типу, который передается в URL пути
+// @Tags categories
+// @Produce json
+// @Param type path string true "тип, по которому будут выбиратся категории или категория"
+// @Success 200 {object}  api.SuccessResponse "success"
+//
 //	@Failure	500	{object}	api.ErrorResponse	"Ошибка сервера"
 //	@Failure	400	{object}	api.ErrorResponse	"Некоректные входные данные"
 //	@Failure	400	{object}	api.ErrorResponse	"Некорректные данные"
 //	@Failure	404	{object}	api.ErrorResponse	"Категория не найдена"
-//@Router /category/get/type/{type} [get]
+//	@Router		/category/type/{type} [get]
 //	@Security	jwtAuth
-
 func (h *CategoryHandlers) CategoryType(c *gin.Context) {
 	const op = "handlers.CategoryType"
 
@@ -285,7 +287,7 @@ func (h *CategoryHandlers) CategoryType(c *gin.Context) {
 
 	log.Info("start gets categories type")
 
-	typeFound := c.Param("param")
+	typeFound := c.Param("type")
 	if typeFound == "" {
 		log.WithField("err", "invalid param").Error("param is not valid")
 		api.ResponseError(c, http.StatusBadRequest, "invalid param")

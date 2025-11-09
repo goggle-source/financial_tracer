@@ -54,6 +54,7 @@ func Init(cfg *config.Config) (*Db, error) {
 	err = db.AutoMigrate(
 		&User{},
 		&Category{},
+		&Transaction{},
 	)
 	if err != nil {
 		return nil, fmt.Errorf("error migrate database: %w", err)

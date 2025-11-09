@@ -303,3 +303,1044 @@
 {"err":"duplicated unique","level":"error","msg":"field duplicated","op":"user.ServerRegistrationUser","time":"2025-11-02T19:48:19+03:00"}
 {"err":"the email has already been registered","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-02T19:48:19+03:00"}
 {"exp":53102900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-02T19:48:19+03:00"}
+{"level":"fatal","msg":"error conn database: failed to connect to `user=teamlid database=f`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connectex: No connection could be made because the target machine actively refused it.\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connectex: No connection could be made because the target machine actively refused it.","time":"2025-11-03T16:04:48+03:00"}
+{"fields.time":"2025-11-03T16:05:51.9798125+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-03T16:05:51+03:00"}
+{"level":"info","msg":"start registration user","op":"handler.RegistrationUser","time":"2025-11-03T16:05:51+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-03T16:05:51+03:00"}
+{"err":"duplicated unique","level":"error","msg":"field duplicated","op":"user.ServerRegistrationUser","time":"2025-11-03T16:05:52+03:00"}
+{"err":"the email has already been registered","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-03T16:05:52+03:00"}
+{"exp":67531000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-03T16:05:52+03:00"}
+{"fields.time":"2025-11-03T16:06:12.6769813+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-03T16:06:12+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-03T16:06:12+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-03T16:06:12+03:00"}
+{"level":"info","msg":"success authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-03T16:06:12+03:00"}
+{"level":"info","msg":"success authentication user","op":"handlers.GetUser","time":"2025-11-03T16:06:12+03:00"}
+{"exp":53795000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-03T16:06:12+03:00"}
+{"fields.time":"2025-11-03T16:06:30.5883925+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:06:30+03:00"}
+{"level":"error","msg":"error Authorization header","time":"2025-11-03T16:06:30+03:00"}
+{"exp":0,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:06:30+03:00"}
+{"fields.time":"2025-11-03T16:06:45.2055506+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:06:45+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:06:45+03:00"}
+{"level":"info","msg":"5","time":"2025-11-03T16:06:45+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:06:45+03:00","user_id":5}
+{"err":"Key: 'CategoryInput.Limit' Error:Field validation for 'Limit' failed on the 'required' tag","level":"error","msg":"invalid validate","op":"category.CreateCategory","time":"2025-11-03T16:06:45+03:00","user_id":5}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:06:45+03:00"}
+{"exp":505300,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:06:45+03:00"}
+{"fields.time":"2025-11-03T16:06:52.8512591+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:06:52+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:06:52+03:00"}
+{"level":"info","msg":"5","time":"2025-11-03T16:06:52+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:06:52+03:00","user_id":5}
+{"err":"duplicated key not allowed","level":"error","msg":"invalid create category","op":"category.CreateCategory","time":"2025-11-03T16:06:52+03:00","user_id":5}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:06:52+03:00"}
+{"exp":8843500,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:06:52+03:00"}
+{"fields.time":"2025-11-03T16:07:12.5847828+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:07:12+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:07:12+03:00"}
+{"level":"info","msg":"5","time":"2025-11-03T16:07:12+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:07:12+03:00","user_id":5}
+{"err":"duplicated key not allowed","level":"error","msg":"invalid create category","op":"category.CreateCategory","time":"2025-11-03T16:07:12+03:00","user_id":5}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:07:12+03:00"}
+{"exp":5328800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:07:12+03:00"}
+{"fields.time":"2025-11-03T16:07:28.1614127+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:07:28+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:07:28+03:00"}
+{"level":"info","msg":"5","time":"2025-11-03T16:07:28+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:07:28+03:00","user_id":5}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-03T16:07:28+03:00","user_id":5}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-03T16:07:28+03:00"}
+{"exp":8773900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:07:28+03:00"}
+{"fields.time":"2025-11-03T16:07:35.5540541+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:07:35+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:07:35+03:00"}
+{"level":"info","msg":"5","time":"2025-11-03T16:07:35+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:07:35+03:00","user_id":5}
+{"err":"duplicated key not allowed","level":"error","msg":"invalid create category","op":"category.CreateCategory","time":"2025-11-03T16:07:35+03:00","user_id":5}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:07:35+03:00"}
+{"exp":4609000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:07:35+03:00"}
+{"fields.time":"2025-11-03T16:08:27.1001071+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:08:27+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:08:27+03:00"}
+{"level":"info","msg":"5","time":"2025-11-03T16:08:27+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:08:27+03:00","user_id":5}
+{"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.CreateCategory","time":"2025-11-03T16:08:27+03:00","user_id":5}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:08:27+03:00"}
+{"exp":20202200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:08:27+03:00"}
+{"fields.time":"2025-11-03T16:08:46.039131+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:08:46+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:08:46+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:08:46+03:00"}
+{"category_id":2,"err":"not found","level":"error","msg":"category is not found","op":"category.UpdateCategory","time":"2025-11-03T16:08:46+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:08:46+03:00"}
+{"exp":2954700,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:08:46+03:00"}
+{"fields.time":"2025-11-03T16:08:56.309772+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:08:56+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:08:56+03:00"}
+{"level":"info","msg":"5","time":"2025-11-03T16:08:56+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:08:56+03:00","user_id":5}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-03T16:08:56+03:00","user_id":5}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-03T16:08:56+03:00"}
+{"exp":8300800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:08:56+03:00"}
+{"fields.time":"2025-11-03T16:09:05.7668671+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:09:05+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:09:05+03:00"}
+{"category_id":17,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:09:05+03:00"}
+{"category_id":17,"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.UpdateCategory","time":"2025-11-03T16:09:05+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:09:05+03:00"}
+{"exp":4290400,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:09:05+03:00"}
+{"fields.time":"2025-11-03T16:14:04.6473105+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:14:04+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:14:04+03:00"}
+{"category_id":17,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:14:04+03:00"}
+{"category_id":17,"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.UpdateCategory","time":"2025-11-03T16:14:04+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:14:04+03:00"}
+{"exp":17155900,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:14:04+03:00"}
+{"fields.time":"2025-11-03T16:14:53.8938902+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:14:53+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:14:53+03:00"}
+{"category_id":17,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:14:53+03:00"}
+{"category_id":17,"err":"not found","level":"error","msg":"category is not found","op":"category.UpdateCategory","time":"2025-11-03T16:14:53+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:14:53+03:00"}
+{"exp":18269600,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:14:53+03:00"}
+{"fields.time":"2025-11-03T16:15:01.3515914+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:15:01+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:15:01+03:00"}
+{"level":"info","msg":"5","time":"2025-11-03T16:15:01+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:15:01+03:00","user_id":5}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-03T16:15:01+03:00","user_id":5}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-03T16:15:01+03:00"}
+{"exp":8133900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:15:01+03:00"}
+{"fields.time":"2025-11-03T16:15:15.2579585+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:15:15+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:15:15+03:00"}
+{"category_id":18,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:15:15+03:00"}
+{"category_id":18,"err":"not found","level":"error","msg":"category is not found","op":"category.UpdateCategory","time":"2025-11-03T16:15:15+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:15:15+03:00"}
+{"exp":4932300,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:15:15+03:00"}
+{"level":"fatal","msg":"error migrate database: duplicated key not allowed","time":"2025-11-03T16:16:53+03:00"}
+{"fields.time":"2025-11-03T16:20:14.999044+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:20:14+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:20:15+03:00"}
+{"level":"info","msg":"5","time":"2025-11-03T16:20:15+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:20:15+03:00","user_id":5}
+{"err":"not found","level":"error","msg":"category is not found","op":"category.CreateCategory","time":"2025-11-03T16:20:15+03:00","user_id":5}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:20:15+03:00"}
+{"exp":18192700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:20:15+03:00"}
+{"fields.time":"2025-11-03T16:20:55.1074579+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-03T16:20:55+03:00"}
+{"level":"info","msg":"start registration user","op":"handler.RegistrationUser","time":"2025-11-03T16:20:55+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-03T16:20:55+03:00"}
+{"level":"info","msg":"success registration user","op":"user.ServerRegistrationUser","time":"2025-11-03T16:20:55+03:00"}
+{"level":"info","msg":"success registration user","op":"handler.RegistrationUser","time":"2025-11-03T16:20:55+03:00"}
+{"exp":58502000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-03T16:20:55+03:00"}
+{"fields.time":"2025-11-03T16:21:13.3430703+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:21:13+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:21:13+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:21:13+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:21:13+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-03T16:21:13+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-03T16:21:13+03:00"}
+{"exp":7472900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:21:13+03:00"}
+{"fields.time":"2025-11-03T16:21:23.865206+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:21:23+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:21:23+03:00"}
+{"category_id":1,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:21:23+03:00"}
+{"category_id":1,"err":"not found","level":"error","msg":"category is not found","op":"category.UpdateCategory","time":"2025-11-03T16:21:23+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:21:23+03:00"}
+{"exp":7217600,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:21:23+03:00"}
+{"fields.time":"2025-11-03T16:25:47.3273034+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:25:47+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:25:47+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:25:47+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:25:47+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-03T16:25:47+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-03T16:25:47+03:00"}
+{"exp":7239300,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:25:47+03:00"}
+{"fields.time":"2025-11-03T16:25:49.9907234+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:25:49+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:25:49+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:25:49+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:25:49+03:00","user_id":1}
+{"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.CreateCategory","time":"2025-11-03T16:25:49+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:25:49+03:00"}
+{"exp":4989300,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:25:49+03:00"}
+{"fields.time":"2025-11-03T16:25:54.3897608+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:25:54+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:25:54+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:25:54+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:25:54+03:00","user_id":1}
+{"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.CreateCategory","time":"2025-11-03T16:25:54+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:25:54+03:00"}
+{"exp":7340900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:25:54+03:00"}
+{"fields.time":"2025-11-03T16:26:05.9606429+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:26:05+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:26:05+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:26:05+03:00"}
+{"category_id":2,"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.UpdateCategory","time":"2025-11-03T16:26:05+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:26:05+03:00"}
+{"exp":4928100,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:26:05+03:00"}
+{"fields.time":"2025-11-03T16:26:12.5191091+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:26:12+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:26:12+03:00"}
+{"category_id":1,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:26:12+03:00"}
+{"category_id":1,"err":"not found","level":"error","msg":"category is not found","op":"category.UpdateCategory","time":"2025-11-03T16:26:12+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:26:12+03:00"}
+{"exp":4861200,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:26:12+03:00"}
+{"fields.time":"2025-11-03T16:26:15.9895388+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:26:15+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:26:15+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:26:15+03:00"}
+{"category_id":2,"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.UpdateCategory","time":"2025-11-03T16:26:15+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:26:15+03:00"}
+{"exp":4823300,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:26:15+03:00"}
+{"fields.time":"2025-11-03T16:26:46.2979396+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:26:46+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:26:46+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:26:46+03:00"}
+{"category_id":2,"err":"duplicated key not allowed","level":"error","msg":"invalid update category","op":"category.UpdateCategory","time":"2025-11-03T16:26:46+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:26:46+03:00"}
+{"exp":17298300,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:26:46+03:00"}
+{"fields.time":"2025-11-03T16:27:13.5161806+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:27:13+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:27:13+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:27:13+03:00"}
+{"category_id":2,"err":"not found","level":"error","msg":"category is not found","op":"category.UpdateCategory","time":"2025-11-03T16:27:13+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:27:13+03:00"}
+{"exp":19035100,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:27:13+03:00"}
+{"fields.time":"2025-11-03T16:27:24.3849362+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:27:24+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:27:24+03:00"}
+{"category_id":1,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:27:24+03:00"}
+{"category_id":1,"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.UpdateCategory","time":"2025-11-03T16:27:24+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:27:24+03:00"}
+{"exp":4312300,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:27:24+03:00"}
+{"fields.time":"2025-11-03T16:27:29.9181327+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:27:29+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:27:29+03:00"}
+{"category_id":1,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:27:29+03:00"}
+{"category_id":1,"err":"not found","level":"error","msg":"category is not found","op":"category.UpdateCategory","time":"2025-11-03T16:27:29+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:27:29+03:00"}
+{"exp":4732700,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:27:29+03:00"}
+{"fields.time":"2025-11-03T16:27:50.7176075+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:27:50+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:27:50+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:27:50+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:27:50+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-03T16:27:50+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-03T16:27:50+03:00"}
+{"exp":7924800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:27:50+03:00"}
+{"fields.time":"2025-11-03T16:28:21.2386595+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:28:21+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:28:21+03:00"}
+{"category_id":5,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:28:21+03:00"}
+{"category_id":5,"err":"not found","level":"error","msg":"category is not found","op":"category.UpdateCategory","time":"2025-11-03T16:28:21+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:28:21+03:00"}
+{"exp":5004400,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:28:21+03:00"}
+{"fields.time":"2025-11-03T16:28:27.2470624+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:28:27+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:28:27+03:00"}
+{"category_id":1,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:28:27+03:00"}
+{"category_id":1,"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.UpdateCategory","time":"2025-11-03T16:28:27+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:28:27+03:00"}
+{"exp":4545400,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:28:27+03:00"}
+{"fields.time":"2025-11-03T16:28:50.9210864+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:28:50+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:28:50+03:00"}
+{"category_id":1,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:28:50+03:00"}
+{"category_id":1,"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.UpdateCategory","time":"2025-11-03T16:28:50+03:00"}
+{"level":"error","msg":"error update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:28:50+03:00"}
+{"exp":17812100,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:28:50+03:00"}
+{"fields.time":"2025-11-03T16:28:54.3354854+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:28:54+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:28:54+03:00"}
+{"category_id":1,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:28:54+03:00"}
+{"category_id":1,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:28:54+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:28:54+03:00"}
+{"exp":4609500,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:28:54+03:00"}
+{"fields.time":"2025-11-03T16:31:37.1857871+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:31:37+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:31:37+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:31:37+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:31:37+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:31:37+03:00"}
+{"exp":9024800,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:31:37+03:00"}
+{"fields.time":"2025-11-03T16:32:35.3833406+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:32:35+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:32:35+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:32:35+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:32:35+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:32:35+03:00"}
+{"exp":4982900,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:32:35+03:00"}
+{"fields.time":"2025-11-03T16:32:39.3170204+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:32:39+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:32:39+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:32:39+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:32:39+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:32:39+03:00"}
+{"exp":4967800,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:32:39+03:00"}
+{"fields.time":"2025-11-03T16:32:57.4569485+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:32:57+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:32:57+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:32:57+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:32:57+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:32:57+03:00"}
+{"exp":6774600,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:32:57+03:00"}
+{"fields.time":"2025-11-03T16:33:13.4348487+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:13+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:13+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:13+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:13+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:13+03:00"}
+{"exp":4739700,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:13+03:00"}
+{"fields.time":"2025-11-03T16:33:41.276297+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:41+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:41+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:41+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:41+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:41+03:00"}
+{"exp":18567100,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:41+03:00"}
+{"fields.time":"2025-11-03T16:33:44.1305756+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:44+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"exp":4788200,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:44+03:00"}
+{"fields.time":"2025-11-03T16:33:44.3458145+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:44+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"exp":5217100,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:44+03:00"}
+{"fields.time":"2025-11-03T16:33:44.5295091+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:44+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"exp":4387000,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:44+03:00"}
+{"fields.time":"2025-11-03T16:33:44.6953435+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:44+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"exp":4092300,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:44+03:00"}
+{"fields.time":"2025-11-03T16:33:44.8570543+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:44+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"exp":5525700,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:44+03:00"}
+{"fields.time":"2025-11-03T16:33:44.9990163+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:44+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:44+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"exp":3263100,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"fields.time":"2025-11-03T16:33:45.1675979+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"exp":4383100,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"fields.time":"2025-11-03T16:33:45.3195144+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"exp":4134800,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"fields.time":"2025-11-03T16:33:45.4797598+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"exp":4561700,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"fields.time":"2025-11-03T16:33:45.6641879+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"exp":3313800,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"fields.time":"2025-11-03T16:33:45.8157542+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"exp":4036400,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"fields.time":"2025-11-03T16:33:45.992495+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:45+03:00"}
+{"exp":4210900,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:45+03:00"}
+{"fields.time":"2025-11-03T16:33:46.1504518+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"exp":4271300,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"fields.time":"2025-11-03T16:33:46.3110924+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"exp":3865400,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"fields.time":"2025-11-03T16:33:46.485278+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"exp":5499700,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"fields.time":"2025-11-03T16:33:46.654772+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"exp":4288600,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"fields.time":"2025-11-03T16:33:46.8237277+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"exp":4586700,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"fields.time":"2025-11-03T16:33:46.990197+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:46+03:00"}
+{"exp":4219100,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:46+03:00"}
+{"fields.time":"2025-11-03T16:33:59.9007235+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:59+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:59+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:59+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:33:59+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:33:59+03:00"}
+{"exp":5313300,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:33:59+03:00"}
+{"fields.time":"2025-11-03T16:34:04.2365173+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:34:04+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:34:04+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:34:04+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:34:04+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:34:04+03:00"}
+{"exp":5029600,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:34:04+03:00"}
+{"fields.time":"2025-11-03T16:34:11.3706621+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:34:11+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:34:11+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:34:11+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:34:11+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:34:11+03:00"}
+{"exp":4846400,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:34:11+03:00"}
+{"fields.time":"2025-11-03T16:34:34.0606753+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/update","time":"2025-11-03T16:34:34+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:34:34+03:00"}
+{"category_id":2,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-03T16:34:34+03:00"}
+{"category_id":2,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-03T16:34:34+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-03T16:34:34+03:00"}
+{"exp":4310500,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/update","time":"2025-11-03T16:34:34+03:00"}
+{"fields.time":"2025-11-03T16:35:51.8897273+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:35:51+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:35:51+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:35:51+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:35:51+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-03T16:35:51+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-03T16:35:51+03:00"}
+{"exp":7488900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:35:51+03:00"}
+{"fields.time":"2025-11-03T16:35:54.2095686+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:35:54+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:35:54+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:35:54+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:35:54+03:00","user_id":1}
+{"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.CreateCategory","time":"2025-11-03T16:35:54+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:35:54+03:00"}
+{"exp":4837400,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:35:54+03:00"}
+{"fields.time":"2025-11-03T16:47:14.8670045+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T16:47:14+03:00"}
+{"exp":12967700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T16:47:14+03:00"}
+{"fields.time":"2025-11-03T16:47:14.898658+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T16:47:14+03:00"}
+{"fields.time":"2025-11-03T16:47:14.898658+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T16:47:14+03:00"}
+{"fields.time":"2025-11-03T16:47:14.898658+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T16:47:14+03:00"}
+{"exp":565900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T16:47:14+03:00"}
+{"exp":565900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T16:47:14+03:00"}
+{"exp":4537900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T16:47:14+03:00"}
+{"fields.time":"2025-11-03T16:47:15.3668813+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T16:47:15+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T16:47:15+03:00"}
+{"fields.time":"2025-11-03T16:47:15.3688009+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T16:47:15+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T16:47:15+03:00"}
+{"fields.time":"2025-11-03T16:50:30.1711848+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:50:30+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:50:30+03:00"}
+{"level":"info","msg":"\u003cnil\u003e","time":"2025-11-03T16:50:30+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-11-03T16:50:30+03:00"}
+{"exp":505100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:50:30+03:00"}
+{"fields.time":"2025-11-03T16:50:58.7035616+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-03T16:50:58+03:00"}
+{"level":"info","msg":"start registration user","op":"handler.RegistrationUser","time":"2025-11-03T16:50:58+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-03T16:50:58+03:00"}
+{"err":"duplicated unique","level":"error","msg":"field duplicated","op":"user.ServerRegistrationUser","time":"2025-11-03T16:50:58+03:00"}
+{"err":"the email has already been registered","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-03T16:50:58+03:00"}
+{"exp":52688200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-03T16:50:58+03:00"}
+{"fields.time":"2025-11-03T16:51:05.6633814+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-03T16:51:05+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-03T16:51:05+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-03T16:51:05+03:00"}
+{"level":"info","msg":"success authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-03T16:51:05+03:00"}
+{"level":"info","msg":"success authentication user","op":"handlers.GetUser","time":"2025-11-03T16:51:05+03:00"}
+{"exp":52284100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-03T16:51:05+03:00"}
+{"fields.time":"2025-11-03T16:51:26.3189585+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:51:26+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:51:26+03:00"}
+{"level":"info","msg":"\u003cnil\u003e","time":"2025-11-03T16:51:26+03:00"}
+{"level":"error","msg":"error get userID","op":"handlers.PostCategory","time":"2025-11-03T16:51:26+03:00"}
+{"exp":1059200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:51:26+03:00"}
+{"fields.time":"2025-11-03T16:51:35.4508246+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:51:35+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:51:35+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:51:35+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:51:35+03:00","user_id":1}
+{"err":"Key: 'CategoryInput.Limit' Error:Field validation for 'Limit' failed on the 'required' tag","level":"error","msg":"invalid validate","op":"category.CreateCategory","time":"2025-11-03T16:51:35+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:51:35+03:00"}
+{"exp":13731000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:51:35+03:00"}
+{"fields.time":"2025-11-03T16:52:23.5200452+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:52:23+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:52:23+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:52:23+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:52:23+03:00","user_id":1}
+{"err":"Key: 'CategoryInput.Limit' Error:Field validation for 'Limit' failed on the 'required' tag","level":"error","msg":"invalid validate","op":"category.CreateCategory","time":"2025-11-03T16:52:23+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:52:23+03:00"}
+{"exp":504600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:52:23+03:00"}
+{"fields.time":"2025-11-03T16:52:27.9895405+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:52:27+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:52:27+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:52:27+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:52:27+03:00","user_id":1}
+{"err":"Key: 'CategoryInput.Limit' Error:Field validation for 'Limit' failed on the 'required' tag","level":"error","msg":"invalid validate","op":"category.CreateCategory","time":"2025-11-03T16:52:27+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:52:27+03:00"}
+{"exp":1507300,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:52:27+03:00"}
+{"fields.time":"2025-11-03T16:52:31.3007928+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:52:31+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:52:31+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:52:31+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:52:31+03:00","user_id":1}
+{"err":"Key: 'CategoryInput.Limit' Error:Field validation for 'Limit' failed on the 'required' tag","level":"error","msg":"invalid validate","op":"category.CreateCategory","time":"2025-11-03T16:52:31+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T16:52:31+03:00"}
+{"exp":504300,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:52:31+03:00"}
+{"fields.time":"2025-11-03T16:52:37.2606505+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/create","time":"2025-11-03T16:52:37+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T16:52:37+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T16:52:37+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T16:52:37+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-03T16:52:37+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-03T16:52:37+03:00"}
+{"exp":9624700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/create","time":"2025-11-03T16:52:37+03:00"}
+{"fields.time":"2025-11-03T17:07:26.7376058+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:07:26+03:00"}
+{"exp":13624100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:07:26+03:00"}
+{"fields.time":"2025-11-03T17:07:26.865687+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:07:26+03:00"}
+{"fields.time":"2025-11-03T17:07:26.865687+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:07:26+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:07:26+03:00"}
+{"fields.time":"2025-11-03T17:07:26.8666444+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:07:26+03:00"}
+{"exp":609000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:07:26+03:00"}
+{"exp":5966000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:07:26+03:00"}
+{"fields.time":"2025-11-03T17:07:27.0765419+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:07:27+03:00"}
+{"exp":505100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:07:27+03:00"}
+{"fields.time":"2025-11-03T17:07:34.0416432+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:07:34+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:07:34+03:00"}
+{"fields.time":"2025-11-03T17:07:34.0643817+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:07:34+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:07:34+03:00"}
+{"fields.time":"2025-11-03T17:07:34.0701271+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:07:34+03:00"}
+{"fields.time":"2025-11-03T17:07:34.0701271+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:07:34+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:07:34+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:07:34+03:00"}
+{"fields.time":"2025-11-03T17:07:34.3140738+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:07:34+03:00"}
+{"exp":532800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:07:34+03:00"}
+{"fields.time":"2025-11-03T17:07:41.5305641+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/","time":"2025-11-03T17:07:41+03:00"}
+{"level":"error","msg":"error Authorization header","time":"2025-11-03T17:07:41+03:00"}
+{"exp":0,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/","time":"2025-11-03T17:07:41+03:00"}
+{"fields.time":"2025-11-03T17:07:51.9811555+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-03T17:07:51+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-03T17:07:51+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-03T17:07:51+03:00"}
+{"level":"info","msg":"success authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-03T17:07:52+03:00"}
+{"level":"info","msg":"success authentication user","op":"handlers.GetUser","time":"2025-11-03T17:07:52+03:00"}
+{"exp":53159600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-03T17:07:52+03:00"}
+{"fields.time":"2025-11-03T17:08:09.367804+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-03T17:08:09+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T17:08:09+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T17:08:09+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T17:08:09+03:00","user_id":1}
+{"err":"Key: 'CategoryInput.Limit' Error:Field validation for 'Limit' failed on the 'required' tag","level":"error","msg":"invalid validate","op":"category.CreateCategory","time":"2025-11-03T17:08:09+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T17:08:09+03:00"}
+{"exp":505200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-03T17:08:09+03:00"}
+{"fields.time":"2025-11-03T17:08:15.0114204+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-03T17:08:15+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T17:08:15+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T17:08:15+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T17:08:15+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-03T17:08:15+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-03T17:08:15+03:00"}
+{"exp":8142800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-03T17:08:15+03:00"}
+{"fields.time":"2025-11-03T17:08:19.1246111+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-03T17:08:19+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T17:08:19+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T17:08:19+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T17:08:19+03:00","user_id":1}
+{"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.CreateCategory","time":"2025-11-03T17:08:19+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T17:08:19+03:00"}
+{"exp":5238900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-03T17:08:19+03:00"}
+{"fields.time":"2025-11-03T17:08:31.3974413+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-03T17:08:31+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T17:08:31+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T17:08:31+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T17:08:31+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-03T17:08:31+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-03T17:08:31+03:00"}
+{"exp":6973200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-03T17:08:31+03:00"}
+{"fields.time":"2025-11-03T17:15:09.8954413+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:15:09+03:00"}
+{"exp":12902700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:15:09+03:00"}
+{"fields.time":"2025-11-03T17:15:09.9263621+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:15:09+03:00"}
+{"exp":508800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:15:09+03:00"}
+{"fields.time":"2025-11-03T17:15:09.9268709+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:15:09+03:00"}
+{"fields.time":"2025-11-03T17:15:09.9268709+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:15:09+03:00"}
+{"exp":528000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:15:09+03:00"}
+{"exp":5170100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:15:09+03:00"}
+{"fields.time":"2025-11-03T17:15:10.3911142+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:15:10+03:00"}
+{"exp":708100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:15:10+03:00"}
+{"fields.time":"2025-11-03T17:15:10.3947475+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T17:15:10+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T17:15:10+03:00"}
+{"fields.time":"2025-11-03T17:15:18.2643965+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-03T17:15:18+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-03T17:15:18+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-03T17:15:18+03:00"}
+{"level":"info","msg":"success authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-03T17:15:18+03:00"}
+{"level":"info","msg":"success authentication user","op":"handlers.GetUser","time":"2025-11-03T17:15:18+03:00"}
+{"exp":52997900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-03T17:15:18+03:00"}
+{"fields.time":"2025-11-03T17:15:35.2061746+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-03T17:15:35+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T17:15:35+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T17:15:35+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T17:15:35+03:00","user_id":1}
+{"err":"Key: 'CategoryInput.Limit' Error:Field validation for 'Limit' failed on the 'required' tag","level":"error","msg":"invalid validate","op":"category.CreateCategory","time":"2025-11-03T17:15:35+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T17:15:35+03:00"}
+{"exp":1033800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-03T17:15:35+03:00"}
+{"fields.time":"2025-11-03T17:15:39.8224412+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-03T17:15:39+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T17:15:39+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T17:15:39+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T17:15:39+03:00","user_id":1}
+{"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.CreateCategory","time":"2025-11-03T17:15:39+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T17:15:39+03:00"}
+{"exp":8637600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-03T17:15:39+03:00"}
+{"fields.time":"2025-11-03T17:15:45.4922898+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-03T17:15:45+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T17:15:45+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T17:15:45+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T17:15:45+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-03T17:15:45+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-03T17:15:45+03:00"}
+{"exp":7077200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-03T17:15:45+03:00"}
+{"fields.time":"2025-11-03T17:18:59.7831597+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:18:59+03:00"}
+{"exp":12600300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:18:59+03:00"}
+{"fields.time":"2025-11-03T17:18:59.8139849+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:18:59+03:00"}
+{"fields.time":"2025-11-03T17:18:59.8139849+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:18:59+03:00"}
+{"fields.time":"2025-11-03T17:18:59.8139849+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:18:59+03:00"}
+{"exp":507200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:18:59+03:00"}
+{"exp":507200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:18:59+03:00"}
+{"exp":6046000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:18:59+03:00"}
+{"fields.time":"2025-11-03T17:19:00.2800802+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:19:00+03:00"}
+{"exp":792800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:19:00+03:00"}
+{"fields.time":"2025-11-03T17:19:00.280873+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T17:19:00+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T17:19:00+03:00"}
+{"fields.time":"2025-11-03T17:19:10.163553+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-03T17:19:10+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-03T17:19:10+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-03T17:19:10+03:00"}
+{"level":"info","msg":"success authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-03T17:19:10+03:00"}
+{"level":"info","msg":"success authentication user","op":"handlers.GetUser","time":"2025-11-03T17:19:10+03:00"}
+{"exp":53539800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-03T17:19:10+03:00"}
+{"fields.time":"2025-11-03T17:19:44.8418604+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-03T17:19:44+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-03T17:19:44+03:00"}
+{"level":"info","msg":"1","time":"2025-11-03T17:19:44+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-03T17:19:44+03:00","user_id":1}
+{"err":"Key: 'CategoryInput.Limit' Error:Field validation for 'Limit' failed on the 'required' tag","level":"error","msg":"invalid validate","op":"category.CreateCategory","time":"2025-11-03T17:19:44+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-03T17:19:44+03:00"}
+{"exp":506100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-03T17:19:44+03:00"}
+{"fields.time":"2025-11-03T17:25:09.3913478+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/11213123","time":"2025-11-03T17:25:09+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-03T17:25:09+03:00"}
+{"category_id":11213123,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-03T17:25:09+03:00"}
+{"category_id":11213123,"err":"not found","level":"error","msg":"category is not found","op":"category.GetCategory","time":"2025-11-03T17:25:09+03:00"}
+{"level":"error","msg":"error get category","op":"handlers.GetCategory","time":"2025-11-03T17:25:09+03:00"}
+{"exp":15124400,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/11213123","time":"2025-11-03T17:25:09+03:00"}
+{"fields.time":"2025-11-03T17:25:14.6509663+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/1","time":"2025-11-03T17:25:14+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-03T17:25:14+03:00"}
+{"category_id":1,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-03T17:25:14+03:00"}
+{"category_id":1,"level":"info","msg":"success get category","op":"category.GetCategory","time":"2025-11-03T17:25:14+03:00"}
+{"exp":2211300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/1","time":"2025-11-03T17:25:14+03:00"}
+{"fields.time":"2025-11-03T17:25:42.0988119+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/1","time":"2025-11-03T17:25:42+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-03T17:25:42+03:00"}
+{"category_id":1,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-03T17:25:42+03:00"}
+{"category_id":1,"level":"info","msg":"success get category","op":"category.GetCategory","time":"2025-11-03T17:25:42+03:00"}
+{"exp":15222100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/1","time":"2025-11-03T17:25:42+03:00"}
+{"fields.time":"2025-11-03T17:25:47.450439+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/category/1","time":"2025-11-03T17:25:47+03:00"}
+{"level":"info","msg":"start delete category","op":"handlers.DeleteCategory","time":"2025-11-03T17:25:47+03:00"}
+{"category_id":1,"level":"info","msg":"start delete category","op":"category.DeleteCategory","time":"2025-11-03T17:25:47+03:00"}
+{"category_id":1,"level":"info","msg":"success delete category","op":"category.DeleteCategory","time":"2025-11-03T17:25:47+03:00"}
+{"level":"info","msg":"success delete category","op":"handlers.DeleteCategory","time":"2025-11-03T17:25:47+03:00"}
+{"exp":5357600,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/category/1","time":"2025-11-03T17:25:47+03:00"}
+{"fields.time":"2025-11-03T17:25:51.129054+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/1","time":"2025-11-03T17:25:51+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-03T17:25:51+03:00"}
+{"category_id":1,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-03T17:25:51+03:00"}
+{"category_id":1,"err":"not found","level":"error","msg":"category is not found","op":"category.GetCategory","time":"2025-11-03T17:25:51+03:00"}
+{"level":"error","msg":"error get category","op":"handlers.GetCategory","time":"2025-11-03T17:25:51+03:00"}
+{"exp":2281300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/1","time":"2025-11-03T17:25:51+03:00"}
+{"fields.time":"2025-11-03T17:25:54.3686254+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/category/1","time":"2025-11-03T17:25:54+03:00"}
+{"level":"info","msg":"start delete category","op":"handlers.DeleteCategory","time":"2025-11-03T17:25:54+03:00"}
+{"category_id":1,"level":"info","msg":"start delete category","op":"category.DeleteCategory","time":"2025-11-03T17:25:54+03:00"}
+{"category_id":1,"level":"info","msg":"success delete category","op":"category.DeleteCategory","time":"2025-11-03T17:25:54+03:00"}
+{"level":"info","msg":"success delete category","op":"handlers.DeleteCategory","time":"2025-11-03T17:25:54+03:00"}
+{"exp":3698900,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/category/1","time":"2025-11-03T17:25:54+03:00"}
+{"fields.time":"2025-11-03T17:26:01.416655+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-03T17:26:01+03:00"}
+{"level":"info","msg":"start create transaction","op":"handlers.PostTransaction","time":"2025-11-03T17:26:01+03:00"}
+{"category_id":2,"level":"info","msg":"start create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-03T17:26:01+03:00","user_id":1}
+{"fields.time":"2025-11-03T17:28:23.0507037+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-03T17:28:23+03:00"}
+{"level":"info","msg":"start create transaction","op":"handlers.PostTransaction","time":"2025-11-03T17:28:23+03:00"}
+{"category_id":2,"level":"info","msg":"start create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-03T17:28:23+03:00","user_id":1}
+{"category_id":2,"err":"ERROR: relation \"transactions\" does not exist (SQLSTATE 42P01)","level":"error","msg":"error create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-03T17:28:23+03:00","user_id":1}
+{"err":"error database","level":"error","msg":"error create transaction","op":"handlers.PostTransaction","time":"2025-11-03T17:28:23+03:00"}
+{"exp":18949900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-03T17:28:23+03:00"}
+{"fields.time":"2025-11-03T17:28:54.2730361+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-03T17:28:54+03:00"}
+{"level":"info","msg":"start create transaction","op":"handlers.PostTransaction","time":"2025-11-03T17:28:54+03:00"}
+{"category_id":2,"level":"info","msg":"start create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-03T17:28:54+03:00","user_id":1}
+{"fields.time":"2025-11-03T17:29:03.1555547+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-03T17:29:03+03:00"}
+{"level":"info","msg":"start create transaction","op":"handlers.PostTransaction","time":"2025-11-03T17:29:03+03:00"}
+{"category_id":2,"level":"info","msg":"start create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-03T17:29:03+03:00","user_id":1}
+{"category_id":2,"err":"ERROR: relation \"transactions\" does not exist (SQLSTATE 42P01)","level":"error","msg":"error create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-03T17:29:03+03:00","user_id":1}
+{"err":"error database","level":"error","msg":"error create transaction","op":"handlers.PostTransaction","time":"2025-11-03T17:29:03+03:00"}
+{"exp":17342700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-03T17:29:03+03:00"}
+{"fields.time":"2025-11-03T17:31:12.5721074+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-03T17:31:12+03:00"}
+{"level":"info","msg":"start create transaction","op":"handlers.PostTransaction","time":"2025-11-03T17:31:12+03:00"}
+{"category_id":2,"level":"info","msg":"start create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-03T17:31:12+03:00","user_id":1}
+{"category_id":2,"level":"info","msg":"success create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-03T17:31:12+03:00","user_id":1}
+{"level":"info","msg":"success create transaction","op":"handlers.PostTransaction","time":"2025-11-03T17:31:12+03:00"}
+{"exp":19486500,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-03T17:31:12+03:00"}
+{"fields.time":"2025-11-03T17:31:20.6586283+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/transaction/1","time":"2025-11-03T17:31:20+03:00"}
+{"level":"info","msg":"start get transaction","op":"handlers.GetTransaction","time":"2025-11-03T17:31:20+03:00"}
+{"level":"info","msg":"start read transaction","op":"transaction.GetTransactionServer","time":"2025-11-03T17:31:20+03:00","transaction_id":1}
+{"level":"info","msg":"success get transaction","op":"transaction.GetTransactionServer","time":"2025-11-03T17:31:20+03:00","transaction_id":1}
+{"level":"info","msg":"success get transaction","op":"handlers.GetTransaction","time":"2025-11-03T17:31:20+03:00"}
+{"exp":2579200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/transaction/1","time":"2025-11-03T17:31:20+03:00"}
+{"fields.time":"2025-11-03T17:31:25.8021514+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/transaction/1","time":"2025-11-03T17:31:25+03:00"}
+{"level":"info","msg":"start delete transaction","op":"handlers.DeleteTransaction","time":"2025-11-03T17:31:25+03:00"}
+{"level":"info","msg":"start delete transaction","op":"transaction.DeleteTransactionServer","time":"2025-11-03T17:31:25+03:00","transaction_id":1}
+{"level":"info","msg":"success delete transaction","op":"transaction.DeleteTransactionServer","time":"2025-11-03T17:31:25+03:00","transaction_id":1}
+{"level":"info","msg":"success delete transaction","op":"handlers.DeleteTransaction","time":"2025-11-03T17:31:25+03:00"}
+{"exp":4357900,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/transaction/1","time":"2025-11-03T17:31:25+03:00"}
+{"fields.time":"2025-11-03T17:32:06.7711957+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-03T17:32:06+03:00"}
+{"level":"info","msg":"start update transaction","op":"handlers.UpdateTransaction","time":"2025-11-03T17:32:06+03:00"}
+{"level":"info","msg":"start update transaction","op":"transaction.UpdateTransactionServer","time":"2025-11-03T17:32:06+03:00","transaction_id":1}
+{"err":"WHERE conditions required","level":"error","msg":"field update transaction","op":"transaction.UpdateTransactionServer","time":"2025-11-03T17:32:06+03:00","transaction_id":1}
+{"err":"error database","level":"error","msg":"error update transaction","op":"handlers.UpdateTransaction","time":"2025-11-03T17:32:06+03:00"}
+{"exp":2329400,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-03T17:32:06+03:00"}
+{"fields.time":"2025-11-03T17:33:44.1330725+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-03T17:33:44+03:00"}
+{"level":"info","msg":"start update transaction","op":"handlers.UpdateTransaction","time":"2025-11-03T17:33:44+03:00"}
+{"level":"info","msg":"start update transaction","op":"transaction.UpdateTransactionServer","time":"2025-11-03T17:33:44+03:00","transaction_id":1}
+{"err":"ERROR: syntax error at or near \"=\" (SQLSTATE 42601)","level":"error","msg":"field update transaction","op":"transaction.UpdateTransactionServer","time":"2025-11-03T17:33:44+03:00","transaction_id":1}
+{"err":"error database","level":"error","msg":"error update transaction","op":"handlers.UpdateTransaction","time":"2025-11-03T17:33:44+03:00"}
+{"exp":16048400,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-03T17:33:44+03:00"}
+{"fields.time":"2025-11-03T17:34:21.1798558+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-03T17:34:21+03:00"}
+{"level":"info","msg":"start update transaction","op":"handlers.UpdateTransaction","time":"2025-11-03T17:34:21+03:00"}
+{"level":"info","msg":"start update transaction","op":"transaction.UpdateTransactionServer","time":"2025-11-03T17:34:21+03:00","transaction_id":1}
+{"level":"info","msg":"success update transaction","op":"transaction.UpdateTransactionServer","time":"2025-11-03T17:34:21+03:00","transaction_id":1}
+{"level":"info","msg":"success update transaction","op":"handlers.UpdateTransaction","time":"2025-11-03T17:34:21+03:00"}
+{"exp":15757300,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-03T17:34:21+03:00"}
+{"fields.time":"2025-11-03T17:34:33.4918462+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/transaction/1","time":"2025-11-03T17:34:33+03:00"}
+{"level":"info","msg":"start delete transaction","op":"handlers.DeleteTransaction","time":"2025-11-03T17:34:33+03:00"}
+{"level":"info","msg":"start delete transaction","op":"transaction.DeleteTransactionServer","time":"2025-11-03T17:34:33+03:00","transaction_id":1}
+{"level":"info","msg":"success delete transaction","op":"transaction.DeleteTransactionServer","time":"2025-11-03T17:34:33+03:00","transaction_id":1}
+{"level":"info","msg":"success delete transaction","op":"handlers.DeleteTransaction","time":"2025-11-03T17:34:33+03:00"}
+{"exp":3366100,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/transaction/1","time":"2025-11-03T17:34:33+03:00"}
+{"fields.time":"2025-11-03T17:34:37.6793506+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/transaction/1","time":"2025-11-03T17:34:37+03:00"}
+{"level":"info","msg":"start get transaction","op":"handlers.GetTransaction","time":"2025-11-03T17:34:37+03:00"}
+{"level":"info","msg":"start read transaction","op":"transaction.GetTransactionServer","time":"2025-11-03T17:34:37+03:00","transaction_id":1}
+{"err":"not found","level":"error","msg":"error get transaction","op":"transaction.GetTransactionServer","time":"2025-11-03T17:34:37+03:00","transaction_id":1}
+{"err":"transaction is not found","level":"error","msg":"error get transaction","op":"handlers.GetTransaction","time":"2025-11-03T17:34:37+03:00"}
+{"exp":3586700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/transaction/1","time":"2025-11-03T17:34:37+03:00"}
+{"fields.time":"2025-11-03T17:39:01.893542+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:39:01+03:00"}
+{"exp":14794900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:39:01+03:00"}
+{"fields.time":"2025-11-03T17:39:01.9251219+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:39:01+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:39:01+03:00"}
+{"fields.time":"2025-11-03T17:39:01.925629+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:39:01+03:00"}
+{"fields.time":"2025-11-03T17:39:01.925629+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:39:01+03:00"}
+{"exp":534500,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:39:01+03:00"}
+{"exp":5662800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:39:01+03:00"}
+{"fields.time":"2025-11-03T17:39:02.3545026+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:39:02+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:39:02+03:00"}
+{"fields.time":"2025-11-03T17:39:02.4078445+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T17:39:02+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T17:39:02+03:00"}
+{"fields.time":"2025-11-03T17:41:11.1253131+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:41:11+03:00"}
+{"exp":12988800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:41:11+03:00"}
+{"fields.time":"2025-11-03T17:41:11.1573569+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:41:11+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:41:11+03:00"}
+{"fields.time":"2025-11-03T17:41:11.1589832+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:41:11+03:00"}
+{"fields.time":"2025-11-03T17:41:11.1594919+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:41:11+03:00"}
+{"exp":1757800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:41:11+03:00"}
+{"exp":4478100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:41:11+03:00"}
+{"fields.time":"2025-11-03T17:41:11.2795921+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:41:11+03:00"}
+{"exp":506800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:41:11+03:00"}
+{"fields.time":"2025-11-03T17:41:11.280631+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T17:41:11+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T17:41:11+03:00"}
+{"fields.time":"2025-11-03T17:44:51.4846035+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:44:51+03:00"}
+{"exp":12548600,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-03T17:44:51+03:00"}
+{"fields.time":"2025-11-03T17:44:51.5147342+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:44:51+03:00"}
+{"fields.time":"2025-11-03T17:44:51.5147342+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:44:51+03:00"}
+{"fields.time":"2025-11-03T17:44:51.5147342+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:44:51+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-03T17:44:51+03:00"}
+{"exp":3422000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-03T17:44:51+03:00"}
+{"exp":6252000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-03T17:44:51+03:00"}
+{"fields.time":"2025-11-03T17:44:51.5849362+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:44:51+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-03T17:44:51+03:00"}
+{"fields.time":"2025-11-03T17:44:51.6380083+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T17:44:51+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-03T17:44:51+03:00"}
+{"fields.time":"2025-11-03T17:44:56.771974+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/type/dasd","time":"2025-11-03T17:44:56+03:00"}
+{"level":"error","msg":"error Authorization header","time":"2025-11-03T17:44:56+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/type/dasd","time":"2025-11-03T17:44:56+03:00"}
+{"level":"fatal","msg":"error conn database: failed to connect to `user=teamlid database=f`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connectex: No connection could be made because the target machine actively refused it.\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connectex: No connection could be made because the target machine actively refused it.","time":"2025-11-04T19:11:33+03:00"}
+{"fields.time":"2025-11-04T19:12:10.3802479+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-04T19:12:10+03:00"}
+{"exp":14460000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-04T19:12:10+03:00"}
+{"fields.time":"2025-11-04T19:12:10.4199515+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-04T19:12:10+03:00"}
+{"exp":546000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-04T19:12:10+03:00"}
+{"fields.time":"2025-11-04T19:12:10.4210397+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-04T19:12:10+03:00"}
+{"fields.time":"2025-11-04T19:12:10.4210397+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-04T19:12:10+03:00"}
+{"exp":1228100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-04T19:12:10+03:00"}
+{"exp":7746100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-04T19:12:10+03:00"}
+{"fields.time":"2025-11-04T19:12:10.6769413+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-04T19:12:10+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-04T19:12:10+03:00"}
+{"fields.time":"2025-11-04T19:12:10.6837431+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-04T19:12:10+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-04T19:12:10+03:00"}
+{"fields.time":"2025-11-04T19:12:20.2859222+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-04T19:12:20+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-04T19:12:20+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-04T19:12:20+03:00"}
+{"level":"info","msg":"success authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-04T19:12:20+03:00"}
+{"level":"info","msg":"success authentication user","op":"handlers.GetUser","time":"2025-11-04T19:12:20+03:00"}
+{"exp":54642600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-04T19:12:20+03:00"}
+{"fields.time":"2025-11-04T19:12:35.3294005+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-04T19:12:35+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-04T19:12:35+03:00"}
+{"err":"Key: 'RequestCreateCategory.Limit' Error:Field validation for 'Limit' failed on the 'required' tag","level":"error","msg":"error valid JSON","op":"handlers.PostCategory","time":"2025-11-04T19:12:35+03:00"}
+{"exp":0,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-04T19:12:35+03:00"}
+{"fields.time":"2025-11-04T19:13:19.6918338+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-04T19:13:19+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-04T19:13:19+03:00"}
+{"err":"Key: 'RequestCreateCategory.Limit' Error:Field validation for 'Limit' failed on the 'required' tag","level":"error","msg":"error valid JSON","op":"handlers.PostCategory","time":"2025-11-04T19:13:19+03:00"}
+{"exp":0,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-04T19:13:19+03:00"}
+{"fields.time":"2025-11-04T19:14:12.8979769+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-04T19:14:12+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-04T19:14:12+03:00"}
+{"level":"info","msg":"1","time":"2025-11-04T19:14:12+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-04T19:14:12+03:00","user_id":1}
+{"err":"duplicated unique","level":"error","msg":"field duiplicated category","op":"category.CreateCategory","time":"2025-11-04T19:14:12+03:00","user_id":1}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-04T19:14:12+03:00"}
+{"exp":9931100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-04T19:14:12+03:00"}
+{"fields.time":"2025-11-04T19:14:19.842323+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-04T19:14:19+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-04T19:14:19+03:00"}
+{"level":"info","msg":"1","time":"2025-11-04T19:14:19+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-04T19:14:19+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-04T19:14:19+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-04T19:14:19+03:00"}
+{"exp":7374400,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-04T19:14:19+03:00"}
+{"fields.time":"2025-11-04T19:14:30.7229273+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/15","time":"2025-11-04T19:14:30+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-04T19:14:30+03:00"}
+{"category_id":15,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-04T19:14:30+03:00"}
+{"category_id":15,"level":"info","msg":"success get category","op":"category.GetCategory","time":"2025-11-04T19:14:30+03:00"}
+{"exp":2357300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/15","time":"2025-11-04T19:14:30+03:00"}
+{"fields.time":"2025-11-04T19:15:20.1124619+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/15","time":"2025-11-04T19:15:20+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-04T19:15:20+03:00"}
+{"category_id":15,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-04T19:15:20+03:00"}
+{"category_id":15,"level":"info","msg":"success get category","op":"category.GetCategory","time":"2025-11-04T19:15:20+03:00"}
+{"exp":14851200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/15","time":"2025-11-04T19:15:20+03:00"}
+{"fields.time":"2025-11-04T19:15:23.4677915+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-04T19:15:23+03:00"}
+{"exp":506400,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-04T19:15:23+03:00"}
+{"fields.time":"2025-11-04T19:15:23.4848909+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-04T19:15:23+03:00"}
+{"fields.time":"2025-11-04T19:15:23.4848909+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-04T19:15:23+03:00"}
+{"fields.time":"2025-11-04T19:15:23.4848909+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-04T19:15:23+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-04T19:15:23+03:00"}
+{"exp":521200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-04T19:15:23+03:00"}
+{"exp":5214200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-04T19:15:23+03:00"}
+{"fields.time":"2025-11-04T19:15:23.8979891+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-04T19:15:23+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-04T19:15:23+03:00"}
+{"fields.time":"2025-11-04T19:15:23.8985428+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-04T19:15:23+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-04T19:15:23+03:00"}
+{"fields.time":"2025-11-04T19:15:37.4962224+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/15","time":"2025-11-04T19:15:37+03:00"}
+{"level":"error","msg":"error Authorization header","time":"2025-11-04T19:15:37+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/15","time":"2025-11-04T19:15:37+03:00"}
+{"fields.time":"2025-11-04T19:15:50.5708109+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/15","time":"2025-11-04T19:15:50+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-04T19:15:50+03:00"}
+{"category_id":15,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-04T19:15:50+03:00"}
+{"category_id":15,"level":"info","msg":"success get category","op":"category.GetCategory","time":"2025-11-04T19:15:50+03:00"}
+{"exp":2133800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/15","time":"2025-11-04T19:15:50+03:00"}
+{"fields.time":"2025-11-04T19:16:35.9797677+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-04T19:16:35+03:00"}
+{"exp":12998300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-04T19:16:35+03:00"}
+{"fields.time":"2025-11-04T19:16:36.0143214+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-04T19:16:36+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-04T19:16:36+03:00"}
+{"fields.time":"2025-11-04T19:16:36.0148281+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-04T19:16:36+03:00"}
+{"fields.time":"2025-11-04T19:16:36.0148281+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-04T19:16:36+03:00"}
+{"exp":1065800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-04T19:16:36+03:00"}
+{"exp":5546000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-04T19:16:36+03:00"}
+{"fields.time":"2025-11-04T19:16:36.4229974+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-04T19:16:36+03:00"}
+{"fields.time":"2025-11-04T19:16:36.4229974+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-04T19:16:36+03:00"}
+{"exp":802700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-04T19:16:36+03:00"}
+{"exp":802700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-04T19:16:36+03:00"}
+{"fields.time":"2025-11-04T19:17:01.4815704+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/category/","time":"2025-11-04T19:17:01+03:00"}
+{"level":"info","msg":"start update category","op":"handlers.UpdateCategory","time":"2025-11-04T19:17:01+03:00"}
+{"category_id":15,"level":"info","msg":"start update category","op":"category.UpdateCategory","time":"2025-11-04T19:17:01+03:00"}
+{"category_id":15,"level":"info","msg":"success update category","op":"category.UpdateCategory","time":"2025-11-04T19:17:01+03:00"}
+{"level":"info","msg":"success update category","op":"handlers.UpdateCategory","time":"2025-11-04T19:17:01+03:00"}
+{"exp":8629700,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/category/","time":"2025-11-04T19:17:01+03:00"}
+{"fields.time":"2025-11-04T19:17:11.9507921+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/15","time":"2025-11-04T19:17:11+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-04T19:17:11+03:00"}
+{"category_id":15,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-04T19:17:11+03:00"}
+{"category_id":15,"level":"info","msg":"success get category","op":"category.GetCategory","time":"2025-11-04T19:17:11+03:00"}
+{"exp":1738900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/15","time":"2025-11-04T19:17:11+03:00"}
+{"fields.time":"2025-11-04T19:17:23.2387999+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:17:23+03:00"}
+{"level":"info","msg":"start gets categories type","op":"handlers.CategoryType","time":"2025-11-04T19:17:23+03:00"}
+{"err":"invalid param","level":"error","msg":"param is not valid","op":"handlers.CategoryType","time":"2025-11-04T19:17:23+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:17:23+03:00"}
+{"fields.time":"2025-11-04T19:18:16.6547922+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:18:16+03:00"}
+{"level":"info","msg":"start gets categories type","op":"handlers.CategoryType","time":"2025-11-04T19:18:16+03:00"}
+{"err":"invalid param","level":"error","msg":"param is not valid","op":"handlers.CategoryType","time":"2025-11-04T19:18:16+03:00"}
+{"exp":12553800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:18:16+03:00"}
+{"fields.time":"2025-11-04T19:18:19.410787+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-04T19:18:19+03:00"}
+{"exp":791600,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-04T19:18:19+03:00"}
+{"fields.time":"2025-11-04T19:18:19.428675+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-04T19:18:19+03:00"}
+{"fields.time":"2025-11-04T19:18:19.428675+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-04T19:18:19+03:00"}
+{"exp":506100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-04T19:18:19+03:00"}
+{"fields.time":"2025-11-04T19:18:19.4291811+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-04T19:18:19+03:00"}
+{"exp":520900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-04T19:18:19+03:00"}
+{"exp":4122300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-04T19:18:19+03:00"}
+{"fields.time":"2025-11-04T19:18:20.1581154+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-04T19:18:20+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-04T19:18:20+03:00"}
+{"fields.time":"2025-11-04T19:18:20.1600915+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-04T19:18:20+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-04T19:18:20+03:00"}
+{"fields.time":"2025-11-04T19:18:31.1741745+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:18:31+03:00"}
+{"level":"info","msg":"start gets categories type","op":"handlers.CategoryType","time":"2025-11-04T19:18:31+03:00"}
+{"err":"invalid param","level":"error","msg":"param is not valid","op":"handlers.CategoryType","time":"2025-11-04T19:18:31+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:18:31+03:00"}
+{"fields.time":"2025-11-04T19:19:14.899176+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-04T19:19:14+03:00"}
+{"exp":12557500,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-04T19:19:14+03:00"}
+{"fields.time":"2025-11-04T19:19:14.9299354+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-04T19:19:14+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-04T19:19:14+03:00"}
+{"fields.time":"2025-11-04T19:19:14.9306521+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-04T19:19:14+03:00"}
+{"fields.time":"2025-11-04T19:19:14.9306521+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-04T19:19:14+03:00"}
+{"exp":531700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-04T19:19:14+03:00"}
+{"exp":5916500,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-04T19:19:14+03:00"}
+{"fields.time":"2025-11-04T19:19:15.1936627+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-04T19:19:15+03:00"}
+{"fields.time":"2025-11-04T19:19:15.1936627+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-04T19:19:15+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-04T19:19:15+03:00"}
+{"exp":506100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-04T19:19:15+03:00"}
+{"fields.time":"2025-11-04T19:19:24.2678504+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:19:24+03:00"}
+{"level":"info","msg":"start gets categories type","op":"handlers.CategoryType","time":"2025-11-04T19:19:24+03:00"}
+{"level":"info","msg":"start gets categories type","op":"category.CategoryType","time":"2025-11-04T19:19:24+03:00","type":"car"}
+{"level":"info","msg":"gets categories type","op":"category.CategoryType","time":"2025-11-04T19:19:24+03:00","type":"car"}
+{"level":"info","msg":"success get category type","op":"handlers.CategoryType","time":"2025-11-04T19:19:24+03:00"}
+{"exp":2639300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:19:24+03:00"}
+{"fields.time":"2025-11-04T19:19:53.2494883+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-04T19:19:53+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-04T19:19:53+03:00"}
+{"level":"info","msg":"1","time":"2025-11-04T19:19:53+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-04T19:19:53+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-04T19:19:53+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-04T19:19:53+03:00"}
+{"exp":9178000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-04T19:19:53+03:00"}
+{"fields.time":"2025-11-04T19:19:57.2505513+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-04T19:19:57+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-04T19:19:57+03:00"}
+{"level":"info","msg":"1","time":"2025-11-04T19:19:57+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-04T19:19:57+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-04T19:19:57+03:00","user_id":1}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-04T19:19:57+03:00"}
+{"exp":6022100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-04T19:19:57+03:00"}
+{"fields.time":"2025-11-04T19:20:02.0534375+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:20:02+03:00"}
+{"level":"info","msg":"start gets categories type","op":"handlers.CategoryType","time":"2025-11-04T19:20:02+03:00"}
+{"level":"info","msg":"start gets categories type","op":"category.CategoryType","time":"2025-11-04T19:20:02+03:00","type":"car"}
+{"level":"info","msg":"gets categories type","op":"category.CategoryType","time":"2025-11-04T19:20:02+03:00","type":"car"}
+{"level":"info","msg":"success get category type","op":"handlers.CategoryType","time":"2025-11-04T19:20:02+03:00"}
+{"exp":3212400,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:20:02+03:00"}
+{"fields.time":"2025-11-04T19:20:36.4119942+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:20:36+03:00"}
+{"level":"info","msg":"start gets categories type","op":"handlers.CategoryType","time":"2025-11-04T19:20:36+03:00"}
+{"level":"info","msg":"start gets categories type","op":"category.CategoryType","time":"2025-11-04T19:20:36+03:00","type":"car"}
+{"level":"info","msg":"gets categories type","op":"category.CategoryType","time":"2025-11-04T19:20:36+03:00","type":"car"}
+{"level":"info","msg":"success get category type[]","op":"handlers.CategoryType","time":"2025-11-04T19:20:36+03:00"}
+{"exp":15169300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:20:36+03:00"}
+{"fields.time":"2025-11-04T19:21:27.9362678+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:21:27+03:00"}
+{"level":"info","msg":"start gets categories type","op":"handlers.CategoryType","time":"2025-11-04T19:21:27+03:00"}
+{"level":"info","msg":"start gets categories type","op":"category.CategoryType","time":"2025-11-04T19:21:27+03:00","type":"car"}
+{"level":"info","msg":"gets categories type[]","op":"category.CategoryType","time":"2025-11-04T19:21:27+03:00","type":"car"}
+{"level":"info","msg":"success get category type[]","op":"handlers.CategoryType","time":"2025-11-04T19:21:27+03:00"}
+{"exp":15175300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:21:27+03:00"}
+{"fields.time":"2025-11-04T19:24:07.1656948+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:24:07+03:00"}
+{"level":"info","msg":"start gets categories type","op":"handlers.CategoryType","time":"2025-11-04T19:24:07+03:00"}
+{"level":"info","msg":"start gets categories type","op":"category.CategoryType","time":"2025-11-04T19:24:07+03:00","type":"car"}
+{"level":"info","msg":"gets categories type[{1 jonnsina 1000 car car expenses} {1 jonnasdas 200000 car Shopping in the store} {1 jonnasdasas 200000 car Shopping in the store}]","op":"category.CategoryType","time":"2025-11-04T19:24:07+03:00","type":"car"}
+{"level":"info","msg":"success get category type[{1 jonnsina 1000 car car expenses} {1 jonnasdas 200000 car Shopping in the store} {1 jonnasdasas 200000 car Shopping in the store}]","op":"handlers.CategoryType","time":"2025-11-04T19:24:07+03:00"}
+{"exp":14983800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:24:07+03:00"}
+{"fields.time":"2025-11-04T19:24:58.0484128+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:24:58+03:00"}
+{"level":"info","msg":"start gets categories type","op":"handlers.CategoryType","time":"2025-11-04T19:24:58+03:00"}
+{"level":"info","msg":"start gets categories type","op":"category.CategoryType","time":"2025-11-04T19:24:58+03:00","type":"car"}
+{"level":"info","msg":"gets categories type","op":"category.CategoryType","time":"2025-11-04T19:24:58+03:00","type":"car"}
+{"level":"info","msg":"success get category type","op":"handlers.CategoryType","time":"2025-11-04T19:24:58+03:00"}
+{"exp":14979200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/type/car","time":"2025-11-04T19:24:58+03:00"}
+{"fields.time":"2025-11-04T19:25:11.3086146+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/category/15","time":"2025-11-04T19:25:11+03:00"}
+{"level":"info","msg":"start delete category","op":"handlers.DeleteCategory","time":"2025-11-04T19:25:11+03:00"}
+{"category_id":15,"level":"info","msg":"start delete category","op":"category.DeleteCategory","time":"2025-11-04T19:25:11+03:00"}
+{"category_id":15,"level":"info","msg":"success delete category","op":"category.DeleteCategory","time":"2025-11-04T19:25:11+03:00"}
+{"level":"info","msg":"success delete category","op":"handlers.DeleteCategory","time":"2025-11-04T19:25:11+03:00"}
+{"exp":5460400,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/category/15","time":"2025-11-04T19:25:11+03:00"}
+{"fields.time":"2025-11-04T19:25:18.5880021+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/15","time":"2025-11-04T19:25:18+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-04T19:25:18+03:00"}
+{"category_id":15,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-04T19:25:18+03:00"}
+{"category_id":15,"err":"not found","level":"error","msg":"category is not found","op":"category.GetCategory","time":"2025-11-04T19:25:18+03:00"}
+{"level":"error","msg":"error get category","op":"handlers.GetCategory","time":"2025-11-04T19:25:18+03:00"}
+{"exp":2339900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/15","time":"2025-11-04T19:25:18+03:00"}
+{"fields.time":"2025-11-04T19:25:27.9407669+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-04T19:25:27+03:00"}
+{"level":"info","msg":"start create transaction","op":"handlers.PostTransaction","time":"2025-11-04T19:25:27+03:00"}
+{"category_id":2,"level":"info","msg":"start create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-04T19:25:27+03:00","user_id":1}
+{"category_id":2,"level":"info","msg":"success create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-04T19:25:27+03:00","user_id":1}
+{"level":"info","msg":"success create transaction","op":"handlers.PostTransaction","time":"2025-11-04T19:25:27+03:00"}
+{"exp":11820000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-04T19:25:27+03:00"}
+{"fields.time":"2025-11-04T19:25:33.5157194+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/transaction/2","time":"2025-11-04T19:25:33+03:00"}
+{"level":"info","msg":"start get transaction","op":"handlers.GetTransaction","time":"2025-11-04T19:25:33+03:00"}
+{"level":"info","msg":"start read transaction","op":"transaction.GetTransactionServer","time":"2025-11-04T19:25:33+03:00","transaction_id":2}
+{"level":"info","msg":"success get transaction","op":"transaction.GetTransactionServer","time":"2025-11-04T19:25:33+03:00","transaction_id":2}
+{"level":"info","msg":"success get transaction","op":"handlers.GetTransaction","time":"2025-11-04T19:25:33+03:00"}
+{"exp":3211200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/transaction/2","time":"2025-11-04T19:25:33+03:00"}
+{"fields.time":"2025-11-04T19:25:57.7488718+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-04T19:25:57+03:00"}
+{"level":"info","msg":"start update transaction","op":"handlers.UpdateTransaction","time":"2025-11-04T19:25:57+03:00"}
+{"level":"info","msg":"start update transaction","op":"transaction.UpdateTransactionServer","time":"2025-11-04T19:25:57+03:00","transaction_id":2}
+{"level":"info","msg":"success update transaction","op":"transaction.UpdateTransactionServer","time":"2025-11-04T19:25:57+03:00","transaction_id":2}
+{"level":"info","msg":"success update transaction","op":"handlers.UpdateTransaction","time":"2025-11-04T19:25:57+03:00"}
+{"exp":5366700,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-04T19:25:57+03:00"}
+{"fields.time":"2025-11-04T19:26:05.5355561+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/transaction/2","time":"2025-11-04T19:26:05+03:00"}
+{"level":"info","msg":"start get transaction","op":"handlers.GetTransaction","time":"2025-11-04T19:26:05+03:00"}
+{"level":"info","msg":"start read transaction","op":"transaction.GetTransactionServer","time":"2025-11-04T19:26:05+03:00","transaction_id":2}
+{"level":"info","msg":"success get transaction","op":"transaction.GetTransactionServer","time":"2025-11-04T19:26:05+03:00","transaction_id":2}
+{"level":"info","msg":"success get transaction","op":"handlers.GetTransaction","time":"2025-11-04T19:26:05+03:00"}
+{"exp":1731700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/transaction/2","time":"2025-11-04T19:26:05+03:00"}
+{"fields.time":"2025-11-04T19:26:11.8295012+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/transaction/2","time":"2025-11-04T19:26:11+03:00"}
+{"level":"info","msg":"start delete transaction","op":"handlers.DeleteTransaction","time":"2025-11-04T19:26:11+03:00"}
+{"level":"info","msg":"start delete transaction","op":"transaction.DeleteTransactionServer","time":"2025-11-04T19:26:11+03:00","transaction_id":2}
+{"level":"info","msg":"success delete transaction","op":"transaction.DeleteTransactionServer","time":"2025-11-04T19:26:11+03:00","transaction_id":2}
+{"level":"info","msg":"success delete transaction","op":"handlers.DeleteTransaction","time":"2025-11-04T19:26:11+03:00"}
+{"exp":5457500,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/transaction/2","time":"2025-11-04T19:26:11+03:00"}
+{"fields.time":"2025-11-04T19:26:14.454384+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/transaction/2","time":"2025-11-04T19:26:14+03:00"}
+{"level":"info","msg":"start get transaction","op":"handlers.GetTransaction","time":"2025-11-04T19:26:14+03:00"}
+{"level":"info","msg":"start read transaction","op":"transaction.GetTransactionServer","time":"2025-11-04T19:26:14+03:00","transaction_id":2}
+{"err":"not found","level":"error","msg":"error get transaction","op":"transaction.GetTransactionServer","time":"2025-11-04T19:26:14+03:00","transaction_id":2}
+{"err":"transaction is not found","level":"error","msg":"error get transaction","op":"handlers.GetTransaction","time":"2025-11-04T19:26:14+03:00"}
+{"exp":1793800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/transaction/2","time":"2025-11-04T19:26:14+03:00"}
+{"fields.time":"2025-11-04T19:26:25.1580452+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/user/","time":"2025-11-04T19:26:25+03:00"}
+{"fields.time":"2025-11-04T19:26:25.1580452+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/user/","time":"2025-11-04T19:26:25+03:00"}
+{"level":"info","msg":"start delete user","op":"handlers.DeleteUser","time":"2025-11-04T19:26:25+03:00"}
+{"level":"info","msg":"start delete user","op":"user.ServerDeleteUser","time":"2025-11-04T19:26:25+03:00"}
+{"err":"WHERE conditions required","level":"error","msg":"field delete user","op":"user.ServerDeleteUser","time":"2025-11-04T19:26:25+03:00"}
+{"err":"error database","level":"error","msg":"error delete user","op":"handlers.DeleteUser","time":"2025-11-04T19:26:25+03:00"}
+{"exp":55099700,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/user/","time":"2025-11-04T19:26:25+03:00"}
+{"exp":55099700,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/user/","time":"2025-11-04T19:26:25+03:00"}
+{"fields.time":"2025-11-04T19:27:27.6599748+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/user/","time":"2025-11-04T19:27:27+03:00"}
+{"fields.time":"2025-11-04T19:27:27.6727387+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/user/","time":"2025-11-04T19:27:27+03:00"}
+{"level":"info","msg":"start delete user","op":"handlers.DeleteUser","time":"2025-11-04T19:27:27+03:00"}
+{"level":"info","msg":"start delete user","op":"user.ServerDeleteUser","time":"2025-11-04T19:27:27+03:00"}
+{"err":"violates foreign key constraint","level":"error","msg":"field delete user","op":"user.ServerDeleteUser","time":"2025-11-04T19:27:27+03:00"}
+{"err":"error database","level":"error","msg":"error delete user","op":"handlers.DeleteUser","time":"2025-11-04T19:27:27+03:00"}
+{"exp":56785600,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/user/","time":"2025-11-04T19:27:27+03:00"}
+{"exp":69549500,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/user/","time":"2025-11-04T19:27:27+03:00"}
+{"fields.time":"2025-11-04T19:31:01.6742802+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/user/","time":"2025-11-04T19:31:01+03:00"}
+{"fields.time":"2025-11-04T19:31:01.6873063+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/user/","time":"2025-11-04T19:31:01+03:00"}
+{"level":"info","msg":"start delete user","op":"handlers.DeleteUser","time":"2025-11-04T19:31:01+03:00"}
+{"level":"info","msg":"start delete user","op":"user.ServerDeleteUser","time":"2025-11-04T19:31:01+03:00"}
+{"err":"violates foreign key constraint","level":"error","msg":"field delete user","op":"user.ServerDeleteUser","time":"2025-11-04T19:31:01+03:00"}
+{"err":"error database","level":"error","msg":"error delete user","op":"handlers.DeleteUser","time":"2025-11-04T19:31:01+03:00"}
+{"exp":54678100,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/user/","time":"2025-11-04T19:31:01+03:00"}
+{"exp":67704200,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/user/","time":"2025-11-04T19:31:01+03:00"}
+{"fields.time":"2025-11-04T19:40:02.5447333+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/user/","time":"2025-11-04T19:40:02+03:00"}
+{"fields.time":"2025-11-04T19:40:02.5573432+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/user/","time":"2025-11-04T19:40:02+03:00"}
+{"level":"info","msg":"start delete user","op":"handlers.DeleteUser","time":"2025-11-04T19:40:02+03:00"}
+{"level":"info","msg":"start delete user","op":"user.ServerDeleteUser","time":"2025-11-04T19:40:02+03:00"}
+{"level":"info","msg":"success delete user","op":"user.ServerDeleteUser","time":"2025-11-04T19:40:02+03:00"}
+{"level":"info","msg":"success delete user","op":"handlers.DeleteUser","time":"2025-11-04T19:40:02+03:00"}
+{"exp":58622600,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/user/","time":"2025-11-04T19:40:02+03:00"}
+{"exp":71232500,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/user/","time":"2025-11-04T19:40:02+03:00"}
+{"fields.time":"2025-11-04T19:40:11.2216702+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/user/","time":"2025-11-04T19:40:11+03:00"}
+{"fields.time":"2025-11-04T19:40:11.2216702+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/user/","time":"2025-11-04T19:40:11+03:00"}
+{"level":"info","msg":"start delete user","op":"handlers.DeleteUser","time":"2025-11-04T19:40:11+03:00"}
+{"level":"info","msg":"start delete user","op":"user.ServerDeleteUser","time":"2025-11-04T19:40:11+03:00"}
+{"err":"not found","level":"error","msg":"not found","op":"user.ServerDeleteUser","time":"2025-11-04T19:40:11+03:00"}
+{"err":"user is not found","level":"error","msg":"error delete user","op":"handlers.DeleteUser","time":"2025-11-04T19:40:11+03:00"}
+{"exp":1993400,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/user/","time":"2025-11-04T19:40:11+03:00"}
+{"exp":2677900,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/user/","time":"2025-11-04T19:40:11+03:00"}
+{"level":"fatal","msg":"error conn database: failed to connect to `user=teamlid database=f`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connectex: No connection could be made because the target machine actively refused it.\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connectex: No connection could be made because the target machine actively refused it.","time":"2025-11-05T17:05:17+03:00"}
+{"fields.time":"2025-11-05T17:05:55.0839037+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/index.html","time":"2025-11-05T17:05:55+03:00"}
+{"exp":12159900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/index.html","time":"2025-11-05T17:05:55+03:00"}
+{"fields.time":"2025-11-05T17:05:55.1147373+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-05T17:05:55+03:00"}
+{"fields.time":"2025-11-05T17:05:55.1147373+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-05T17:05:55+03:00"}
+{"exp":505300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui.css","time":"2025-11-05T17:05:55+03:00"}
+{"fields.time":"2025-11-05T17:05:55.1157763+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-05T17:05:55+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-standalone-preset.js","time":"2025-11-05T17:05:55+03:00"}
+{"exp":5390000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/swagger-ui-bundle.js","time":"2025-11-05T17:05:55+03:00"}
+{"fields.time":"2025-11-05T17:05:55.6748355+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/doc.json","time":"2025-11-05T17:05:55+03:00"}
+{"exp":504300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/doc.json","time":"2025-11-05T17:05:55+03:00"}
+{"fields.time":"2025-11-05T17:05:55.6854933+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-05T17:05:55+03:00"}
+{"exp":0,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-05T17:05:55+03:00"}
+{"fields.time":"2025-11-05T17:19:24.7271758+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/debug/pprof/profile","time":"2025-11-05T17:19:24+03:00"}
+{"exp":30012958500,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/debug/pprof/profile","time":"2025-11-05T17:19:54+03:00"}
+{"fields.time":"2025-11-05T17:20:16.3294022+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-05T17:20:16+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-05T17:20:16+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-05T17:20:16+03:00"}
+{"err":"not found","level":"error","msg":"not found","op":"user.ServerAuthenticationUser","time":"2025-11-05T17:20:16+03:00"}
+{"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-05T17:20:16+03:00"}
+{"exp":8941200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-05T17:20:16+03:00"}
+{"fields.time":"2025-11-05T17:20:16.6939136+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-05T17:20:16+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-05T17:20:16+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-05T17:20:16+03:00"}
+{"err":"not found","level":"error","msg":"not found","op":"user.ServerAuthenticationUser","time":"2025-11-05T17:20:16+03:00"}
+{"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-05T17:20:16+03:00"}
+{"exp":1550900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-05T17:20:16+03:00"}
+{"fields.time":"2025-11-05T17:20:17.011432+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-05T17:20:17+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-05T17:20:17+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-05T17:20:17+03:00"}
+{"err":"not found","level":"error","msg":"not found","op":"user.ServerAuthenticationUser","time":"2025-11-05T17:20:17+03:00"}
+{"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-05T17:20:17+03:00"}
+{"exp":2626800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-05T17:20:17+03:00"}
+{"fields.time":"2025-11-05T17:20:17.3403342+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-05T17:20:17+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-05T17:20:17+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-05T17:20:17+03:00"}
+{"err":"not found","level":"error","msg":"not found","op":"user.ServerAuthenticationUser","time":"2025-11-05T17:20:17+03:00"}
+{"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-05T17:20:17+03:00"}
+{"exp":2165900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-05T17:20:17+03:00"}

@@ -158,7 +158,7 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 //	@Failure		400	{object}	api.ErrorResponse	"Некорректные данные"
 //	@Failure		404	{object}	api.ErrorResponse	"Пользователь не найден"
 //
-//	@Router			/user/delete [post]
+//	@Router			/user/ [delete]
 //
 //	@Security		jwtAuth
 func (h *HandlersUser) DeleteUser(c *gin.Context) {

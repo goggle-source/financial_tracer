@@ -1,4 +1,3 @@
-basePath: /financial_tracker
 definitions:
   api.ErrorResponse:
     properties:
@@ -18,6 +17,8 @@ definitions:
       name:
         example: jonn
         type: string
+      type:
+        type: string
     required:
     - description
     - limit
@@ -36,6 +37,9 @@ definitions:
         type: integer
       name:
         example: jonn
+        type: string
+      type:
+        example: car
         type: string
     required:
     - description
@@ -127,7 +131,7 @@ info:
   title: Финансовый Трекер
   version: "1.0"
 paths:
-  /category/create:
+  /category/:
     post:
       consumes:
       - application/json
@@ -163,81 +167,6 @@ paths:
       summary: Создание Категории
       tags:
       - categories
-  /category/delete/{id}:
-    delete:
-      description: Удаление категории конкретного пользователя
-      parameters:
-      - description: userID для удаление категории
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/api.SuccessResponse'
-        "400":
-          description: Некорректные данные
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "401":
-          description: Ошибка авторизации
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "404":
-          description: Категория не найдена
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: Ошибка сервера
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-      security:
-      - jwtAuth: []
-      summary: Удаление категории
-      tags:
-      - categories
-  /category/get//{id}:
-    get:
-      description: Получение категории для конкретного пользователя
-      parameters:
-      - description: userID для получение категории
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: success
-          schema:
-            $ref: '#/definitions/api.SuccessResponse'
-        "400":
-          description: Некорректный данные
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "401":
-          description: Ошибка авторизации
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "404":
-          description: Категория не найдена
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: Ошибка сервера
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-      security:
-      - jwtAuth: []
-      summary: Получение категории
-      tags:
-      - categories
-  /category/update:
     put:
       consumes:
       - application/json
@@ -275,6 +204,113 @@ paths:
       security:
       - jwtAuth: []
       summary: обновление пользователя
+      tags:
+      - categories
+  /category/{id}:
+    delete:
+      description: Удаление категории конкретного пользователя
+      parameters:
+      - description: ID категории
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Некорректные данные
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: Ошибка авторизации
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: Категория не найдена
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - jwtAuth: []
+      summary: Удаление категории
+      tags:
+      - categories
+    get:
+      description: Получение категории для конкретного пользователя
+      parameters:
+      - description: ID категории
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Некорректный данные
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: Ошибка авторизации
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: Категория не найдена
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - jwtAuth: []
+      summary: Получение категории
+      tags:
+      - categories
+  /category/type/{type}:
+    get:
+      description: получение категории или категорий по определенномк типу, который
+        передается в URL пути
+      parameters:
+      - description: тип, по которому будут выбиратся категории или категория
+        in: path
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Некорректные данные
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: Категория не найдена
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - jwtAuth: []
+      summary: получение категории или категорий по типу
       tags:
       - categories
   /registration/get_access_token:
@@ -371,7 +407,7 @@ paths:
       summary: Регистрация пользователя
       tags:
       - registration
-  /transaction/create:
+  /transaction/:
     post:
       consumes:
       - application/json
@@ -407,81 +443,6 @@ paths:
       summary: Создание транзакции
       tags:
       - transaction
-  /transaction/delete:
-    delete:
-      description: Удаление 1 транзакции для 1 пользователя
-      parameters:
-      - description: id транзакции
-        in: path
-        name: req
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Транзакция удалена
-          schema:
-            $ref: '#/definitions/api.SuccessResponse'
-        "400":
-          description: Некорректные данные
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "401":
-          description: Ошибка авторизации
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "404":
-          description: Транзакция не найдена
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: Ошибка сервера
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-      security:
-      - jwtAuth: []
-      summary: Удаление транзакции
-      tags:
-      - transaction
-  /transaction/get:
-    get:
-      description: Получение 1 транзакции для 1 пользователя
-      parameters:
-      - description: id транзакции
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: good
-          schema:
-            $ref: '#/definitions/api.SuccessResponse'
-        "400":
-          description: Некорректные данные
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "401":
-          description: Ошибка авторизации
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "404":
-          description: Транзакция не найдена
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-        "500":
-          description: Ошибка сервера
-          schema:
-            $ref: '#/definitions/api.ErrorResponse'
-      security:
-      - jwtAuth: []
-      summary: Получение транзакции
-      tags:
-      - transaction
-  /transaction/update:
     put:
       consumes:
       - application/json
@@ -521,8 +482,81 @@ paths:
       summary: Обновление транзакции
       tags:
       - transaction
-  /user/delete:
-    post:
+  /transaction/{id}:
+    delete:
+      description: Удаление 1 транзакции для 1 пользователя
+      parameters:
+      - description: id транзакции
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Транзакция удалена
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Некорректные данные
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: Ошибка авторизации
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: Транзакция не найдена
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - jwtAuth: []
+      summary: Удаление транзакции
+      tags:
+      - transaction
+    get:
+      description: Получение 1 транзакции для 1 пользователя
+      parameters:
+      - description: id транзакции
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: good
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Некорректные данные
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "401":
+          description: Ошибка авторизации
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: Транзакция не найдена
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      security:
+      - jwtAuth: []
+      summary: Получение транзакции
+      tags:
+      - transaction
+  /user/:
+    delete:
       consumes:
       - application/json
       description: Удаление пользователя

@@ -1,7 +1,9 @@
 package category
 
 import (
+	"context"
 	"errors"
+	"strconv"
 
 	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/infastructure/db/postgresql"
@@ -29,6 +31,12 @@ type CategoryTypeRepository interface {
 	CategoriesType(typeFound string) ([]domain.CategoryOutput, error)
 }
 
+type Redis interface {
+	HsetCategory(ctx context.Context, key string, category domain.CategoryOutput) error
+	HgetCategory(ctx context.Context, key string) (map[string]string, error)
+	HdelCategory(ctx context.Context, key string) error
+}
+
 type CategoryServer struct {
 	d        DeleteCategoryRepository
 	c        CreateCategoryRepository
@@ -36,6 +44,7 @@ type CategoryServer struct {
 	u        UpdateCategoryRepository
 	t        CategoryTypeRepository
 	log      *logrus.Logger
+	rbd      Redis
 	validate validator.Validate
 }
 
@@ -44,7 +53,8 @@ func CreateCategoryServer(d DeleteCategoryRepository,
 	u UpdateCategoryRepository,
 	g GetCategoryRepository,
 	t CategoryTypeRepository,
-	log *logrus.Logger) *CategoryServer {
+	log *logrus.Logger,
+	rbd Redis) *CategoryServer {
 	return &CategoryServer{
 		d:        d,
 		c:        c,
@@ -52,6 +62,7 @@ func CreateCategoryServer(d DeleteCategoryRepository,
 		u:        u,
 		t:        t,
 		log:      log,
+		rbd:      rbd,
 		validate: *validator.New(),
 	}
 }
@@ -89,7 +100,26 @@ func (cs *CategoryServer) CreateCategory(userID uint, category domain.CategoryIn
 		return 0, ErrDatabase
 	}
 
+	canal := make(chan error)
+
+	go func(canal chan error) {
+		str := strconv.FormatUint(uint64(id), 10)
+		category := domain.CategoryOutput{
+			Name:        category.Name,
+			Description: category.Description,
+			Type:        category.Type,
+			Limit:       category.Limit,
+			UserID:      userID,
+		}
+		err := cs.rbd.HsetCategory(context.Background(), str, category)
+		canal <- err
+	}(canal)
+
 	log.Info("success create category")
+
+	if err := <-canal; err != nil {
+		log.Error("invalid set in redis", err)
+	}
 
 	return id, nil
 }
@@ -103,14 +133,33 @@ func (cs *CategoryServer) GetCategory(idCategory uint) (domain.CategoryOutput, e
 	})
 
 	log.Info("start get category")
+	str := strconv.FormatUint(uint64(idCategory), 10)
+
+	result, err := cs.rbd.HgetCategory(context.Background(), "category"+str)
+	if err == nil {
+		log.Info("get cateogry is cash: ", result)
+		limit, _ := strconv.Atoi(result["limit"])
+		userID, _ := strconv.Atoi(result["userID"])
+		return domain.CategoryOutput{
+			UserID:      uint(userID),
+			Name:        result["name"],
+			Limit:       limit,
+			Description: result["description"],
+			Type:        result["type"],
+		}, nil
+	} else {
+		log.Info("error cash", err)
+	}
 
 	category, err := cs.g.GetCategory(idCategory)
 	if err != nil {
+
 		if errors.Is(err, postgresql.ErrorNotFound) {
 			log.WithField("err", err).Error("category is not found")
 
 			return domain.CategoryOutput{}, ErrNoFound
 		}
+
 		log.WithField("err", err).Error("invalid get category")
 
 		return domain.CategoryOutput{}, ErrDatabase
@@ -152,6 +201,19 @@ func (cs *CategoryServer) UpdateCategory(idCategory uint, newCategory domain.Cat
 
 		return domain.CategoryOutput{}, ErrDatabase
 	}
+
+	canal := make(chan error, 1)
+
+	go func(chan error) {
+		str := strconv.FormatUint(uint64(idCategory), 10)
+		err := cs.rbd.HsetCategory(context.Background(), "category"+str, category)
+		canal <- err
+	}(canal)
+
+	if err := <-canal; err != nil {
+		log.Error("invalid set in cash", err)
+	}
+
 	log.Info("success update category")
 
 	return category, nil
@@ -177,6 +239,18 @@ func (cs *CategoryServer) DeleteCategory(idCategory uint) error {
 		log.WithField("err", err).Error("invalid delete user")
 
 		return ErrDatabase
+	}
+
+	canal := make(chan error)
+
+	go func(canal chan error) {
+		str := strconv.FormatUint(uint64(idCategory), 10)
+		err := cs.rbd.HdelCategory(context.Background(), "category"+str)
+		canal <- err
+	}(canal)
+
+	if err := <-canal; err != nil {
+		log.Error("invalid set in cash", err)
 	}
 
 	log.Info("success delete category")

@@ -47,7 +47,7 @@ func (d *Db) AuthenticationUser(email string, password string) (uint, string, er
 }
 
 func (d *Db) DeleteUser(email string, passwordHash string) error {
-	var user domain.User
+	var user User
 	result := d.DB.Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -60,7 +60,7 @@ func (d *Db) DeleteUser(email string, passwordHash string) error {
 		return err
 	}
 
-	result = d.DB.Delete(&user)
+	result = d.DB.Select("Transactions", "Categories").Where("id = ?", user.ID).Delete(&user)
 	if result.Error != nil {
 		return result.Error
 	}
