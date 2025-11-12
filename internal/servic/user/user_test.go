@@ -1,6 +1,7 @@
 package user
 
 import (
+	"context"
 	"errors"
 	"testing"
 
@@ -79,10 +80,10 @@ func TestServerRegistrationUser(t *testing.T) {
 			repoMock := new(DbMock)
 			log := logrus.New()
 
-			repoMock.On("RegistrationUser", mock.AnythingOfType("domain.User")).Return(test.userID, test.user.Name, test.mokuErr)
+			repoMock.On("RegistrationUser", mock.Anything, mock.AnythingOfType("domain.User")).Return(test.userID, test.user.Name, test.mokuErr)
 
 			server := CreateUserServer(repoMock, repoMock, repoMock, "secret", log)
-			tokens, err := server.RegistrationUser(test.user)
+			tokens, err := server.RegistrationUser(context.Background(), test.user)
 
 			if test.mokuErr != nil || test.userErr != nil {
 				assert.Error(t, err)
@@ -104,7 +105,7 @@ func TestServerRegistrationUser(t *testing.T) {
 			}
 
 			if test.shouldCallDB {
-				repoMock.AssertCalled(t, "RegistrationUser", mock.AnythingOfType("domain.User"))
+				repoMock.AssertCalled(t, "RegistrationUser", mock.Anything, mock.AnythingOfType("domain.User"))
 			}
 		})
 	}
@@ -177,11 +178,11 @@ func TestServerAuthenticationUser(t *testing.T) {
 			repoMock := new(DbMock)
 			log := logrus.New()
 
-			repoMock.On("AuthenticationUser", ts.inputUser.Email, ts.inputUser.Password).
+			repoMock.On("AuthenticationUser", mock.Anything, ts.inputUser.Email, ts.inputUser.Password).
 				Return(ts.userID, ts.nameUser, ts.mokuErr)
 
 			server := CreateUserServer(repoMock, repoMock, repoMock, "secret", log)
-			tokens, err := server.AuthenticationUser(ts.inputUser)
+			tokens, err := server.AuthenticationUser(context.Background(), ts.inputUser)
 
 			if ts.mokuErr != nil || ts.userErr != nil {
 				assert.Error(t, err)
@@ -203,7 +204,7 @@ func TestServerAuthenticationUser(t *testing.T) {
 			}
 
 			if ts.shouldCallDB {
-				repoMock.AssertCalled(t, "AuthenticationUser", ts.inputUser.Email, ts.inputUser.Password)
+				repoMock.AssertCalled(t, "AuthenticationUser", mock.Anything, ts.inputUser.Email, ts.inputUser.Password)
 			}
 		})
 	}
@@ -266,10 +267,10 @@ func TestServerDeleteUser(t *testing.T) {
 			repoMock := new(DbMock)
 			log := logrus.New()
 
-			repoMock.On("DeleteUser", ts.user.Email, ts.user.Password).Return(ts.mockErr)
+			repoMock.On("DeleteUser", mock.Anything, ts.user.Email, ts.user.Password).Return(ts.mockErr)
 
 			server := CreateUserServer(repoMock, repoMock, repoMock, "secret", log)
-			err := server.DeleteUser(ts.user)
+			err := server.DeleteUser(context.Background(), ts.user)
 
 			if ts.mockErr != nil || ts.userErr != nil {
 				assert.Error(t, err)
@@ -289,7 +290,7 @@ func TestServerDeleteUser(t *testing.T) {
 			}
 
 			if ts.shouldCallDB {
-				repoMock.AssertCalled(t, "DeleteUser", ts.user.Email, ts.user.Password)
+				repoMock.AssertCalled(t, "DeleteUser", mock.Anything, ts.user.Email, ts.user.Password)
 			}
 		})
 	}

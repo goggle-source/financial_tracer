@@ -1,6 +1,7 @@
 package userHandlers
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/financial_tracer/internal/domain"
@@ -11,15 +12,15 @@ import (
 )
 
 type RegistrationUserServic interface {
-	RegistrationUser(us domain.RegisterUser) (jwttoken.ResponseJWTUser, error)
+	RegistrationUser(ctx context.Context, us domain.RegisterUser) (jwttoken.ResponseJWTUser, error)
 }
 
 type AuthenticationUserServic interface {
-	AuthenticationUser(us domain.AuthenticationUser) (jwttoken.ResponseJWTUser, error)
+	AuthenticationUser(ctx context.Context, us domain.AuthenticationUser) (jwttoken.ResponseJWTUser, error)
 }
 
 type DeleteUserServic interface {
-	DeleteUser(us domain.DeleteUser) error
+	DeleteUser(ctx context.Context, us domain.DeleteUser) error
 }
 
 type HandlersUser struct {
@@ -28,17 +29,21 @@ type HandlersUser struct {
 	a         AuthenticationUserServic
 	d         DeleteUserServic
 	log       *logrus.Logger
+	ctx       context.Context
 }
 
 func CreateHandlersUser(secretKey string, r RegistrationUserServic,
 	a AuthenticationUserServic,
-	d DeleteUserServic, log *logrus.Logger) *HandlersUser {
+	d DeleteUserServic,
+	log *logrus.Logger,
+	ctx context.Context) *HandlersUser {
 	return &HandlersUser{
 		d:         d,
 		a:         a,
 		r:         r,
 		log:       log,
 		SecretKey: secretKey,
+		ctx:       ctx,
 	}
 }
 
@@ -78,7 +83,7 @@ func (h *HandlersUser) Registration(c *gin.Context) {
 		Password: req.Password,
 	}
 
-	tokens, err := h.r.RegistrationUser(user)
+	tokens, err := h.r.RegistrationUser(h.ctx, user)
 	if err != nil {
 		log.WithField("err", err).Error("error registration user")
 		api.RegistrationError(c, err)
@@ -128,7 +133,7 @@ func (h *HandlersUser) Authentication(c *gin.Context) {
 		Password: req.Password,
 	}
 
-	tokens, err := h.a.AuthenticationUser(user)
+	tokens, err := h.a.AuthenticationUser(h.ctx, user)
 	if err != nil {
 		log.WithField("err", err).Error("error authentication user")
 		api.RegistrationError(c, err)
@@ -181,7 +186,7 @@ func (h *HandlersUser) DeleteUser(c *gin.Context) {
 		Password: req.Password,
 	}
 
-	err := h.d.DeleteUser(users)
+	err := h.d.DeleteUser(h.ctx, users)
 	if err != nil {
 		log.WithField("err", err).Error("error delete user")
 		api.RegistrationError(c, err)

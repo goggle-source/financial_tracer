@@ -1344,3 +1344,202 @@
 {"err":"not found","level":"error","msg":"not found","op":"user.ServerAuthenticationUser","time":"2025-11-05T17:20:17+03:00"}
 {"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-05T17:20:17+03:00"}
 {"exp":2165900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-05T17:20:17+03:00"}
+{"level":"fatal","msg":"error conn database: failed to connect to `user=teamlid database=f`:\n\t[::1]:5432 (localhost): dial error: dial tcp [::1]:5432: connectex: No connection could be made because the target machine actively refused it.\n\t127.0.0.1:5432 (localhost): dial error: dial tcp 127.0.0.1:5432: connectex: No connection could be made because the target machine actively refused it.","time":"2025-11-12T17:30:11+03:00"}
+{"fields.time":"2025-11-12T17:30:44.3150502+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-12T17:30:44+03:00"}
+{"exp":13799700,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/swagger/favicon-32x32.png","time":"2025-11-12T17:30:44+03:00"}
+{"fields.time":"2025-11-12T17:30:49.7495224+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-12T17:30:49+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-12T17:30:49+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:30:49+03:00"}
+{"level":"error","msg":"error authentication user: not found","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:30:49+03:00"}
+{"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-12T17:30:49+03:00"}
+{"exp":2630600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-12T17:30:49+03:00"}
+{"fields.time":"2025-11-12T17:31:04.7874079+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-12T17:31:04+03:00"}
+{"level":"info","msg":"start registration user","op":"handler.RegistrationUser","time":"2025-11-12T17:31:04+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-12T17:31:04+03:00"}
+{"level":"error","msg":"error registration user: duplicated unique","op":"user.ServerRegistrationUser","time":"2025-11-12T17:31:04+03:00"}
+{"err":"the email has already been registered","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-12T17:31:04+03:00"}
+{"exp":53701200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-12T17:31:04+03:00"}
+{"fields.time":"2025-11-12T17:31:25.2584001+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-12T17:31:25+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-12T17:31:25+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:31:25+03:00"}
+{"level":"error","msg":"error authentication user: not found","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:31:25+03:00"}
+{"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-12T17:31:25+03:00"}
+{"exp":3452000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-12T17:31:25+03:00"}
+{"fields.time":"2025-11-12T17:31:56.8220162+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-12T17:31:56+03:00"}
+{"level":"info","msg":"start registration user","op":"handler.RegistrationUser","time":"2025-11-12T17:31:56+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-12T17:31:56+03:00"}
+{"level":"error","msg":"error registration user: duplicated unique","op":"user.ServerRegistrationUser","time":"2025-11-12T17:31:56+03:00"}
+{"err":"the email has already been registered","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-12T17:31:56+03:00"}
+{"exp":54195100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-12T17:31:56+03:00"}
+{"fields.time":"2025-11-12T17:32:03.1647065+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:03+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:03+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:03+03:00"}
+{"level":"error","msg":"error authentication user: not found","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:03+03:00"}
+{"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:03+03:00"}
+{"exp":3172600,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:03+03:00"}
+{"fields.time":"2025-11-12T17:32:08.8826669+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-12T17:32:08+03:00"}
+{"level":"info","msg":"start registration user","op":"handler.RegistrationUser","time":"2025-11-12T17:32:08+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-12T17:32:08+03:00"}
+{"level":"error","msg":"error registration user: duplicated unique","op":"user.ServerRegistrationUser","time":"2025-11-12T17:32:08+03:00"}
+{"err":"the email has already been registered","level":"error","msg":"error registration user","op":"handler.RegistrationUser","time":"2025-11-12T17:32:08+03:00"}
+{"exp":52891100,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-12T17:32:08+03:00"}
+{"fields.time":"2025-11-12T17:32:14.0834047+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:14+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:14+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:14+03:00"}
+{"level":"error","msg":"error authentication user: not found","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:14+03:00"}
+{"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:14+03:00"}
+{"exp":2293300,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:14+03:00"}
+{"fields.time":"2025-11-12T17:32:15.0972815+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:15+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:15+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:15+03:00"}
+{"level":"error","msg":"error authentication user: not found","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:15+03:00"}
+{"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:15+03:00"}
+{"exp":2372900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:15+03:00"}
+{"fields.time":"2025-11-12T17:32:15.3015959+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:15+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:15+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:15+03:00"}
+{"level":"error","msg":"error authentication user: not found","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:15+03:00"}
+{"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:15+03:00"}
+{"exp":2044300,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:15+03:00"}
+{"fields.time":"2025-11-12T17:32:15.4871365+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:15+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:15+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:15+03:00"}
+{"level":"error","msg":"error authentication user: not found","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:15+03:00"}
+{"err":"user is not found","level":"error","msg":"error authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:15+03:00"}
+{"exp":1624800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:15+03:00"}
+{"fields.time":"2025-11-12T17:32:23.8065845+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/register","time":"2025-11-12T17:32:23+03:00"}
+{"level":"info","msg":"start registration user","op":"handler.RegistrationUser","time":"2025-11-12T17:32:23+03:00"}
+{"level":"info","msg":"registration user","op":"user.ServerRegistrationUser","time":"2025-11-12T17:32:23+03:00"}
+{"level":"info","msg":"success registration user","op":"user.ServerRegistrationUser","time":"2025-11-12T17:32:23+03:00"}
+{"level":"info","msg":"success registration user","op":"handler.RegistrationUser","time":"2025-11-12T17:32:23+03:00"}
+{"exp":55350000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/register","time":"2025-11-12T17:32:23+03:00"}
+{"fields.time":"2025-11-12T17:32:52.5521588+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:52+03:00"}
+{"level":"info","msg":"start authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:52+03:00"}
+{"level":"info","msg":"start authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:52+03:00"}
+{"level":"info","msg":"success authentication user","op":"user.ServerAuthenticationUser","time":"2025-11-12T17:32:52+03:00"}
+{"level":"info","msg":"success authentication user","op":"handlers.GetUser","time":"2025-11-12T17:32:52+03:00"}
+{"exp":52644200,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/registration/login","time":"2025-11-12T17:32:52+03:00"}
+{"fields.time":"2025-11-12T17:33:02.3741542+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-12T17:33:02+03:00"}
+{"level":"error","msg":"error Authorization header","time":"2025-11-12T17:33:02+03:00"}
+{"exp":0,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-12T17:33:02+03:00"}
+{"fields.time":"2025-11-12T17:33:12.7336318+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-12T17:33:12+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-12T17:33:12+03:00"}
+{"err":"Key: 'RequestCreateCategory.Limit' Error:Field validation for 'Limit' failed on the 'required' tag","level":"error","msg":"error valid JSON","op":"handlers.PostCategory","time":"2025-11-12T17:33:12+03:00"}
+{"exp":1000800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-12T17:33:12+03:00"}
+{"fields.time":"2025-11-12T17:33:22.1713222+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-12T17:33:22+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-12T17:33:22+03:00"}
+{"level":"info","msg":"6","time":"2025-11-12T17:33:22+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-12T17:33:22+03:00","user_id":6}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-12T17:33:22+03:00","user_id":6}
+{"level":"error","msg":"invalid set in redisdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.CreateCategory","time":"2025-11-12T17:33:24+03:00","user_id":6}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-12T17:33:24+03:00"}
+{"exp":2108687300,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-12T17:33:24+03:00"}
+{"fields.time":"2025-11-12T17:33:35.9802091+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/18","time":"2025-11-12T17:33:35+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-12T17:33:35+03:00"}
+{"category_id":18,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-12T17:33:35+03:00"}
+{"category_id":18,"level":"info","msg":"error cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.GetCategory","time":"2025-11-12T17:33:38+03:00"}
+{"category_id":18,"level":"info","msg":"success get category","op":"category.GetCategory","time":"2025-11-12T17:33:38+03:00"}
+{"exp":2106420400,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/18","time":"2025-11-12T17:33:38+03:00"}
+{"fields.time":"2025-11-12T17:33:51.3665639+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/1","time":"2025-11-12T17:33:51+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-12T17:33:51+03:00"}
+{"category_id":1,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-12T17:33:51+03:00"}
+{"category_id":1,"level":"info","msg":"error cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.GetCategory","time":"2025-11-12T17:33:53+03:00"}
+{"category_id":1,"level":"error","msg":"error get category: not found","op":"category.GetCategory","time":"2025-11-12T17:33:53+03:00"}
+{"level":"error","msg":"error get category","op":"handlers.GetCategory","time":"2025-11-12T17:33:53+03:00"}
+{"exp":2141898600,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/1","time":"2025-11-12T17:33:53+03:00"}
+{"fields.time":"2025-11-12T17:33:56.885691+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/2","time":"2025-11-12T17:33:56+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-12T17:33:56+03:00"}
+{"category_id":2,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-12T17:33:56+03:00"}
+{"category_id":2,"level":"info","msg":"error cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.GetCategory","time":"2025-11-12T17:33:58+03:00"}
+{"category_id":2,"level":"error","msg":"error get category: not found","op":"category.GetCategory","time":"2025-11-12T17:33:58+03:00"}
+{"level":"error","msg":"error get category","op":"handlers.GetCategory","time":"2025-11-12T17:33:58+03:00"}
+{"exp":2071634000,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/2","time":"2025-11-12T17:33:58+03:00"}
+{"fields.time":"2025-11-12T17:34:02.5335687+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/15","time":"2025-11-12T17:34:02+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-12T17:34:02+03:00"}
+{"category_id":15,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-12T17:34:02+03:00"}
+{"category_id":15,"level":"info","msg":"error cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.GetCategory","time":"2025-11-12T17:34:04+03:00"}
+{"category_id":15,"level":"error","msg":"error get category: not found","op":"category.GetCategory","time":"2025-11-12T17:34:04+03:00"}
+{"level":"error","msg":"error get category","op":"handlers.GetCategory","time":"2025-11-12T17:34:04+03:00"}
+{"exp":2127510900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/15","time":"2025-11-12T17:34:04+03:00"}
+{"fields.time":"2025-11-12T17:34:09.4861538+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/16","time":"2025-11-12T17:34:09+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-12T17:34:09+03:00"}
+{"category_id":16,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-12T17:34:09+03:00"}
+{"category_id":16,"level":"info","msg":"error cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.GetCategory","time":"2025-11-12T17:34:11+03:00"}
+{"category_id":16,"level":"error","msg":"error get category: not found","op":"category.GetCategory","time":"2025-11-12T17:34:11+03:00"}
+{"level":"error","msg":"error get category","op":"handlers.GetCategory","time":"2025-11-12T17:34:11+03:00"}
+{"exp":2118210800,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/16","time":"2025-11-12T17:34:11+03:00"}
+{"fields.time":"2025-11-12T17:34:14.9411837+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/17","time":"2025-11-12T17:34:14+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-12T17:34:14+03:00"}
+{"category_id":17,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-12T17:34:14+03:00"}
+{"category_id":17,"level":"info","msg":"error cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.GetCategory","time":"2025-11-12T17:34:17+03:00"}
+{"category_id":17,"level":"error","msg":"error get category: not found","op":"category.GetCategory","time":"2025-11-12T17:34:17+03:00"}
+{"level":"error","msg":"error get category","op":"handlers.GetCategory","time":"2025-11-12T17:34:17+03:00"}
+{"exp":2137072400,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/17","time":"2025-11-12T17:34:17+03:00"}
+{"fields.time":"2025-11-12T17:34:19.902133+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/18","time":"2025-11-12T17:34:19+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-12T17:34:19+03:00"}
+{"category_id":18,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-12T17:34:19+03:00"}
+{"category_id":18,"level":"info","msg":"error cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.GetCategory","time":"2025-11-12T17:34:22+03:00"}
+{"category_id":18,"level":"info","msg":"success get category","op":"category.GetCategory","time":"2025-11-12T17:34:22+03:00"}
+{"exp":2120514200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/18","time":"2025-11-12T17:34:22+03:00"}
+{"fields.time":"2025-11-12T17:34:25.267253+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/19","time":"2025-11-12T17:34:25+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-12T17:34:25+03:00"}
+{"category_id":19,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-12T17:34:25+03:00"}
+{"category_id":19,"level":"info","msg":"error cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.GetCategory","time":"2025-11-12T17:34:27+03:00"}
+{"category_id":19,"level":"error","msg":"error get category: not found","op":"category.GetCategory","time":"2025-11-12T17:34:27+03:00"}
+{"level":"error","msg":"error get category","op":"handlers.GetCategory","time":"2025-11-12T17:34:27+03:00"}
+{"exp":2116240900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/19","time":"2025-11-12T17:34:27+03:00"}
+{"fields.time":"2025-11-12T17:35:18.9667391+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-12T17:35:18+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-12T17:35:18+03:00"}
+{"level":"info","msg":"6","time":"2025-11-12T17:35:18+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-12T17:35:18+03:00","user_id":6}
+{"level":"error","msg":"error create category: duplicated unique","op":"category.CreateCategory","time":"2025-11-12T17:35:18+03:00","user_id":6}
+{"level":"error","msg":"error create category","op":"handlers.PostCategory","time":"2025-11-12T17:35:18+03:00"}
+{"exp":5042900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-12T17:35:18+03:00"}
+{"fields.time":"2025-11-12T17:35:32.8532067+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-12T17:35:32+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-12T17:35:32+03:00"}
+{"level":"info","msg":"6","time":"2025-11-12T17:35:32+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-12T17:35:32+03:00","user_id":6}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-12T17:35:32+03:00","user_id":6}
+{"level":"error","msg":"invalid set in redisdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.CreateCategory","time":"2025-11-12T17:35:34+03:00","user_id":6}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-12T17:35:34+03:00"}
+{"exp":2132152800,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-12T17:35:34+03:00"}
+{"fields.time":"2025-11-12T17:35:44.0325173+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/category/","time":"2025-11-12T17:35:44+03:00"}
+{"level":"info","msg":"start create category","op":"handlers.PostCategory","time":"2025-11-12T17:35:44+03:00"}
+{"level":"info","msg":"6","time":"2025-11-12T17:35:44+03:00"}
+{"level":"info","msg":"start create category","op":"category.CreateCategory","time":"2025-11-12T17:35:44+03:00","user_id":6}
+{"level":"info","msg":"success create category","op":"category.CreateCategory","time":"2025-11-12T17:35:44+03:00","user_id":6}
+{"level":"error","msg":"invalid set in redisdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.CreateCategory","time":"2025-11-12T17:35:46+03:00","user_id":6}
+{"level":"info","msg":"success create category","op":"handlers.PostCategory","time":"2025-11-12T17:35:46+03:00"}
+{"exp":2137601000,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/category/","time":"2025-11-12T17:35:46+03:00"}
+{"fields.time":"2025-11-12T17:35:54.3888502+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/type/string","time":"2025-11-12T17:35:54+03:00"}
+{"level":"info","msg":"start gets categories type","op":"handlers.CategoryType","time":"2025-11-12T17:35:54+03:00"}
+{"level":"info","msg":"start gets categories type","op":"category.CategoryType","time":"2025-11-12T17:35:54+03:00","type":"string"}
+{"level":"info","msg":"gets categories type","op":"category.CategoryType","time":"2025-11-12T17:35:54+03:00","type":"string"}
+{"level":"info","msg":"success get category type","op":"handlers.CategoryType","time":"2025-11-12T17:35:54+03:00"}
+{"exp":2689300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/type/string","time":"2025-11-12T17:35:54+03:00"}
+{"fields.time":"2025-11-12T17:36:07.2140941+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/category/18","time":"2025-11-12T17:36:07+03:00"}
+{"level":"info","msg":"start delete category","op":"handlers.DeleteCategory","time":"2025-11-12T17:36:07+03:00"}
+{"category_id":18,"level":"info","msg":"start delete category","op":"category.DeleteCategory","time":"2025-11-12T17:36:07+03:00"}
+{"category_id":18,"level":"error","msg":"invalid set in cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.DeleteCategory","time":"2025-11-12T17:36:09+03:00"}
+{"category_id":18,"level":"info","msg":"success delete category","op":"category.DeleteCategory","time":"2025-11-12T17:36:09+03:00"}
+{"level":"info","msg":"success delete category","op":"handlers.DeleteCategory","time":"2025-11-12T17:36:09+03:00"}
+{"exp":2150429100,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/category/18","time":"2025-11-12T17:36:09+03:00"}
+{"fields.time":"2025-11-12T17:36:15.7014494+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/18","time":"2025-11-12T17:36:15+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-12T17:36:15+03:00"}
+{"category_id":18,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-12T17:36:15+03:00"}
+{"category_id":18,"level":"info","msg":"error cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.GetCategory","time":"2025-11-12T17:36:17+03:00"}
+{"category_id":18,"level":"error","msg":"error get category: not found","op":"category.GetCategory","time":"2025-11-12T17:36:17+03:00"}
+{"level":"error","msg":"error get category","op":"handlers.GetCategory","time":"2025-11-12T17:36:17+03:00"}
+{"exp":2124031300,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/18","time":"2025-11-12T17:36:17+03:00"}
+{"fields.time":"2025-11-12T17:36:27.3516062+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-12T17:36:27+03:00"}
+{"level":"info","msg":"start create transaction","op":"handlers.PostTransaction","time":"2025-11-12T17:36:27+03:00"}
+{"category_id":2,"level":"info","msg":"start create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-12T17:36:27+03:00","user_id":6}
+{"category_id":2,"level":"error","msg":"error create transaction: not found","op":"transaction.CreateTransactionServic","time":"2025-11-12T17:36:27+03:00","user_id":6}
+{"err":"transaction is not found","level":"error","msg":"error create transaction","op":"handlers.PostTransaction","time":"2025-11-12T17:36:27+03:00"}
+{"exp":4613900,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-12T17:36:27+03:00"}
+{"fields.time":"2025-11-12T17:36:36.9227159+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-12T17:36:36+03:00"}
+{"level":"info","msg":"start create transaction","op":"handlers.PostTransaction","time":"2025-11-12T17:36:36+03:00"}
+{"category_id":2,"level":"info","msg":"start create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-12T17:36:36+03:00","user_id":6}
+{"category_id":2,"level":"error","msg":"error create transaction: not found","op":"transaction.CreateTransactionServic","time":"2025-11-12T17:36:36+03:00","user_id":6}
+{"err":"transaction is not found","level":"error","msg":"error create transaction","op":"handlers.PostTransaction","time":"2025-11-12T17:36:36+03:00"}
+{"exp":3748700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-12T17:36:36+03:00"}

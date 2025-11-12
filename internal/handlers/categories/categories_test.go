@@ -2,6 +2,7 @@ package categoryHandlers
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -82,9 +83,10 @@ func TestPostCategory(t *testing.T) {
 
 			svc := new(categoryServiceMock)
 			log := logrus.New()
+			ctx := context.Background()
 
-			svc.On("CreateCategory", tc.userID, tc.body).Return(tc.categoryID, tc.mockErr)
-			h := CreateHandlersCategory(svc, svc, svc, svc, svc, log)
+			svc.On("CreateCategory", ctx, tc.userID, tc.body).Return(tc.categoryID, tc.mockErr)
+			h := CreateHandlersCategory(svc, svc, svc, svc, svc, log, ctx)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalidJSON {
@@ -99,7 +101,7 @@ func TestPostCategory(t *testing.T) {
 			h.PostCategory(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "CreateCategory", tc.userID, tc.body)
+				svc.AssertCalled(t, "CreateCategory", ctx, tc.userID, tc.body)
 			}
 		})
 	}
@@ -144,11 +146,13 @@ func TestGetCategory(t *testing.T) {
 
 			svc := new(categoryServiceMock)
 			log := logrus.New()
+			ctx := context.Background()
+
 			if tc.shouldCallDB {
-				svc.On("GetCategory", tc.req).Return(tc.output, tc.mockErr)
+				svc.On("GetCategory", ctx, tc.req).Return(tc.output, tc.mockErr)
 			}
 
-			h := CreateHandlersCategory(svc, svc, svc, svc, svc, log)
+			h := CreateHandlersCategory(svc, svc, svc, svc, svc, log, ctx)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 
@@ -174,7 +178,7 @@ func TestGetCategory(t *testing.T) {
 			h.GetCategory(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "GetCategory", tc.req)
+				svc.AssertCalled(t, "GetCategory", ctx, tc.req)
 			}
 		})
 	}
@@ -221,10 +225,13 @@ func TestUpdateCategory(t *testing.T) {
 
 			svc := new(categoryServiceMock)
 			log := logrus.New()
+			ctx := context.Background()
 			input := domain.CategoryInput{Name: tc.req.Name, Limit: tc.req.Limit, Description: tc.req.Description}
 
-			svc.On("UpdateCategory", tc.req.CategoryId, input).Return(tc.output, tc.mockErr)
-			h := CreateHandlersCategory(svc, svc, svc, svc, svc, log)
+			if tc.shouldCallDB {
+				svc.On("UpdateCategory", ctx, tc.req.CategoryId, input).Return(tc.output, tc.mockErr)
+			}
+			h := CreateHandlersCategory(svc, svc, svc, svc, svc, log, ctx)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalidJSON {
@@ -239,7 +246,7 @@ func TestUpdateCategory(t *testing.T) {
 			h.UpdateCategory(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "UpdateCategory", tc.req.CategoryId, input)
+				svc.AssertCalled(t, "UpdateCategory", ctx, tc.req.CategoryId, input)
 			}
 		})
 	}
@@ -283,11 +290,13 @@ func TestDeleteCategory(t *testing.T) {
 
 			svc := new(categoryServiceMock)
 			log := logrus.New()
+			ctx := context.Background()
+
 			if tc.shouldCallDB {
-				svc.On("DeleteCategory", tc.req).Return(tc.mockErr)
+				svc.On("DeleteCategory", ctx, tc.req).Return(tc.mockErr)
 			}
 
-			h := CreateHandlersCategory(svc, svc, svc, svc, svc, log)
+			h := CreateHandlersCategory(svc, svc, svc, svc, svc, log, ctx)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 
@@ -313,7 +322,7 @@ func TestDeleteCategory(t *testing.T) {
 			h.DeleteCategory(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "DeleteCategory", tc.req)
+				svc.AssertCalled(t, "DeleteCategory", ctx, tc.req)
 			}
 		})
 	}
@@ -376,11 +385,13 @@ func TestCategoryType(t *testing.T) {
 
 			svc := new(categoryServiceMock)
 			log := logrus.New()
+			ctx := context.Background()
+
 			if tc.shouldCallDB {
-				svc.On("CategoryType", tc.param).Return(tc.output, tc.mockErr)
+				svc.On("CategoryType", ctx, tc.param).Return(tc.output, tc.mockErr)
 			}
 
-			h := CreateHandlersCategory(svc, svc, svc, svc, svc, log)
+			h := CreateHandlersCategory(svc, svc, svc, svc, svc, log, ctx)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			req.Header.Set("content-type", "application/json")
@@ -389,7 +400,7 @@ func TestCategoryType(t *testing.T) {
 			if tc.param != "" {
 				c.Params = gin.Params{
 					{
-						Key:   "param",
+						Key:   "type",
 						Value: tc.param,
 					},
 				}
@@ -398,7 +409,7 @@ func TestCategoryType(t *testing.T) {
 			h.CategoryType(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "CategoryType", tc.param)
+				svc.AssertCalled(t, "CategoryType", ctx, tc.param)
 			}
 		})
 	}

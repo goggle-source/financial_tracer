@@ -1,6 +1,7 @@
 package transactionHandlers
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 
@@ -11,19 +12,19 @@ import (
 )
 
 type CreateTransactionServic interface {
-	CreateTransaction(idUser uint, idCategory uint, tran domain.TransactionInput) (uint, error)
+	CreateTransaction(ctx context.Context, idUser uint, idCategory uint, tran domain.TransactionInput) (uint, error)
 }
 
 type GetTransactionServic interface {
-	GetTransaction(idTransaction uint) (domain.TransactionOutput, error)
+	GetTransaction(ctx context.Context, idTransaction uint) (domain.TransactionOutput, error)
 }
 
 type UpdateTransactionServic interface {
-	UpdateTransaction(idTransaction uint, newTransaction domain.TransactionInput) (domain.TransactionOutput, error)
+	UpdateTransaction(ctx context.Context, idTransaction uint, newTransaction domain.TransactionInput) (domain.TransactionOutput, error)
 }
 
 type DeleteTransactionServic interface {
-	DeleteTransaction(idTransaction uint) error
+	DeleteTransaction(ctx context.Context, idTransaction uint) error
 }
 
 type TransactionHandlers struct {
@@ -32,19 +33,22 @@ type TransactionHandlers struct {
 	u   UpdateTransactionServic
 	d   DeleteTransactionServic
 	log *logrus.Logger
+	ctx context.Context
 }
 
 func CreateTransactionHandlers(c CreateTransactionServic,
 	g GetTransactionServic,
 	u UpdateTransactionServic,
 	d DeleteTransactionServic,
-	log *logrus.Logger) *TransactionHandlers {
+	log *logrus.Logger,
+	ctx context.Context) *TransactionHandlers {
 	return &TransactionHandlers{
 		c:   c,
 		d:   d,
 		g:   g,
 		u:   u,
 		log: log,
+		ctx: ctx,
 	}
 }
 
@@ -93,7 +97,7 @@ func (th *TransactionHandlers) PostTransaction(c *gin.Context) {
 		Description: transaction.Description,
 	}
 
-	id, err := th.c.CreateTransaction(idUser.(uint), transaction.IdCategory, newTransaction)
+	id, err := th.c.CreateTransaction(th.ctx, idUser.(uint), transaction.IdCategory, newTransaction)
 	if err != nil {
 		log.WithField("err", err).Error("error create transaction")
 		api.RegistrationError(c, err)
@@ -139,7 +143,7 @@ func (th *TransactionHandlers) GetTransaction(c *gin.Context) {
 		return
 	}
 
-	transaction, err := th.g.GetTransaction(uint(id))
+	transaction, err := th.g.GetTransaction(c.Request.Context(), uint(id))
 	if err != nil {
 		log.WithField("err", err).Error("error get transaction")
 		api.RegistrationError(c, err)
@@ -189,7 +193,7 @@ func (th *TransactionHandlers) UpdateTransaction(c *gin.Context) {
 		Description: transaction.Description,
 	}
 
-	newTransaction, err := th.u.UpdateTransaction(transaction.IdTransaction, tran)
+	newTransaction, err := th.u.UpdateTransaction(c.Request.Context(), transaction.IdTransaction, tran)
 	if err != nil {
 		log.WithField("err", err).Error("error update transaction")
 		api.RegistrationError(c, err)
@@ -235,7 +239,7 @@ func (th *TransactionHandlers) DeleteTransaction(c *gin.Context) {
 		return
 	}
 
-	err = th.d.DeleteTransaction(uint(id))
+	err = th.d.DeleteTransaction(c.Request.Context(), uint(id))
 
 	if err != nil {
 		log.WithField("err", err).Error("error delete transaction")

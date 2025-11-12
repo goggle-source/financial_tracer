@@ -1,14 +1,18 @@
 package transaction
 
 import (
+	"context"
 	"errors"
+	"strconv"
 	"testing"
 
 	"github.com/financial_tracer/internal/domain"
+	"github.com/financial_tracer/internal/infastructure/cash"
 	"github.com/financial_tracer/internal/infastructure/db/postgresql"
 	"github.com/go-playground/validator/v10"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestCreateTransactionServic(t *testing.T) {
@@ -21,6 +25,8 @@ func TestCreateTransactionServic(t *testing.T) {
 		repoErr       error
 		tranErr       error
 		shouldCallDB  bool
+		shouldCache   bool
+		cacheErr      error
 	}
 
 	arrTest := []test{
@@ -31,12 +37,14 @@ func TestCreateTransactionServic(t *testing.T) {
 				Count:       1000,
 				Description: "потраченно в субботу в ресторане",
 			},
-			idUser:        1,
-			idCategory:    2,
+			idUser:        123,
+			idCategory:    15312,
 			idTransaction: 1,
 			repoErr:       nil,
 			tranErr:       nil,
 			shouldCallDB:  true,
+			shouldCache:   true,
+			cacheErr:      nil,
 		},
 		{
 			name: "error not found",
@@ -51,6 +59,7 @@ func TestCreateTransactionServic(t *testing.T) {
 			repoErr:       postgresql.ErrorNotFound,
 			tranErr:       ErrNoFound,
 			shouldCallDB:  true,
+			shouldCache:   false,
 		},
 		{
 			name: "error database",
@@ -65,6 +74,7 @@ func TestCreateTransactionServic(t *testing.T) {
 			repoErr:       errors.New("some db error"),
 			tranErr:       ErrDatabase,
 			shouldCallDB:  true,
+			shouldCache:   false,
 		},
 		{
 			name: "error limit",
@@ -79,6 +89,7 @@ func TestCreateTransactionServic(t *testing.T) {
 			repoErr:       postgresql.ErrorLimit,
 			tranErr:       ErrLimit,
 			shouldCallDB:  true,
+			shouldCache:   false,
 		},
 		{
 			name: "error validate",
@@ -93,19 +104,34 @@ func TestCreateTransactionServic(t *testing.T) {
 			repoErr:       nil,
 			tranErr:       validator.ValidationErrors{},
 			shouldCallDB:  false,
+			shouldCache:   false,
 		},
 	}
 
 	for _, test := range arrTest {
 		t.Run(test.name, func(t *testing.T) {
 			repoMock := new(DbMock)
+			redisMock := new(cash.RedisMock)
 
-			repoMock.On("CreateTransaction", test.idUser, test.idCategory, test.tran).
-				Return(test.idTransaction, test.repoErr)
+			if test.shouldCallDB {
+				repoMock.On("CreateTransaction", mock.Anything, test.idUser, test.idCategory, test.tran).
+					Return(test.idTransaction, test.repoErr)
+			}
+			if test.shouldCache {
+				expectedTransaction := domain.TransactionOutput{
+					Name:        test.tran.Name,
+					UserID:      test.idUser,
+					CategoryID:  test.idCategory,
+					Description: test.tran.Description,
+					Count:       test.tran.Count,
+				}
+				redisMock.On("HsetTransaction", mock.Anything, test.idTransaction, expectedTransaction).
+					Return(test.cacheErr)
+			}
 			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log)
-			id, err := server.CreateTransaction(test.idUser, test.idCategory, test.tran)
+			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log, redisMock)
+			id, err := server.CreateTransaction(context.Background(), test.idUser, test.idCategory, test.tran)
 
 			if test.repoErr != nil || test.tranErr != nil {
 				assert.Error(t, err)
@@ -123,7 +149,15 @@ func TestCreateTransactionServic(t *testing.T) {
 			}
 
 			if test.shouldCallDB {
-				repoMock.AssertCalled(t, "CreateTransaction", test.idUser, test.idCategory, test.tran)
+				repoMock.AssertExpectations(t)
+			} else {
+				repoMock.AssertNotCalled(t, "CreateTransaction", mock.Anything, mock.Anything, mock.Anything, mock.Anything)
+			}
+
+			if test.shouldCache {
+				redisMock.AssertExpectations(t)
+			} else {
+				redisMock.AssertNotCalled(t, "HsetTransaction", mock.Anything, mock.Anything, mock.Anything)
 			}
 		})
 	}
@@ -136,6 +170,9 @@ func TestReadTransactionServer(t *testing.T) {
 		idTransaction uint
 		tranErr       error
 		svcErr        error
+		redisPayload  map[string]string
+		redisErr      error
+		shouldCallDB  bool
 	}
 
 	arrTest := []test{
@@ -148,15 +185,24 @@ func TestReadTransactionServer(t *testing.T) {
 				Count:       10000,
 				Description: "походил с девушкой по магазинам",
 			},
-			idTransaction: 4,
+			idTransaction: 7,
 			tranErr:       nil,
 			svcErr:        nil,
+			redisPayload: map[string]string{
+				"name":        "траты на магазин",
+				"description": "походил с девушкой по магазинам",
+				"userID":      strconv.FormatUint(uint64(1), 10),
+				"categoryID":  strconv.FormatUint(uint64(2), 10),
+				"count":       strconv.Itoa(10000),
+			},
+			redisErr:     nil,
+			shouldCallDB: false,
 		},
 		{
 			name: "error database",
 			tran: domain.TransactionOutput{
-				UserID:      4,
-				CategoryID:  7,
+				UserID:      5,
+				CategoryID:  1,
 				Name:        "покупка нового пк",
 				Count:       100000,
 				Description: "купил себе компьютер по-мощнее для разработки собственной нейросети",
@@ -164,6 +210,9 @@ func TestReadTransactionServer(t *testing.T) {
 			idTransaction: 0,
 			tranErr:       errors.New("some db err"),
 			svcErr:        ErrDatabase,
+			redisPayload:  map[string]string{},
+			redisErr:      errors.New("cache miss"),
+			shouldCallDB:  true,
 		},
 		{
 			name: "not found",
@@ -177,18 +226,27 @@ func TestReadTransactionServer(t *testing.T) {
 			idTransaction: 0,
 			tranErr:       postgresql.ErrorNotFound,
 			svcErr:        ErrNoFound,
+			redisPayload:  map[string]string{},
+			redisErr:      errors.New("cache miss"),
+			shouldCallDB:  true,
 		},
 	}
 
 	for _, ts := range arrTest {
 		t.Run(ts.name, func(t *testing.T) {
-			repoMock := new(DbMock)
 
-			repoMock.On("GetTransaction", ts.idTransaction).Return(ts.tran, ts.tranErr)
+			repoMock := new(DbMock)
+			redisMock := new(cash.RedisMock)
+
+			if ts.shouldCallDB {
+				repoMock.On("GetTransaction", mock.Anything, ts.idTransaction).Return(ts.tran, ts.tranErr)
+			}
+			redisMock.On("HgetTransaction", mock.Anything, ts.idTransaction).
+				Return(ts.redisPayload, ts.redisErr)
 			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log)
-			tran, err := server.GetTransaction(ts.idTransaction)
+			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log, redisMock)
+			tran, err := server.GetTransaction(context.Background(), ts.idTransaction)
 			if ts.tranErr != nil || ts.svcErr != nil {
 				assert.Error(t, err)
 				if !errors.Is(err, ts.svcErr) {
@@ -199,7 +257,13 @@ func TestReadTransactionServer(t *testing.T) {
 				assert.Equal(t, tran, ts.tran)
 			}
 
-			repoMock.AssertExpectations(t)
+			redisMock.AssertExpectations(t)
+
+			if ts.shouldCallDB {
+				repoMock.AssertExpectations(t)
+			} else {
+				repoMock.AssertNotCalled(t, "GetTransaction", mock.Anything, mock.AnythingOfType("uint"))
+			}
 		})
 	}
 }
@@ -213,6 +277,8 @@ func TestUpdateTransactionServer(t *testing.T) {
 		tranErr       error
 		svcErr        error
 		shouldCallDB  bool
+		shouldCache   bool
+		cacheErr      error
 	}
 
 	arrTest := []test{
@@ -234,6 +300,8 @@ func TestUpdateTransactionServer(t *testing.T) {
 			tranErr:      nil,
 			svcErr:       nil,
 			shouldCallDB: true,
+			shouldCache:  true,
+			cacheErr:     nil,
 		},
 		{
 			name:          "error database",
@@ -247,6 +315,7 @@ func TestUpdateTransactionServer(t *testing.T) {
 			tranErr:      errors.New("db error"),
 			svcErr:       ErrDatabase,
 			shouldCallDB: true,
+			shouldCache:  false,
 		},
 		{
 			name:          "error validate",
@@ -260,18 +329,26 @@ func TestUpdateTransactionServer(t *testing.T) {
 			tranErr:      nil,
 			svcErr:       validator.ValidationErrors{},
 			shouldCallDB: false,
+			shouldCache:  false,
 		},
 	}
 
 	for _, test := range arrTest {
 		t.Run(test.name, func(t *testing.T) {
-			repoMock := new(DbMock)
 
-			repoMock.On("UpdateTransaction", test.idTransaction, test.tranInput).Return(test.tranOutput, test.tranErr)
+			repoMock := new(DbMock)
+			redisMock := new(cash.RedisMock)
+
+			if test.shouldCallDB {
+				repoMock.On("UpdateTransaction", mock.Anything, test.idTransaction, test.tranInput).Return(test.tranOutput, test.tranErr)
+			}
+			if test.shouldCache {
+				redisMock.On("HsetTransaction", mock.Anything, test.idTransaction, test.tranOutput).Return(test.cacheErr)
+			}
 			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log)
-			tranOutput, err := server.UpdateTransaction(test.idTransaction, test.tranInput)
+			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log, redisMock)
+			tranOutput, err := server.UpdateTransaction(context.Background(), test.idTransaction, test.tranInput)
 
 			if test.tranErr != nil || test.svcErr != nil {
 				assert.Error(t, err)
@@ -289,7 +366,15 @@ func TestUpdateTransactionServer(t *testing.T) {
 			}
 
 			if test.shouldCallDB {
-				repoMock.AssertCalled(t, "UpdateTransaction", test.idTransaction, test.tranInput)
+				repoMock.AssertExpectations(t)
+			} else {
+				repoMock.AssertNotCalled(t, "UpdateTransaction", mock.Anything, mock.Anything, mock.Anything)
+			}
+
+			if test.shouldCache {
+				redisMock.AssertExpectations(t)
+			} else {
+				redisMock.AssertNotCalled(t, "HsetTransaction", mock.Anything, mock.Anything, mock.Anything)
 			}
 		})
 	}
@@ -301,6 +386,8 @@ func TestDeleteTransactionServer(t *testing.T) {
 		idTransaction uint
 		tranErr       error
 		svcErr        error
+		shouldCache   bool
+		cacheErr      error
 	}
 
 	arrTest := []test{
@@ -309,30 +396,39 @@ func TestDeleteTransactionServer(t *testing.T) {
 			idTransaction: 2,
 			tranErr:       nil,
 			svcErr:        nil,
+			shouldCache:   true,
+			cacheErr:      nil,
 		},
 		{
 			name:          "not found",
 			idTransaction: 5,
 			tranErr:       postgresql.ErrorNotFound,
 			svcErr:        ErrNoFound,
+			shouldCache:   false,
 		},
 		{
 			name:          "error database",
 			idTransaction: 6,
 			tranErr:       errors.New("db error"),
 			svcErr:        ErrDatabase,
+			shouldCache:   false,
 		},
 	}
 
 	for _, ts := range arrTest {
 		t.Run(ts.name, func(t *testing.T) {
-			repoMock := new(DbMock)
 
-			repoMock.On("DeleteTransaction", ts.idTransaction).Return(ts.tranErr)
+			repoMock := new(DbMock)
+			redisMock := new(cash.RedisMock)
+
+			repoMock.On("DeleteTransaction", mock.Anything, ts.idTransaction).Return(ts.tranErr)
+			if ts.shouldCache {
+				redisMock.On("HdelTransaction", mock.Anything, ts.idTransaction).Return(ts.cacheErr)
+			}
 			log := logrus.New()
 
-			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log)
-			err := server.DeleteTransaction(ts.idTransaction)
+			server := CreateTransactionServer(repoMock, repoMock, repoMock, repoMock, log, redisMock)
+			err := server.DeleteTransaction(context.Background(), ts.idTransaction)
 			if ts.tranErr != nil || ts.svcErr != nil {
 				assert.Error(t, err)
 				if !errors.Is(err, ts.svcErr) {
@@ -342,6 +438,11 @@ func TestDeleteTransactionServer(t *testing.T) {
 				assert.NoError(t, err)
 			}
 			repoMock.AssertExpectations(t)
+			if ts.shouldCache {
+				redisMock.AssertExpectations(t)
+			} else {
+				redisMock.AssertNotCalled(t, "HdelTransaction", mock.Anything, mock.Anything)
+			}
 		})
 	}
 }

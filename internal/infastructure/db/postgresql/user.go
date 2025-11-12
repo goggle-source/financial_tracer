@@ -1,6 +1,7 @@
 package postgresql
 
 import (
+	"context"
 	"errors"
 
 	"github.com/financial_tracer/internal/domain"
@@ -8,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func (d *Db) RegistrationUser(user domain.User) (uint, string, error) {
+func (d *Db) RegistrationUser(ctx context.Context, user domain.User) (uint, string, error) {
 
 	userDb := User{
 		Name:         user.Name,
@@ -16,7 +17,7 @@ func (d *Db) RegistrationUser(user domain.User) (uint, string, error) {
 		PasswordHash: user.PasswordHash[:],
 	}
 
-	result := d.DB.Create(&userDb)
+	result := d.DB.WithContext(ctx).Create(&userDb)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
 			return 0, "", ErrorDuplicated
@@ -26,11 +27,11 @@ func (d *Db) RegistrationUser(user domain.User) (uint, string, error) {
 	return userDb.ID, user.Name, nil
 }
 
-func (d *Db) AuthenticationUser(email string, password string) (uint, string, error) {
+func (d *Db) AuthenticationUser(ctx context.Context, email string, password string) (uint, string, error) {
 
 	var user User
 
-	result := d.DB.Where("email = ?", email).First(&user)
+	result := d.DB.WithContext(ctx).Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return 0, "", ErrorNotFound
@@ -46,9 +47,9 @@ func (d *Db) AuthenticationUser(email string, password string) (uint, string, er
 	return user.ID, user.Name, nil
 }
 
-func (d *Db) DeleteUser(email string, passwordHash string) error {
+func (d *Db) DeleteUser(ctx context.Context, email string, passwordHash string) error {
 	var user User
-	result := d.DB.Where("email = ?", email).First(&user)
+	result := d.DB.WithContext(ctx).Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return ErrorNotFound
@@ -60,7 +61,7 @@ func (d *Db) DeleteUser(email string, passwordHash string) error {
 		return err
 	}
 
-	result = d.DB.Select("Transactions", "Categories").Where("id = ?", user.ID).Delete(&user)
+	result = d.DB.WithContext(ctx).Select("Transactions", "Categories").Where("id = ?", user.ID).Delete(&user)
 	if result.Error != nil {
 		return result.Error
 	}

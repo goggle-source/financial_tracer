@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"io"
 	"net/http"
 	"os"
@@ -28,13 +29,14 @@ func main() {
 	}
 
 	red := cash.CreateRealRedis(*cfg)
+	ctx := context.Background()
 
 	users := user.CreateUserServer(db, db, db, cfg.App.SercretKey, log)
-	handlersUser := userHandlers.CreateHandlersUser(cfg.App.SercretKey, users, users, users, log)
+	handlersUser := userHandlers.CreateHandlersUser(cfg.App.SercretKey, users, users, users, log, ctx)
 	categories := category.CreateCategoryServer(db, db, db, db, db, log, &red)
-	handlersCategory := categoryHandlers.CreateHandlersCategory(categories, categories, categories, categories, categories, log)
-	transactions := transaction.CreateTransactionServer(db, db, db, db, log)
-	handlersTransaction := transactionHandlers.CreateTransactionHandlers(transactions, transactions, transactions, transactions, log)
+	handlersCategory := categoryHandlers.CreateHandlersCategory(categories, categories, categories, categories, categories, log, ctx)
+	transactions := transaction.CreateTransactionServer(db, db, db, db, log, &red)
+	handlersTransaction := transactionHandlers.CreateTransactionHandlers(transactions, transactions, transactions, transactions, log, ctx)
 	r := handlers.Router(handlersUser, handlersCategory, log, handlersTransaction, cfg.App.SercretKey)
 
 	srv := &http.Server{

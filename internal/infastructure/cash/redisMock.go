@@ -25,3 +25,18 @@ func (r *RedisMock) HdelCategory(ctx context.Context, id uint) error {
 	args := r.Called(ctx, id)
 	return args.Error(0)
 }
+
+func (r *RedisMock) HsetTransaction(ctx context.Context, id uint, transaction domain.TransactionOutput) error {
+	args := r.Called(ctx, id, transaction)
+	return args.Error(0)
+}
+
+func (r *RedisMock) HgetTransaction(ctx context.Context, id uint) (map[string]string, error) {
+	args := r.Called(ctx, id)
+	return args.Get(0).(map[string]string), args.Error(1)
+}
+
+func (r *RedisMock) HdelTransaction(ctx context.Context, id uint) error {
+	args := r.Called(ctx, id)
+	return args.Error(0)
+}

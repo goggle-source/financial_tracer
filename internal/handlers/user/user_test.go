@@ -2,6 +2,7 @@ package userHandlers
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -85,10 +86,11 @@ func TestRegistration(t *testing.T) {
 
 			svc := new(userServiceMock)
 			log := logrus.New()
+			ctx := context.Background()
 
-			svc.On("RegistrationUser", tc.user).Return(tc.userID, tc.mockErr)
+			svc.On("RegistrationUser", ctx, tc.user).Return(tc.userID, tc.mockErr)
 
-			h := CreateHandlersUser("secret", svc, svc, svc, log)
+			h := CreateHandlersUser("secret", svc, svc, svc, log, ctx)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalidJSON {
@@ -103,7 +105,7 @@ func TestRegistration(t *testing.T) {
 			h.Registration(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "RegistrationUser", tc.user)
+				svc.AssertCalled(t, "RegistrationUser", ctx, tc.user)
 			}
 		})
 	}
@@ -158,10 +160,11 @@ func TestAuthentication(t *testing.T) {
 
 			svc := new(userServiceMock)
 			log := logrus.New()
+			ctx := context.Background()
 
-			svc.On("AuthenticationUser", tc.user).Return(tc.userID, tc.userName, tc.mockErr)
+			svc.On("AuthenticationUser", ctx, tc.user).Return(tc.userID, tc.userName, tc.mockErr)
 
-			h := CreateHandlersUser("secret", svc, svc, svc, log)
+			h := CreateHandlersUser("secret", svc, svc, svc, log, ctx)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalidJSON {
@@ -176,7 +179,7 @@ func TestAuthentication(t *testing.T) {
 			h.Authentication(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "AuthenticationUser", tc.user)
+				svc.AssertCalled(t, "AuthenticationUser", ctx, tc.user)
 			}
 		})
 	}
@@ -225,10 +228,11 @@ func TestDeleteUser(t *testing.T) {
 
 			svc := new(userServiceMock)
 			log := logrus.New()
+			ctx := context.Background()
 
-			svc.On("DeleteUser", tc.user).Return(tc.mockErr)
+			svc.On("DeleteUser", ctx, tc.user).Return(tc.mockErr)
 
-			h := CreateHandlersUser("secret", svc, svc, svc, log)
+			h := CreateHandlersUser("secret", svc, svc, svc, log, ctx)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalidJSON {
@@ -243,7 +247,7 @@ func TestDeleteUser(t *testing.T) {
 			h.DeleteUser(c)
 			assert.Equal(t, tc.status, w.Code)
 			if tc.shouldCallDB {
-				svc.AssertCalled(t, "DeleteUser", tc.user)
+				svc.AssertCalled(t, "DeleteUser", ctx, tc.user)
 			}
 		})
 	}
@@ -253,9 +257,10 @@ func TestGetAccessToken(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
+	ctx := context.Background()
 
 	log := logrus.New()
-	h := CreateHandlersUser("secret", nil, nil, nil, log)
+	h := CreateHandlersUser("secret", nil, nil, nil, log, ctx)
 
 	// invalid json
 	req := http.Request{Header: make(http.Header), URL: &url.URL{}}

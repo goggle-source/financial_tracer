@@ -10,23 +10,23 @@ import (
 )
 
 type CreateCategoryRepository interface {
-	CreateCategory(id uint, category domain.CategoryInput) (uint, error)
+	CreateCategory(ctx context.Context, id uint, category domain.CategoryInput) (uint, error)
 }
 
 type GetCategoryRepository interface {
-	GetCategory(idCategory uint) (domain.CategoryOutput, error)
+	GetCategory(ctx context.Context, idCategory uint) (domain.CategoryOutput, error)
 }
 
 type UpdateCategoryRepository interface {
-	UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error)
+	UpdateCategory(ctx context.Context, idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error)
 }
 
 type DeleteCategoryRepository interface {
-	DeleteCategory(idCategory uint) error
+	DeleteCategory(ctx context.Context, idCategory uint) error
 }
 
 type CategoryTypeRepository interface {
-	CategoriesType(typeFound string) ([]domain.CategoryOutput, error)
+	CategoriesType(ctx context.Context, typeFound string) ([]domain.CategoryOutput, error)
 }
 
 type Redis interface {
@@ -65,7 +65,7 @@ func CreateCategoryServer(d DeleteCategoryRepository,
 	}
 }
 
-func (cs *CategoryServer) CreateCategory(userID uint, category domain.CategoryInput) (uint, error) {
+func (cs *CategoryServer) CreateCategory(ctx context.Context, userID uint, category domain.CategoryInput) (uint, error) {
 	const op = "category.CreateCategory"
 
 	log := cs.log.WithFields(logrus.Fields{
@@ -81,7 +81,7 @@ func (cs *CategoryServer) CreateCategory(userID uint, category domain.CategoryIn
 		return 0, err
 	}
 
-	id, err := cs.c.CreateCategory(userID, category)
+	id, err := cs.c.CreateCategory(ctx, userID, category)
 	if err != nil {
 		log.Error("error create category: ", err)
 		return 0, RegsiterErrorDatabase(err)
@@ -97,7 +97,7 @@ func (cs *CategoryServer) CreateCategory(userID uint, category domain.CategoryIn
 			Limit:       category.Limit,
 			UserID:      userID,
 		}
-		err := cs.rbd.HsetCategory(context.Background(), id, category)
+		err := cs.rbd.HsetCategory(ctx, id, category)
 		canal <- err
 	}(canal)
 
@@ -110,7 +110,7 @@ func (cs *CategoryServer) CreateCategory(userID uint, category domain.CategoryIn
 	return id, nil
 }
 
-func (cs *CategoryServer) GetCategory(idCategory uint) (domain.CategoryOutput, error) {
+func (cs *CategoryServer) GetCategory(ctx context.Context, idCategory uint) (domain.CategoryOutput, error) {
 	const op = "category.GetCategory"
 
 	log := cs.log.WithFields(logrus.Fields{
@@ -120,7 +120,7 @@ func (cs *CategoryServer) GetCategory(idCategory uint) (domain.CategoryOutput, e
 
 	log.Info("start get category")
 
-	result, err := cs.rbd.HgetCategory(context.Background(), idCategory)
+	result, err := cs.rbd.HgetCategory(ctx, idCategory)
 	if err == nil {
 		log.Info("get cateogry is cash: ", result)
 		limit, _ := strconv.Atoi(result["limit"])
@@ -136,7 +136,7 @@ func (cs *CategoryServer) GetCategory(idCategory uint) (domain.CategoryOutput, e
 		log.Info("error cash", err)
 	}
 
-	category, err := cs.g.GetCategory(idCategory)
+	category, err := cs.g.GetCategory(ctx, idCategory)
 	if err != nil {
 		log.Error("error get category: ", err)
 		return domain.CategoryOutput{}, RegsiterErrorDatabase(err)
@@ -146,7 +146,7 @@ func (cs *CategoryServer) GetCategory(idCategory uint) (domain.CategoryOutput, e
 	return category, nil
 }
 
-func (cs *CategoryServer) UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error) {
+func (cs *CategoryServer) UpdateCategory(ctx context.Context, idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error) {
 	const op = "category.UpdateCategory"
 
 	log := cs.log.WithFields(logrus.Fields{
@@ -162,7 +162,7 @@ func (cs *CategoryServer) UpdateCategory(idCategory uint, newCategory domain.Cat
 		return domain.CategoryOutput{}, err
 	}
 
-	category, err := cs.u.UpdateCategory(idCategory, newCategory)
+	category, err := cs.u.UpdateCategory(ctx, idCategory, newCategory)
 	if err != nil {
 		log.Error("error update category: ", err)
 		return domain.CategoryOutput{}, RegsiterErrorDatabase(err)
@@ -171,7 +171,7 @@ func (cs *CategoryServer) UpdateCategory(idCategory uint, newCategory domain.Cat
 	canal := make(chan error, 1)
 
 	go func(chan error) {
-		err := cs.rbd.HsetCategory(context.Background(), idCategory, category)
+		err := cs.rbd.HsetCategory(ctx, idCategory, category)
 		canal <- err
 	}(canal)
 
@@ -184,7 +184,7 @@ func (cs *CategoryServer) UpdateCategory(idCategory uint, newCategory domain.Cat
 	return category, nil
 }
 
-func (cs *CategoryServer) DeleteCategory(idCategory uint) error {
+func (cs *CategoryServer) DeleteCategory(ctx context.Context, idCategory uint) error {
 	const op = "category.DeleteCategory"
 
 	log := cs.log.WithFields(logrus.Fields{
@@ -194,7 +194,7 @@ func (cs *CategoryServer) DeleteCategory(idCategory uint) error {
 
 	log.Info("start delete category")
 
-	err := cs.d.DeleteCategory(idCategory)
+	err := cs.d.DeleteCategory(ctx, idCategory)
 	if err != nil {
 		log.Error("error delete category: ", err)
 		return RegsiterErrorDatabase(err)
@@ -203,7 +203,7 @@ func (cs *CategoryServer) DeleteCategory(idCategory uint) error {
 	canal := make(chan error)
 
 	go func(canal chan error) {
-		err := cs.rbd.HdelCategory(context.Background(), idCategory)
+		err := cs.rbd.HdelCategory(ctx, idCategory)
 		canal <- err
 	}(canal)
 
@@ -214,9 +214,10 @@ func (cs *CategoryServer) DeleteCategory(idCategory uint) error {
 	log.Info("success delete category")
 
 	return nil
+	
 }
 
-func (cs *CategoryServer) CategoryType(typeFound string) ([]domain.CategoryOutput, error) {
+func (cs *CategoryServer) CategoryType(ctx context.Context, typeFound string) ([]domain.CategoryOutput, error) {
 	const op = "category.CategoryType"
 
 	log := cs.log.WithFields(logrus.Fields{
@@ -231,7 +232,7 @@ func (cs *CategoryServer) CategoryType(typeFound string) ([]domain.CategoryOutpu
 		return []domain.CategoryOutput{}, ErrValidateType
 	}
 
-	result, err := cs.t.CategoriesType(typeFound)
+	result, err := cs.t.CategoriesType(ctx, typeFound)
 	if err != nil {
 		log.Error("error find category type: ", err)
 		return []domain.CategoryOutput{}, RegsiterErrorDatabase(err)

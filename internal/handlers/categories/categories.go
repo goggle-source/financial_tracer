@@ -1,6 +1,7 @@
 package categoryHandlers
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 
@@ -11,30 +12,30 @@ import (
 )
 
 type ServicCategoryer interface {
-	CreateCategory(idUser uint, category domain.CategoryInput) (uint, error)
-	ReadCategory(idCategory uint) (domain.CategoryOutput, error)
-	UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error)
-	DeleteCategory(idCategory uint) error
+	CreateCategory(ctx context.Context, idUser uint, category domain.CategoryInput) (uint, error)
+	ReadCategory(ctx context.Context, idCategory uint) (domain.CategoryOutput, error)
+	UpdateCategory(ctx context.Context, idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error)
+	DeleteCategory(ctx context.Context, idCategory uint) error
 }
 
 type CreateCategoryServic interface {
-	CreateCategory(idUser uint, category domain.CategoryInput) (uint, error)
+	CreateCategory(ctx context.Context, idUser uint, category domain.CategoryInput) (uint, error)
 }
 
 type GetCategoryServic interface {
-	GetCategory(idCategory uint) (domain.CategoryOutput, error)
+	GetCategory(ctx context.Context, idCategory uint) (domain.CategoryOutput, error)
 }
 
 type UpdateCategoryServic interface {
-	UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error)
+	UpdateCategory(ctx context.Context, idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error)
 }
 
 type DeleteCategoryServic interface {
-	DeleteCategory(idCategory uint) error
+	DeleteCategory(ctx context.Context, idCategory uint) error
 }
 
 type CategoryTypeServic interface {
-	CategoryType(typeFound string) ([]domain.CategoryOutput, error)
+	CategoryType(ctx context.Context, typeFound string) ([]domain.CategoryOutput, error)
 }
 
 type CategoryHandlers struct {
@@ -44,6 +45,7 @@ type CategoryHandlers struct {
 	d   DeleteCategoryServic
 	t   CategoryTypeServic
 	log *logrus.Logger
+	ctx context.Context
 }
 
 func CreateHandlersCategory(c CreateCategoryServic,
@@ -51,7 +53,8 @@ func CreateHandlersCategory(c CreateCategoryServic,
 	u UpdateCategoryServic,
 	d DeleteCategoryServic,
 	t CategoryTypeServic,
-	log *logrus.Logger) *CategoryHandlers {
+	log *logrus.Logger,
+	ctx context.Context) *CategoryHandlers {
 	return &CategoryHandlers{
 		c:   c,
 		g:   g,
@@ -59,6 +62,7 @@ func CreateHandlersCategory(c CreateCategoryServic,
 		d:   d,
 		t:   t,
 		log: log,
+		ctx: ctx,
 	}
 }
 
@@ -112,7 +116,7 @@ func (h *CategoryHandlers) PostCategory(c *gin.Context) {
 		Description: newCategory.Description,
 	}
 
-	idCategory, err := h.c.CreateCategory(idUser.(uint), cat)
+	idCategory, err := h.c.CreateCategory(h.ctx, idUser.(uint), cat)
 	if err != nil {
 		log.Error("error create category")
 		api.RegistrationError(c, err)
@@ -157,7 +161,7 @@ func (h *CategoryHandlers) GetCategory(c *gin.Context) {
 		return
 	}
 
-	category, err := h.g.GetCategory(uint(id))
+	category, err := h.g.GetCategory(h.ctx, uint(id))
 	if err != nil {
 		log.Error("error get category")
 		api.RegistrationError(c, err)
@@ -207,7 +211,7 @@ func (h *CategoryHandlers) UpdateCategory(c *gin.Context) {
 		Description: updateCategory.Description,
 	}
 
-	category, err := h.u.UpdateCategory(updateCategory.CategoryId, newCategory)
+	category, err := h.u.UpdateCategory(h.ctx, updateCategory.CategoryId, newCategory)
 	if err != nil {
 		log.Error("error update category")
 		api.RegistrationError(c, err)
@@ -254,7 +258,7 @@ func (h *CategoryHandlers) DeleteCategory(c *gin.Context) {
 		return
 	}
 
-	err = h.d.DeleteCategory(uint(id))
+	err = h.d.DeleteCategory(h.ctx, uint(id))
 	if err != nil {
 		log.Error("error delete category")
 		api.RegistrationError(c, err)
@@ -294,7 +298,7 @@ func (h *CategoryHandlers) CategoryType(c *gin.Context) {
 		return
 	}
 
-	result, err := h.t.CategoryType(typeFound)
+	result, err := h.t.CategoryType(h.ctx, typeFound)
 	if err != nil {
 		log.WithField("err", err).Error("error in get category type")
 		api.RegistrationError(c, err)

@@ -1,15 +1,16 @@
 package postgresql
 
 import (
+	"context"
 	"errors"
 
 	"github.com/financial_tracer/internal/domain"
 	"gorm.io/gorm"
 )
 
-func (d *Db) CreateTransaction(idUser uint, idCategory uint, tran domain.TransactionInput) (uint, error) {
+func (d *Db) CreateTransaction(ctx context.Context, idUser uint, idCategory uint, tran domain.TransactionInput) (uint, error) {
 
-	tx := d.DB.Begin()
+	tx := d.DB.WithContext(ctx).Begin()
 	newTransaction := Transaction{
 		UserID:      idUser,
 		CategoryID:  idCategory,
@@ -40,10 +41,10 @@ func (d *Db) CreateTransaction(idUser uint, idCategory uint, tran domain.Transac
 
 }
 
-func (d *Db) GetTransaction(TransactionId uint) (domain.TransactionOutput, error) {
+func (d *Db) GetTransaction(ctx context.Context, TransactionId uint) (domain.TransactionOutput, error) {
 	var tran Transaction
 
-	result := d.DB.First(&tran, TransactionId)
+	result := d.DB.WithContext(ctx).First(&tran, TransactionId)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return domain.TransactionOutput{}, ErrorNotFound
@@ -61,14 +62,14 @@ func (d *Db) GetTransaction(TransactionId uint) (domain.TransactionOutput, error
 	return transaction, nil
 }
 
-func (d *Db) UpdateTransaction(transactionId uint, newTransaction domain.TransactionInput) (domain.TransactionOutput, error) {
+func (d *Db) UpdateTransaction(ctx context.Context, transactionId uint, newTransaction domain.TransactionInput) (domain.TransactionOutput, error) {
 	var transaction = Transaction{
 		Name:        newTransaction.Name,
 		Count:       newTransaction.Count,
 		Description: newTransaction.Description,
 	}
 
-	result := d.DB.Where("id = ?", transactionId).Updates(&transaction)
+	result := d.DB.WithContext(ctx).Where("id = ?", transactionId).Updates(&transaction)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return domain.TransactionOutput{}, ErrorNotFound
@@ -86,9 +87,9 @@ func (d *Db) UpdateTransaction(transactionId uint, newTransaction domain.Transac
 	return res, nil
 }
 
-func (d *Db) DeleteTransaction(transactionId uint) error {
+func (d *Db) DeleteTransaction(ctx context.Context, transactionId uint) error {
 
-	result := d.DB.Delete(&Transaction{}, transactionId)
+	result := d.DB.WithContext(ctx).Delete(&Transaction{}, transactionId)
 	if result.Error != nil {
 		if result.RowsAffected == 0 {
 			return ErrorNotFound

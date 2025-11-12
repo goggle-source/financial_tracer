@@ -1,6 +1,8 @@
 package user
 
 import (
+	"context"
+
 	"github.com/financial_tracer/internal/domain"
 	"github.com/financial_tracer/internal/lib/hashPassword"
 	jwttoken "github.com/financial_tracer/internal/lib/jwtToken"
@@ -9,15 +11,15 @@ import (
 )
 
 type RegistrationuserRepository interface {
-	RegistrationUser(user domain.User) (uint, string, error)
+	RegistrationUser(ctx context.Context, user domain.User) (uint, string, error)
 }
 
 type DeleteUserRepository interface {
-	DeleteUser(email string, password string) error
+	DeleteUser(ctx context.Context, email string, password string) error
 }
 
 type AuthenticationUserRepository interface {
-	AuthenticationUser(email string, password string) (uint, string, error)
+	AuthenticationUser(ctx context.Context, email string, password string) (uint, string, error)
 }
 
 type UserValid struct {
@@ -45,7 +47,7 @@ func CreateUserServer(r RegistrationuserRepository, d DeleteUserRepository, a Au
 	}
 }
 
-func (c *UserServer) RegistrationUser(us domain.RegisterUser) (jwttoken.ResponseJWTUser, error) {
+func (c *UserServer) RegistrationUser(ctx context.Context, us domain.RegisterUser) (jwttoken.ResponseJWTUser, error) {
 	const op = "user.ServerRegistrationUser"
 
 	log := c.log.WithField("op", op)
@@ -71,7 +73,7 @@ func (c *UserServer) RegistrationUser(us domain.RegisterUser) (jwttoken.Response
 		PasswordHash: passwordHash,
 	}
 
-	id, name, err := c.r.RegistrationUser(user)
+	id, name, err := c.r.RegistrationUser(ctx, user)
 	if err != nil {
 		log.Error("error registration user: ", err)
 		return jwttoken.ResponseJWTUser{}, RegisterErrDatabase(err)
@@ -88,7 +90,7 @@ func (c *UserServer) RegistrationUser(us domain.RegisterUser) (jwttoken.Response
 	return tokens, nil
 }
 
-func (c *UserServer) AuthenticationUser(us domain.AuthenticationUser) (jwttoken.ResponseJWTUser, error) {
+func (c *UserServer) AuthenticationUser(ctx context.Context, us domain.AuthenticationUser) (jwttoken.ResponseJWTUser, error) {
 	const op = "user.ServerAuthenticationUser"
 
 	log := c.log.WithField("op", op)
@@ -101,7 +103,7 @@ func (c *UserServer) AuthenticationUser(us domain.AuthenticationUser) (jwttoken.
 		return jwttoken.ResponseJWTUser{}, err
 	}
 
-	id, name, err := c.a.AuthenticationUser(us.Email, us.Password)
+	id, name, err := c.a.AuthenticationUser(ctx, us.Email, us.Password)
 	if err != nil {
 		log.Error("error authentication user: ", err)
 		return jwttoken.ResponseJWTUser{}, RegisterErrDatabase(err)
@@ -119,7 +121,7 @@ func (c *UserServer) AuthenticationUser(us domain.AuthenticationUser) (jwttoken.
 	return token, nil
 }
 
-func (c *UserServer) DeleteUser(us domain.DeleteUser) error {
+func (c *UserServer) DeleteUser(ctx context.Context, us domain.DeleteUser) error {
 	const op = "user.ServerDeleteUser"
 
 	log := c.log.WithField("op", op)
@@ -132,7 +134,7 @@ func (c *UserServer) DeleteUser(us domain.DeleteUser) error {
 		return err
 	}
 
-	err := c.d.DeleteUser(us.Email, us.Password)
+	err := c.d.DeleteUser(ctx, us.Email, us.Password)
 	if err != nil {
 		log.Error("error delete user: ", err)
 		return RegisterErrDatabase(err)

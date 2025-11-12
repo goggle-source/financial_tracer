@@ -1,15 +1,16 @@
 package postgresql
 
 import (
+	"context"
 	"errors"
 
 	"github.com/financial_tracer/internal/domain"
 	"gorm.io/gorm"
 )
 
-func (d *Db) CreateCategory(userID uint, category domain.CategoryInput) (uint, error) {
+func (d *Db) CreateCategory(ctx context.Context, userID uint, category domain.CategoryInput) (uint, error) {
 	var user User
-	result := d.DB.First(&user, userID)
+	result := d.DB.WithContext(ctx).First(&user, userID)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return 0, ErrorNotFound
@@ -24,7 +25,7 @@ func (d *Db) CreateCategory(userID uint, category domain.CategoryInput) (uint, e
 		Description: category.Description,
 	}
 
-	err := d.DB.Model(&user).Association("Categories").Append(&newCategory)
+	err := d.DB.WithContext(ctx).Model(&user).Association("Categories").Append(&newCategory)
 	if err != nil {
 		if errors.Is(err, gorm.ErrDuplicatedKey) {
 			return 0, ErrorDuplicated
@@ -34,10 +35,10 @@ func (d *Db) CreateCategory(userID uint, category domain.CategoryInput) (uint, e
 	return newCategory.ID, nil
 }
 
-func (d *Db) GetCategory(idCategory uint) (domain.CategoryOutput, error) {
+func (d *Db) GetCategory(ctx context.Context, idCategory uint) (domain.CategoryOutput, error) {
 
 	var category Category
-	result := d.DB.First(&category, idCategory)
+	result := d.DB.WithContext(ctx).First(&category, idCategory)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return domain.CategoryOutput{}, ErrorNotFound
@@ -54,10 +55,10 @@ func (d *Db) GetCategory(idCategory uint) (domain.CategoryOutput, error) {
 	return modelCategory, nil
 }
 
-func (d *Db) UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error) {
+func (d *Db) UpdateCategory(ctx context.Context, idCategory uint, newCategory domain.CategoryInput) (domain.CategoryOutput, error) {
 
 	var categor Category
-	result := d.DB.First(&categor, idCategory)
+	result := d.DB.WithContext(ctx).First(&categor, idCategory)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return domain.CategoryOutput{}, ErrorNotFound
@@ -65,7 +66,7 @@ func (d *Db) UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (
 		return domain.CategoryOutput{}, result.Error
 	}
 
-	result = d.DB.Model(&categor).Updates(Category{Name: newCategory.Name,
+	result = d.DB.WithContext(ctx).Model(&categor).Updates(Category{Name: newCategory.Name,
 		Description: newCategory.Description,
 		Type:        newCategory.Type},
 	)
@@ -86,9 +87,9 @@ func (d *Db) UpdateCategory(idCategory uint, newCategory domain.CategoryInput) (
 	return ResponseCategory, nil
 }
 
-func (d *Db) DeleteCategory(idCategory uint) error {
+func (d *Db) DeleteCategory(ctx context.Context, idCategory uint) error {
 
-	result := d.DB.Unscoped().Delete(&Category{}, idCategory)
+	result := d.DB.WithContext(ctx).Unscoped().Delete(&Category{}, idCategory)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -96,11 +97,11 @@ func (d *Db) DeleteCategory(idCategory uint) error {
 	return nil
 }
 
-func (d *Db) CategoriesType(typeFound string) ([]domain.CategoryOutput, error) {
+func (d *Db) CategoriesType(ctx context.Context, typeFound string) ([]domain.CategoryOutput, error) {
 
 	var category []Category
 
-	result := d.DB.Where("type = ?", typeFound).Find(&category, category)
+	result := d.DB.WithContext(ctx).Where("type = ?", typeFound).Find(&category, category)
 
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

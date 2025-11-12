@@ -2,6 +2,7 @@ package transactionHandlers
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -108,6 +109,8 @@ func TestCreateTransactionServic(t *testing.T) {
 	for _, ts := range arrTest {
 
 		t.Run(ts.name, func(t *testing.T) {
+			ctx := context.Background()
+
 			gin.SetMode(gin.TestMode)
 			w := httptest.NewRecorder()
 			c, _ := gin.CreateTestContext(w)
@@ -120,10 +123,11 @@ func TestCreateTransactionServic(t *testing.T) {
 				Count:       ts.tran.Count,
 				Description: ts.tran.Description,
 			}
+			if ts.shouldCallDB {
+				repoMock.On("CreateTransaction", ctx, ts.idUser, ts.idCategory, tranInput).Return(ts.idTransaction, ts.mockErr)
+			}
 
-			repoMock.On("CreateTransactionServic", ts.idUser, ts.idCategory, tranInput).Return(ts.idTransaction, ts.mockErr)
-
-			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log)
+			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log, ctx)
 
 			req := http.Request{
 				Header: make(http.Header),
@@ -144,7 +148,7 @@ func TestCreateTransactionServic(t *testing.T) {
 			assert.Equal(t, ts.status, w.Code)
 
 			if ts.shouldCallDB {
-				repoMock.AssertCalled(t, "CreateTransactionServic", ts.idUser, ts.idCategory, tranInput)
+				repoMock.AssertCalled(t, "CreateTransaction", ctx, ts.idUser, ts.idCategory, tranInput)
 			}
 		})
 	}
@@ -191,12 +195,13 @@ func TestGetTransaction(t *testing.T) {
 
 			repoMock := new(tranasctionServicMock)
 			log := logrus.New()
+			ctx := context.Background()
 
 			if !tc.invalid {
-				repoMock.On("ReadTransactionServer", tc.req).Return(tc.output, tc.mockErr)
+				repoMock.On("GetTransaction", ctx, tc.req).Return(tc.output, tc.mockErr)
 			}
 
-			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log)
+			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log, ctx)
 
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 
@@ -222,7 +227,7 @@ func TestGetTransaction(t *testing.T) {
 			assert.Equal(t, tc.status, w.Code)
 
 			if !tc.invalid {
-				repoMock.AssertCalled(t, "ReadTransactionServer", tc.req)
+				repoMock.AssertCalled(t, "GetTransaction", ctx, tc.req)
 			}
 		})
 	}
@@ -268,13 +273,14 @@ func TestUpdateTransaction(t *testing.T) {
 
 			repoMock := new(tranasctionServicMock)
 			log := logrus.New()
+			ctx := context.Background()
 
 			if !tc.invalid {
 				input := domain.TransactionInput{Name: tc.req.Name, Count: tc.req.Count, Description: tc.req.Description}
-				repoMock.On("UpdateTransactionServer", tc.req.IdTransaction, input).Return(tc.output, tc.mockErr)
+				repoMock.On("UpdateTransaction", ctx, tc.req.IdTransaction, input).Return(tc.output, tc.mockErr)
 			}
 
-			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log)
+			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log, ctx)
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 			if tc.invalid {
 				req.Body = ioutil.NopCloser(bytes.NewBufferString("{"))
@@ -290,7 +296,7 @@ func TestUpdateTransaction(t *testing.T) {
 
 			if !tc.invalid {
 				input := domain.TransactionInput{Name: tc.req.Name, Count: tc.req.Count, Description: tc.req.Description}
-				repoMock.AssertCalled(t, "UpdateTransactionServer", tc.req.IdTransaction, input)
+				repoMock.AssertCalled(t, "UpdateTransaction", ctx, tc.req.IdTransaction, input)
 			}
 		})
 	}
@@ -336,12 +342,13 @@ func TestDeleteTransaction(t *testing.T) {
 
 			repoMock := new(tranasctionServicMock)
 			log := logrus.New()
+			ctx := context.Background()
 
 			if !tc.invalid {
-				repoMock.On("DeleteTransactionServer", tc.req).Return(tc.mockErr)
+				repoMock.On("DeleteTransaction", ctx, tc.req).Return(tc.mockErr)
 			}
 
-			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log)
+			handler := CreateTransactionHandlers(repoMock, repoMock, repoMock, repoMock, log, ctx)
 			req := http.Request{Header: make(http.Header), URL: &url.URL{}}
 
 			req.Header.Set("content-type", "application/json")
@@ -363,7 +370,7 @@ func TestDeleteTransaction(t *testing.T) {
 			assert.Equal(t, tc.status, w.Code)
 
 			if !tc.invalid {
-				repoMock.AssertCalled(t, "DeleteTransactionServer", tc.req)
+				repoMock.AssertCalled(t, "DeleteTransaction", ctx, tc.req)
 			}
 		})
 	}

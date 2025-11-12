@@ -12,6 +12,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestCreateCategory(t *testing.T) {
@@ -122,11 +123,11 @@ func TestCreateCategory(t *testing.T) {
 			shouldCallRedis: false,
 		},
 	}
-	repoMock := new(DbMock)
-	r := new(cash.RedisMock)
-
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
+			repoMock := new(DbMock)
+			r := new(cash.RedisMock)
+
 			repoMock.ExpectedCalls = nil
 			repoMock.Calls = nil
 			r.ExpectedCalls = nil
@@ -140,7 +141,7 @@ func TestCreateCategory(t *testing.T) {
 			}
 
 			if test.shouldCallDB {
-				repoMock.On("CreateCategory", test.userID, test.category).Return(test.categoryID, test.mockErr)
+				repoMock.On("CreateCategory", mock.Anything, test.userID, test.category).Return(test.categoryID, test.mockErr)
 			}
 
 			if test.shouldCallRedis {
@@ -150,7 +151,7 @@ func TestCreateCategory(t *testing.T) {
 			log := logrus.New()
 
 			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log, r)
-			resultID, err := servic.CreateCategory(test.userID, test.category)
+			resultID, err := servic.CreateCategory(context.Background(), test.userID, test.category)
 
 			if test.mockErr != nil || test.categoryErr != nil {
 				assert.Error(t, err)
@@ -168,9 +169,9 @@ func TestCreateCategory(t *testing.T) {
 			}
 
 			if test.shouldCallDB {
-				repoMock.AssertCalled(t, "CreateCategory", test.userID, test.category)
+				repoMock.AssertCalled(t, "CreateCategory", mock.Anything, test.userID, test.category)
 			} else {
-				repoMock.AssertNotCalled(t, "CreateCategory", test.userID, test.category)
+				repoMock.AssertNotCalled(t, "CreateCategory", mock.Anything, test.userID, test.category)
 			}
 
 			if test.shouldCallRedis {
@@ -266,16 +267,17 @@ func TestGetCategory(t *testing.T) {
 			shouldCallDB:    true,
 		},
 	}
-	repoMock := new(DbMock)
-	r := new(cash.RedisMock)
 
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
+			repoMock := new(DbMock)
+			r := new(cash.RedisMock)
+
 			repoMock.ExpectedCalls = nil
 			repoMock.Calls = nil
 
 			if test.shouldCallDB {
-				repoMock.On("GetCategory", test.categoryID).Return(test.category, test.mockErr)
+				repoMock.On("GetCategory", mock.Anything, test.categoryID).Return(test.category, test.mockErr)
 			}
 
 			log := logrus.New()
@@ -285,7 +287,7 @@ func TestGetCategory(t *testing.T) {
 			}
 
 			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log, r)
-			resultCategory, err := servic.GetCategory(test.categoryID)
+			resultCategory, err := servic.GetCategory(context.Background(), test.categoryID)
 
 			if test.categoryErr != nil {
 				assert.Error(t, err)
@@ -313,9 +315,9 @@ func TestGetCategory(t *testing.T) {
 			}
 
 			if test.shouldCallDB {
-				repoMock.AssertCalled(t, "GetCategory", test.categoryID)
+				repoMock.AssertCalled(t, "GetCategory", mock.Anything, test.categoryID)
 			} else {
-				repoMock.AssertNotCalled(t, "GetCategory", test.categoryID)
+				repoMock.AssertNotCalled(t, "GetCategory", mock.Anything, test.categoryID)
 			}
 		})
 	}
@@ -425,16 +427,17 @@ func TestUpdateCategory(t *testing.T) {
 			redisErr:        nil,
 		},
 	}
-	repoMock := new(DbMock)
-	r := new(cash.RedisMock)
 
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
+			repoMock := new(DbMock)
+			r := new(cash.RedisMock)
+
 			repoMock.ExpectedCalls = nil
 			repoMock.Calls = nil
 
 			if test.shouldCallDB {
-				repoMock.On("UpdateCategory", test.categoryID, test.newCategory).Return(test.category, test.mockErr)
+				repoMock.On("UpdateCategory", mock.Anything, test.categoryID, test.newCategory).Return(test.category, test.mockErr)
 			}
 
 			log := logrus.New()
@@ -444,7 +447,7 @@ func TestUpdateCategory(t *testing.T) {
 			}
 
 			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log, r)
-			_, err := servic.UpdateCategory(test.categoryID, test.newCategory)
+			_, err := servic.UpdateCategory(context.Background(), test.categoryID, test.newCategory)
 
 			if test.mockErr != nil || test.categoryErr != nil {
 				assert.Error(t, err)
@@ -461,7 +464,7 @@ func TestUpdateCategory(t *testing.T) {
 			}
 
 			if test.shouldCallDB {
-				repoMock.AssertCalled(t, "UpdateCategory", test.categoryID, test.newCategory)
+				repoMock.AssertCalled(t, "UpdateCategory", mock.Anything, test.categoryID, test.newCategory)
 			}
 
 			if test.shouldCallRedis {
@@ -507,15 +510,16 @@ func TestDeleteCategoryDatabase(t *testing.T) {
 			redisErr:        nil,
 		},
 	}
-	repoMock := new(DbMock)
-	r := new(cash.RedisMock)
 
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
+			repoMock := new(DbMock)
+			r := new(cash.RedisMock)
+
 			repoMock.ExpectedCalls = nil
 			repoMock.Calls = nil
 
-			repoMock.On("DeleteCategory", test.categoryID).Return(test.mockErr)
+			repoMock.On("DeleteCategory", mock.Anything, test.categoryID).Return(test.mockErr)
 			log := logrus.New()
 
 			if test.shouldCallRedis {
@@ -523,7 +527,7 @@ func TestDeleteCategoryDatabase(t *testing.T) {
 			}
 
 			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log, r)
-			err := servic.DeleteCategory(test.categoryID)
+			err := servic.DeleteCategory(context.Background(), test.categoryID)
 
 			if test.mockErr != nil || test.categoryErr != nil {
 				assert.Error(t, err)
@@ -533,7 +537,7 @@ func TestDeleteCategoryDatabase(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 			}
-			repoMock.AssertCalled(t, "DeleteCategory", test.categoryID)
+			repoMock.AssertCalled(t, "DeleteCategory", mock.Anything, test.categoryID)
 
 			if test.shouldCallRedis {
 				r.AssertCalled(t, "HdelCategory", context.Background(), test.categoryID)
@@ -605,16 +609,16 @@ func TestCategoryType(t *testing.T) {
 	for _, test := range arrTests {
 		t.Run(test.Name, func(t *testing.T) {
 			repoMock := new(DbMock)
+			r := new(cash.RedisMock)
 
 			if test.shouldCallDB {
-				repoMock.On("CategoriesType", test.typeFound).Return(test.categories, test.mockErr)
+				repoMock.On("CategoriesType", mock.Anything, test.typeFound).Return(test.categories, test.mockErr)
 			}
 
 			log := logrus.New()
-			r := new(cash.RedisMock)
 
 			servic := CreateCategoryServer(repoMock, repoMock, repoMock, repoMock, repoMock, log, r)
-			resultCategories, err := servic.CategoryType(test.typeFound)
+			resultCategories, err := servic.CategoryType(context.Background(), test.typeFound)
 
 			if test.categoryErr != nil {
 				assert.Error(t, err)
@@ -628,7 +632,7 @@ func TestCategoryType(t *testing.T) {
 			}
 
 			if test.shouldCallDB {
-				repoMock.AssertCalled(t, "CategoriesType", test.typeFound)
+				repoMock.AssertCalled(t, "CategoriesType", mock.Anything, test.typeFound)
 			}
 			repoMock.AssertExpectations(t)
 		})
