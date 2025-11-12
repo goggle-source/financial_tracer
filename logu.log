@@ -1543,3 +1543,58 @@
 {"category_id":2,"level":"error","msg":"error create transaction: not found","op":"transaction.CreateTransactionServic","time":"2025-11-12T17:36:36+03:00","user_id":6}
 {"err":"transaction is not found","level":"error","msg":"error create transaction","op":"handlers.PostTransaction","time":"2025-11-12T17:36:36+03:00"}
 {"exp":3748700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-12T17:36:36+03:00"}
+{"fields.time":"2025-11-12T17:37:26.6029498+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/19","time":"2025-11-12T17:37:26+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-12T17:37:26+03:00"}
+{"category_id":19,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-12T17:37:26+03:00"}
+{"category_id":19,"level":"info","msg":"error cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.GetCategory","time":"2025-11-12T17:37:28+03:00"}
+{"category_id":19,"level":"error","msg":"error get category: not found","op":"category.GetCategory","time":"2025-11-12T17:37:28+03:00"}
+{"level":"error","msg":"error get category","op":"handlers.GetCategory","time":"2025-11-12T17:37:28+03:00"}
+{"exp":2112234200,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/19","time":"2025-11-12T17:37:28+03:00"}
+{"fields.time":"2025-11-12T17:37:34.4013202+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/category/20","time":"2025-11-12T17:37:34+03:00"}
+{"level":"info","msg":"start get cateogry","op":"handlers.GetCategory","time":"2025-11-12T17:37:34+03:00"}
+{"category_id":20,"level":"info","msg":"start get category","op":"category.GetCategory","time":"2025-11-12T17:37:34+03:00"}
+{"category_id":20,"level":"info","msg":"error cashdial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"category.GetCategory","time":"2025-11-12T17:37:36+03:00"}
+{"category_id":20,"level":"info","msg":"success get category","op":"category.GetCategory","time":"2025-11-12T17:37:36+03:00"}
+{"exp":2104479900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/category/20","time":"2025-11-12T17:37:36+03:00"}
+{"fields.time":"2025-11-12T17:37:45.259438+03:00","level":"info","method":"POST","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-12T17:37:45+03:00"}
+{"level":"info","msg":"start create transaction","op":"handlers.PostTransaction","time":"2025-11-12T17:37:45+03:00"}
+{"category_id":20,"level":"info","msg":"start create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-12T17:37:45+03:00","user_id":6}
+{"category_id":20,"level":"error","msg":"error create cash: dial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"transaction.CreateTransactionServic","time":"2025-11-12T17:37:47+03:00","user_id":6}
+{"category_id":20,"level":"info","msg":"success create transaction","op":"transaction.CreateTransactionServic","time":"2025-11-12T17:37:47+03:00","user_id":6}
+{"level":"info","msg":"success create transaction","op":"handlers.PostTransaction","time":"2025-11-12T17:37:47+03:00"}
+{"exp":2145986700,"level":"info","method":"POST","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-12T17:37:47+03:00"}
+{"fields.time":"2025-11-12T17:37:56.2494821+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/transaction/3","time":"2025-11-12T17:37:56+03:00"}
+{"level":"info","msg":"start get transaction","op":"handlers.GetTransaction","time":"2025-11-12T17:37:56+03:00"}
+{"level":"info","msg":"start read transaction","op":"transaction.GetTransactionServer","time":"2025-11-12T17:37:56+03:00","transaction_id":3}
+{"level":"info","msg":"err info: dial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"transaction.GetTransactionServer","time":"2025-11-12T17:37:58+03:00","transaction_id":3}
+{"level":"info","msg":"success get transaction","op":"transaction.GetTransactionServer","time":"2025-11-12T17:37:58+03:00","transaction_id":3}
+{"level":"info","msg":"success get transaction","op":"handlers.GetTransaction","time":"2025-11-12T17:37:58+03:00"}
+{"exp":2074454500,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/transaction/3","time":"2025-11-12T17:37:58+03:00"}
+{"fields.time":"2025-11-12T17:38:05.6830865+03:00","level":"info","method":"PUT","msg":"request","path":"/financial_tracker/transaction/","time":"2025-11-12T17:38:05+03:00"}
+{"level":"info","msg":"start update transaction","op":"handlers.UpdateTransaction","time":"2025-11-12T17:38:05+03:00"}
+{"level":"info","msg":"start update transaction","op":"transaction.UpdateTransactionServer","time":"2025-11-12T17:38:05+03:00","transaction_id":3}
+{"level":"error","msg":"error update cash: dial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"transaction.UpdateTransactionServer","time":"2025-11-12T17:38:07+03:00","transaction_id":3}
+{"level":"info","msg":"success update transaction","op":"transaction.UpdateTransactionServer","time":"2025-11-12T17:38:07+03:00","transaction_id":3}
+{"level":"info","msg":"success update transaction","op":"handlers.UpdateTransaction","time":"2025-11-12T17:38:07+03:00"}
+{"exp":2130564200,"level":"info","method":"PUT","msg":"response","path":"/financial_tracker/transaction/","time":"2025-11-12T17:38:07+03:00"}
+{"fields.time":"2025-11-12T17:38:15.2125262+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/transaction/3","time":"2025-11-12T17:38:15+03:00"}
+{"level":"info","msg":"start get transaction","op":"handlers.GetTransaction","time":"2025-11-12T17:38:15+03:00"}
+{"level":"info","msg":"start read transaction","op":"transaction.GetTransactionServer","time":"2025-11-12T17:38:15+03:00","transaction_id":3}
+{"level":"info","msg":"err info: dial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"transaction.GetTransactionServer","time":"2025-11-12T17:38:17+03:00","transaction_id":3}
+{"level":"info","msg":"success get transaction","op":"transaction.GetTransactionServer","time":"2025-11-12T17:38:17+03:00","transaction_id":3}
+{"level":"info","msg":"success get transaction","op":"handlers.GetTransaction","time":"2025-11-12T17:38:17+03:00"}
+{"exp":2120797100,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/transaction/3","time":"2025-11-12T17:38:17+03:00"}
+{"fields.time":"2025-11-12T17:38:25.9800919+03:00","level":"info","method":"DELETE","msg":"request","path":"/financial_tracker/transaction/3","time":"2025-11-12T17:38:25+03:00"}
+{"level":"info","msg":"start delete transaction","op":"handlers.DeleteTransaction","time":"2025-11-12T17:38:25+03:00"}
+{"level":"info","msg":"start delete transaction","op":"transaction.DeleteTransactionServer","time":"2025-11-12T17:38:25+03:00","transaction_id":3}
+{"level":"error","msg":"error delete cash: dial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"transaction.DeleteTransactionServer","time":"2025-11-12T17:38:28+03:00","transaction_id":3}
+{"level":"info","msg":"success delete transaction","op":"transaction.DeleteTransactionServer","time":"2025-11-12T17:38:28+03:00","transaction_id":3}
+{"level":"info","msg":"success delete transaction","op":"handlers.DeleteTransaction","time":"2025-11-12T17:38:28+03:00"}
+{"exp":2136545400,"level":"info","method":"DELETE","msg":"response","path":"/financial_tracker/transaction/3","time":"2025-11-12T17:38:28+03:00"}
+{"fields.time":"2025-11-12T17:38:31.7775859+03:00","level":"info","method":"GET","msg":"request","path":"/financial_tracker/transaction/3","time":"2025-11-12T17:38:31+03:00"}
+{"level":"info","msg":"start get transaction","op":"handlers.GetTransaction","time":"2025-11-12T17:38:31+03:00"}
+{"level":"info","msg":"start read transaction","op":"transaction.GetTransactionServer","time":"2025-11-12T17:38:31+03:00","transaction_id":3}
+{"level":"info","msg":"err info: dial tcp [::1]:6379: connectex: No connection could be made because the target machine actively refused it.","op":"transaction.GetTransactionServer","time":"2025-11-12T17:38:33+03:00","transaction_id":3}
+{"level":"error","msg":"error get transaction: not found","op":"transaction.GetTransactionServer","time":"2025-11-12T17:38:33+03:00","transaction_id":3}
+{"err":"transaction is not found","level":"error","msg":"error get transaction","op":"handlers.GetTransaction","time":"2025-11-12T17:38:33+03:00"}
+{"exp":2122821900,"level":"info","method":"GET","msg":"response","path":"/financial_tracker/transaction/3","time":"2025-11-12T17:38:33+03:00"}
